@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('daftarbukus', function (Blueprint $table) {
-            $table->id();
-            $table->string("judul");
-            $table->string("author");
-            $table->string("deskripsi");
-            $table->string("jenis_buku");
-            $table->string("cover_buku")->nullable();
-            $table->string("buku")->nullable();
+        Schema::create('products', function (Blueprint $table) {
+            $table->id("id_product");
+            $table->string("name_product");
+            $table->text("desc_product");
+            $table->integer("stock_product");
+            $table->string("name_brand");
+            $table->string("image_product");
+            $table->string("product_status");
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('daftarbukus');
+        Schema::dropIfExists('products');
     }
 };

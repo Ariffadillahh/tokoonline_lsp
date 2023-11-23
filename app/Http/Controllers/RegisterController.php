@@ -45,12 +45,19 @@ class RegisterController extends Controller
         ]);
 
         if ($request->file('image')) {
-            $validateData['image'] = $request->file('image')->store('user_image');
+            $image = $request->file('image');
+            $image->storeAs('public/image_user', $image->hashName());
         }
 
-        $validateData['password'] = Hash::make($validateData['password']);
+        $password = Hash::make($validateData['password']);
 
-        User::create($validateData);
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $password,
+            'level' => $request->level,
+            'image' => $request->file('image')->hashName()
+        ]);
 
         return redirect('login')->with('succses', 'Register berhasil silahkan Login');
     }

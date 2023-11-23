@@ -1,8 +1,8 @@
 <nav class="bg-white/30 backdrop-blur-sm z-10 border-gray-200 fixed w-full dark:bg-gray-900">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="/" class="flex items-center">
-            <img class="w-9 h-9 " src="{{ asset('storage/asset/logo.png') }}" alt="logo">
-            <span class="text-xl ml-2 font-semibold">RipsBooks</span>
+            <img class="w-9 h-9 " src="{{ asset('storage/images/logo.png') }}" alt="logo">
+            <span class="text-xl ml-2 font-semibold">TokoGue</span>
         </a>
         <div class="flex md:order-2">
 
@@ -13,7 +13,7 @@
                     data-dropdown-placement="bottom">
                     <span class="sr-only">Open user menu</span>
                     @if (Auth::user()->image)
-                        <img class="w-10 h-10 rounded-full" src="{{ asset('storage/' . Auth::user()->image) }}"
+                        <img class="w-10 h-10 rounded-full" src="{{ asset('storage/image_user/' . Auth::user()->image) }}"
                             alt="user photo">
                     @else
                         <img class="w-10 h-10 rounded-full " src="{{ asset('storage/user_image/image.jpeg') }}"
@@ -49,12 +49,13 @@
                                 </button>
                             </form>
                         </li>
+
                     </ul>
                 </div>
             @else
                 <a href={{ route('login') }}>
                     <button type="button"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-1 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login</button>
+                        class="text-white bg-[#969D43]  focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm px-4 py-2 text-center mr-1 md:mr-0 ">Login</button>
                 </a>
             @endauth
             <button data-collapse-toggle="navbar-sticky" type="button"
@@ -82,11 +83,11 @@
                         </svg>
                     </div>
                     <input type="text" name="search" id="voice-search" value="{{ request('search') }}"
-                        class="bg-gray-50 border border-gray-300  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Search books..">
+                        class="bg-gray-50 border border-gray-300  text-gray-900 text-sm rounded-lg focus:ring-[#969D43] focus:border-[#969D43] block w-full pl-10 p-2.5  "
+                        placeholder="Search books.." autocomplete="off">
                 </div>
                 <button type="submit"
-                    class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-[#C8D439] rounded-lg border ">
                     <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -108,11 +109,11 @@
                         </svg>
                     </div>
                     <input type="text" id="voice-search" name="search" value="{{ request('search') }}"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Search books..">
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#969D43] focus:border-[#969D43] block w-full pl-10 p-2.5  "
+                        placeholder="Search books.." autocomplete="off">
                 </div>
                 <button type="submit"
-                    class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-[#C8D439] rounded-lg border ">
                     <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -125,4 +126,5 @@
         </div>
     </div>
 </nav>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
 `

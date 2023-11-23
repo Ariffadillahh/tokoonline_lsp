@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\jenisbuku;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
-class JenisbukuController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,22 +35,16 @@ class JenisbukuController extends Controller
      */
     public function store(Request $request)
     {
-        $validateData = $request->validate([
-            'jenis_buku' => 'required|min:3|max:255',
-        ]);
-
-        jenisbuku::create($validateData);
-
-        return redirect()->back()->with('succses', 'Buku Berhasil di tambah');
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\jenisbuku  $jenisbuku
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(jenisbuku $jenisbuku)
+    public function show(Product $product)
     {
         //
     }
@@ -58,10 +52,10 @@ class JenisbukuController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\jenisbuku  $jenisbuku
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(jenisbuku $jenisbuku)
+    public function edit(Product $product)
     {
         //
     }
@@ -70,35 +64,22 @@ class JenisbukuController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\jenisbuku  $jenisbuku
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, jenisbuku $jenisbuku)
-    {   
-
-        
-        $id = $request->id;
-        
-        jenisbuku::where('id',$id)->update([
-            'jenis_buku' => $request->jenis_buku
-        ]);
-
-        return redirect()->back()->with('succses', "Berhasil update" );
-
-
-
+    public function update(Request $request, Product $product)
+    {
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\jenisbuku  $jenisbukujenisbuku
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(Product $product)
     {
-        $id = $request->id;
-        jenisbuku::where("id",$id)->delete();
-        return redirect()->back()->with('succses', "Berhasil hapus" );
+        //
     }
 }

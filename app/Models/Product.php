@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class daftarbuku extends Model
+class Product extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'judul',
-        'author',
-        'deskripsi',
-        'jenis_buku',
-        'cover_buku',
-        'buku',
+        'name_product',
+        'desc_product',
+        'stock_product',
+        'name_brand',
+        'image_product',
+        'product_status',
     ];
 }

@@ -62,18 +62,11 @@ class LoginController extends Controller
     public function show(request $request)
     {
 
-        $daftarBuku = daftarbuku::orderBy('id', 'DESC');
-
-        if (request('search')) {
-            $daftarBuku->where('judul', 'like', '%' . request('search') . '%')
-                ->orWhere('author', 'like', '%' . request('search') . '%')
-                ->orWhere('jenis_buku', 'like', '%' . request('search') . '%');;
-        }
-
+       
         return view(
             "Dashboard.index",
             [
-                'daftarbuku' => $daftarBuku->get()
+                'daftarbuku' => "hai"
             ]
         );
     }
@@ -87,76 +80,6 @@ class LoginController extends Controller
     public function edit(login $login)
     {
         //
-    }
-
-    public function admin()
-    {
-        if(auth()->user()->level == 'admin') {
-            return view('Admin.index', [
-                'user' => User::where("level", "admin"),
-                'boking' => boking::where("status", "redy"),
-                'alltransaksi' => boking::all(),
-                'buku' => daftarbuku::all(),
-                'jenis' => jenisbuku::orderBy("id", "desc")->get(),
-            ]);
-        }else{
-            return redirect('/');
-        }
-        
-    }
-
-    public function penjaga()
-    {
-        if(auth()->user()->level == 'admin') {
-            return view('Admin.penjagaperpus', [
-                'penjaga'=> penjagaperpus::orderBy("id", "desc")->get()
-            ]);
-        }else{
-            return redirect('/');
-        }
-       
-    }
-
-    public function pinjam()
-    {
-        
-
-        if(auth()->user()->level == 'admin') {
-            return view('Admin.pinjam', [
-                'boking' => boking::where('status','redy')->get()
-            ]);
-        }else{
-            return redirect('/');
-        }
-    }
-
-    public function user()
-    {
-       
-
-        if(auth()->user()->level == 'admin') {
-            return view('Admin.user', [
-                'user' => User::where('level', 'user')->get()
-            ]);
-        }else{
-            return redirect('/');
-        }
-    }
-
-    
-
-    public function book()
-    {
-      
-
-        if(auth()->user()->level == 'admin') {
-            return view('Admin.books', [
-                'buku' => daftarbuku::orderBy("id", "desc")->get(),
-                'jenisbuku' => jenisbuku::all()
-            ]);
-        }else{
-            return redirect('/');
-        }
     }
 
 

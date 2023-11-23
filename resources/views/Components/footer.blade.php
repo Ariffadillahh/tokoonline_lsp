@@ -3,8 +3,8 @@
         <div class="md:flex md:justify-between">
             <div class="mb-6 md:mb-0">
                 <a href="/" class="flex items-center">
-                    <img class="w-9 h-9 " src="{{ asset('storage/asset/logo.png') }}" alt="logo">
-                    <span class="text-xl ml-2 font-semibold">RipsBooks</span>
+                    <img class="w-9 h-9 " src="{{ asset('storage/images/logo.png') }}" alt="logo">
+                    <span class="text-xl ml-2 font-semibold">TokoGue</span>
                 </a>
             </div>
             <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
@@ -48,7 +48,7 @@
         <div class="sm:flex sm:items-center sm:justify-between">
             <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a
                     href="https://instagram.com/fdlharip?igshid=YTQwZjQ0NmI0OA%3D%3D&utm_source=qr"
-                    class="hover:underline">RipsBooks</a>. All Rights Reserved.
+                    class="hover:underline">TokoGue</a>. All Rights Reserved.
             </span>
 
         </div>

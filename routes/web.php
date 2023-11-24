@@ -5,6 +5,7 @@ use App\Http\Controllers\DaftarbukuController;
 use App\Http\Controllers\JenisbukuController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PenjagaperpusController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +28,7 @@ Route::get("/login", [LoginController::class, "index"])->name('login')->middlewa
 Route::post("/login/action", [LoginController::class, "store"])->name('loginaction');
 Route::post("/logout", [LoginController::class, "destroy"])->name('logout')->middleware('auth');
 Route::get("/", [LoginController::class, "show"])->name('dashboard');
+
+Route::get('/add', [ProductController::class, 'index']);
+Route::post('/add', [ProductController::class, 'store'])->name('add');
 

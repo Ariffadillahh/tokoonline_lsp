@@ -1,12 +1,11 @@
 <?php
 
-use App\Http\Controllers\BokingController;
-use App\Http\Controllers\DaftarbukuController;
-use App\Http\Controllers\JenisbukuController;
+use App\Http\Controllers\AlamatController;
+use App\Http\Controllers\ChartSizeController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\PenjagaperpusController;
+use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\PavProductController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,14 +20,41 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/register', [RegisterController::class, 'index']);
+Route::post('/register/action', [RegisterController::class, 'store'])
+    ->middleware('guest')
+    ->name('registeraction');
+Route::get('/login', [LoginController::class, 'index'])
+    ->name('login')
+    ->middleware('guest');
+Route::post('/login/action', [LoginController::class, 'store'])->name('loginaction');
+Route::post('/logout', [LoginController::class, 'destroy'])
+    ->name('logout')
+    ->middleware('auth');
+Route::get('/', [LoginController::class, 'show'])->name('homepage');
 
-Route::get("/register", [RegisterController::class, "index"]);
-Route::post("/register/action", [RegisterController::class, "store"])->middleware('guest')->name("registeraction");
-Route::get("/login", [LoginController::class, "index"])->name('login')->middleware('guest');
-Route::post("/login/action", [LoginController::class, "store"])->name('loginaction');
-Route::post("/logout", [LoginController::class, "destroy"])->name('logout')->middleware('auth');
-Route::get("/", [LoginController::class, "show"])->name('dashboard');
-
-Route::get('/add', [ProductController::class, 'index']);
-Route::post('/add', [ProductController::class, 'store'])->name('add');
-
+Route::middleware('auth')->group(function () {
+    Route::get('/product', [ProductController::class, 'index']);
+    Route::get('/product/detail/{id}', [ProductController::class, 'show'])->name('detail');
+    Route::get('/product/add-product', [ProductController::class, 'addproduct']);
+    Route::post('/product/add-product', [ProductController::class, 'store'])->name('add');
+    Route::get('/product/edit-product/{id}', [ProductController::class, 'editproduct']);
+    Route::post('/product/edit-product/{id}', [ProductController::class, 'edit'])->name('edit');
+    Route::post('/product/hapus-product', [ProductController::class, 'destroy'])->name('hapus');
+    Route::delete('/product/edit-product', [ProductController::class, 'deleteSize'])->name('delete-size');
+    Route::post('/product/edit-product', [ChartSizeController::class, 'addSize'])->name('addSize');
+    Route::post('/product/detail/addpav', [PavProductController::class, 'store'])->name('addPav');
+    Route::post('/product/detail/unpav', [PavProductController::class, 'destroy'])->name('unPav');
+    Route::get('/alamat', [AlamatController::class, 'index'])->name('alamat');
+    Route::post('/alamat/tambah', [AlamatController::class, 'store'])->name('addAlamat');
+    Route::put('/alamat/update', [AlamatController::class, 'update'])->name('updateAlamat');
+    Route::post('/alamat/hapus', [AlamatController::class, 'destroy'])->name('hapusAlamat');
+    Route::get('/favorite', [PavProductController::class, 'index'])->name('fav');
+    Route::post('/product/detail/buy', [OrdersController::class, 'store'])->name('buy');
+    Route::get('/orders/dikemas', [OrdersController::class, 'index'])->name('ordersKemas');
+    Route::get('/orders/diantar', [OrdersController::class, 'diantar'])->name('ordersDiantar');
+    Route::get('/orders/selesai', [OrdersController::class, 'selesai'])->name('ordersSelesai');
+    Route::get('/orders/selesai/detail/{id}', [OrdersController::class, 'detail'])->name('orderdetail');
+    Route::post('/orders/selesai', [OrdersController::class, 'edit'])->name('finishorder');
+    Route::get('/search', [OrdersController::class, 'search'])->name('search');
+});

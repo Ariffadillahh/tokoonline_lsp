@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\alamat;
 use App\Models\chart_size;
+use App\Models\pavProduct;
 use App\Models\Product;
 use App\Models\SizeProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -15,11 +19,59 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
-        $chart = chart_size::all();
-        return view('Add', [
-            'chart' => $chart
+    {
+        // $product = DB::table('products')
+        //     ->join('size_products', 'products.id_product', '=', 'size_products.id_product')
+        //     ->select('products.*', 'size_products.*')
+        //     ->orderBy('products.id_product', 'DESC')
+        //     ->get();
+
+        $product = Product::orderBy('id_product', 'DESC')->get();
+
+        return view('Admin.product', [
+            'product' => $product,
         ]);
+    }
+
+    public function addproduct()
+    {
+        $chart = chart_size::all();
+        return view('Admin.AddProduct', [
+            'chart' => $chart,
+        ]);
+    }
+
+    public function editproduct($id)
+    {
+        $product = Product::where('id_product', $id)->first();
+        $chart = SizeProduct::where('id_product', $id)->get();
+        $addSize = chart_size::all();
+
+        $a = [];
+        $b = [];
+
+        foreach ($addSize as $item) {
+            $a[] = $item->uk_chart;
+        }
+
+        foreach ($chart as $item) {
+            $b[] = $item->uk_size;
+        }
+
+        $result = array_diff($a, $b);
+
+        return view('Admin.EditProduct', [
+            'chart' => $chart,
+            'product' => $product,
+            'addSize' => $addSize,
+            'idResult' => $result,
+        ]);
+    }
+
+    public function deleteSize(Request $request)
+    {
+        SizeProduct::where('id_size', $request->id)->delete();
+        return redirect()->back();
     }
 
     /**
@@ -39,38 +91,42 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
-         $request->validate([
+    {
+        $request->validate([
             'name_product' => 'required',
             'desc_product' => 'required',
             'stock_product' => 'required',
             'name_brand' => 'required',
             'images' => 'required',
             'product_status' => 'required',
-            'size' => 'required'
+            'size' => 'required',
+            'price' => 'required',
         ]);
 
         $image = $request->file('images');
         $image->storeAs('public/product_images', $image->hashName());
 
-        $pro = new Product;
+        $angkaTanpaTitik = str_replace('.', '', $request->price);
+        $angkaNumerik = intval($angkaTanpaTitik);
+
+        $pro = new Product();
         $pro->name_product = $request->name_product;
         $pro->desc_product = $request->desc_product;
         $pro->stock_product = $request->stock_product;
         $pro->name_brand = $request->name_brand;
-        $pro->image_product =  $request->file('images')->hashName();
+        $pro->image_product = $request->file('images')->hashName();
         $pro->product_status = $request->product_status;
+        $pro->price_product = $angkaNumerik;
         $pro->save();
 
         foreach ($request->input('size') as $stock) {
-            $size = new SizeProduct;
+            $size = new SizeProduct();
             $size->uk_size = $stock;
             $size->id_product = $pro->id;
             $size->save();
         }
 
-        return redirect()->back();
-     
+        return redirect('/product')->with('success', 'Product Berhasil Di Tambah');
     }
 
     /**
@@ -79,9 +135,29 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(Product $product, $id)
     {
-        //
+        $product = Product::where('id_product', $id)->first();
+        $size = SizeProduct::where('id_product', $id)->get();
+        $cek = pavProduct::where('id_product', $id)
+            ->where('id_user', auth()->user()->id)
+            ->first();
+       
+            $Similiar = Product::where('name_brand', $product->name_brand)
+            ->where('id_product', '!=', $id)
+            ->inRandomOrder()
+            ->limit(5)
+            ->get();
+
+        $alamat = alamat::where('id_user', auth()->user()->id)->get();
+
+        return view('User.Detail', [
+            'product' => $product,
+            'size' => $size,
+            'sameProduct' => $Similiar,
+            'pav' => $cek,
+            'alamat' => $alamat
+        ]);
     }
 
     /**
@@ -90,9 +166,39 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit(Request $request, $id)
     {
-        //
+        $product = Product::where('id_product', $id)->first();
+        $angkaTanpaTitik = str_replace('.', '', $request->price);
+        $angkaNumerik = intval($angkaTanpaTitik);
+
+        if ($request->hasFile('images')) {
+            $image = $request->file('images');
+            $image->storeAs('public/product_images', $image->hashName());
+
+            Storage::delete('public/product_images/' . basename($product->image_product));
+
+            Product::where('id_product', $id)->update([
+                'name_product' => $request->name_product,
+                'desc_product' => $request->desc_product,
+                'stock_product' => $request->stock_product,
+                'name_brand' => $request->name_brand,
+                'image_product' => $image->hashName(),
+                'product_status' => $request->product_status,
+                'price_product' => $angkaNumerik,
+            ]);
+        } else {
+            Product::where('id_product', $id)->update([
+                'name_product' => $request->name_product,
+                'desc_product' => $request->desc_product,
+                'stock_product' => $request->stock_product,
+                'name_brand' => $request->name_brand,
+                'product_status' => $request->product_status,
+                'price_product' => $angkaNumerik,
+            ]);
+        }
+
+        return redirect('/product')->with('success', 'Update Berhasil');
     }
 
     /**
@@ -113,8 +219,17 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->id;
+
+        $product = Product::where('id_product', $id)->first();
+
+        Storage::delete('public/product_images/' . basename($product->image_product));
+
+        Product::where('id_product', $id)->delete();
+        SizeProduct::where('id_product', $id)->delete();
+
+        return redirect('/product')->with('success', 'Delete Berhasil');
     }
 }

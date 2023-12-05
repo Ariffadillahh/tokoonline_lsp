@@ -8,6 +8,7 @@ use App\Models\login;
 use App\Models\daftarbuku;
 use App\Models\jenisbuku;
 use App\Models\penjagaperpus;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -62,11 +63,12 @@ class LoginController extends Controller
     public function show(request $request)
     {
 
-       
+        $product = Product::orderBy("id_product", "DESC")->get();
+        
         return view(
-            "Dashboard.index",
+            "Homepage.index",
             [
-                'daftarbuku' => "hai"
+                'product' => $product
             ]
         );
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\chart_size;
+use App\Models\SizeProduct;
 use Illuminate\Http\Request;
 
 class ChartSizeController extends Controller
@@ -25,6 +26,21 @@ class ChartSizeController extends Controller
     public function create()
     {
         //
+    }
+
+    public function addSize(Request $request) {
+
+        if(empty($request->input('size'))) {
+            return redirect()->back()->with('error', 'Please select at least one size.');
+        }
+        foreach ($request->input('size') as $stock) {
+            $size = new SizeProduct;
+            $size->uk_size = $stock;
+            $size->id_product = $request->id;
+            $size->save();
+        }
+
+        return redirect()->back();
     }
 
     /**

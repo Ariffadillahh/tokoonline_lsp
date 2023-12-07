@@ -47,20 +47,23 @@
             </div>
         @endif
         @if ($errors->any())
-        <div class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-            <svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-            </svg>
-            <span class="sr-only">Danger</span>
-            <div>
-              <span class="font-medium">Gagal membuat orders:</span>
-                <ul class="mt-1.5 list-disc list-inside">
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-              </ul>
+            <div class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                role="alert">
+                <svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+                <span class="sr-only">Danger</span>
+                <div>
+                    <span class="font-medium">Gagal membuat orders:</span>
+                    <ul class="mt-1.5 list-disc list-inside">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
-          </div>
         @endif
         <div class="my-10">
             <nav class="flex" aria-label="Breadcrumb">
@@ -146,44 +149,57 @@
                                         <div class="p-4 md:p-5 space-y-4">
                                             <div class="border-b pb-3">
                                                 @if (count($alamat) != 0)
-                                                <p class="font-mono mb-2">Pilih alamat anda</p>
+                                                    <p class="font-mono mb-2">Pilih alamat anda</p>
                                                 @endif
                                                 @if (count($alamat) == 0)
-                                                    <p class="font-mono">Anda belum memiliki alamat, <a href="/alamat" class="text-blue-600 hover:underline">Tamabah alamat</a></p>
+                                                    <p class="font-mono">Anda belum memiliki alamat, <a href="/alamat"
+                                                            class="text-blue-600 hover:underline">Tamabah alamat</a>
+                                                    </p>
                                                 @endif
                                                 <div class="grid grid-cols-3 gap-4">
                                                     @foreach ($alamat as $alamats)
-                                                    <div>
-                                                        <input type="radio" name="alamat"
-                                                        value="{{ $alamats->id_alamat }}" id="{{ $alamats->id_alamat }}"
-                                                        class="hidden peer">
-                                                    <label for={{ $alamats->id_alamat }}
-                                                        class="inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[#969D43] hover:text-gray-600  peer-checked:text-gray-600 hover:bg-gray-50 ">
-                                                        <div class="">
-                                                            <h1 class="font-mono font-semibold">{{ $alamats->name_penerima }}</h1>
-                                                            <p class="font-mono text-gray-400">{{ $alamats->no_hp }}</p>
-                                                            <p class="font-mono text-gray-400"> {{ Str::limit($alamats->alamat_detail, 10, '...') }}</p>
+                                                        <div>
+                                                            <input type="radio" name="alamat"
+                                                                value="{{ $alamats->id_alamat }}"
+                                                                id="{{ $alamats->id_alamat }}" class="hidden peer">
+                                                            <label for={{ $alamats->id_alamat }}
+                                                                class="inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[#969D43] hover:text-gray-600  peer-checked:text-gray-600 hover:bg-gray-50 ">
+                                                                <div class="">
+                                                                    <h1 class="font-mono font-semibold">
+                                                                        {{ $alamats->name_penerima }}</h1>
+                                                                    <p class="font-mono text-gray-400">
+                                                                        {{ $alamats->no_hp }}</p>
+                                                                    <p class="font-mono text-gray-400">
+                                                                        {{ Str::limit($alamats->alamat_detail, 10, '...') }}
+                                                                    </p>
+                                                                </div>
+                                                            </label>
                                                         </div>
-                                                    </label>
-                                                    </div>
                                                     @endforeach
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="id_product" value="{{$product->id_product}}">
-                                            <input type="hidden" name="harga" value="{{$product->price_product}}">
+                                            <input type="hidden" name="id_product"
+                                                value="{{ $product->id_product }}">
+                                            <input type="hidden" name="harga"
+                                                value="{{ $product->price_product }}">
                                             <input type="hidden" name="pembayaran" value="cod">
 
                                             <div class="border-b pb-3">
                                                 <p class="font-mono"> Jumlah Pesanan</p>
                                                 <div class="flex gap-3 w-full my-3">
-                                                    <div class="w-[10%] cursor-pointer text-2xl font-bold  flex justify-center items-center" onclick="decrease()">-</div>
-                                                     <input type="number" id="counterInput" name="qty" min="1" value="1" max="{{$product->stock_product}}" class="w-[80%]">
-                                                    <div class="w-[10%] cursor-pointer text-2xl font-bold  flex justify-center items-center" onclick="increase()">+</div>
+                                                    <div class="w-[10%] cursor-pointer text-2xl font-bold  flex justify-center items-center"
+                                                        onclick="decrease()">-</div>
+                                                    <input type="number" id="counterInput" name="qty"
+                                                        min="1" value="1"
+                                                        max="{{ $product->stock_product }}" class="w-[80%]">
+                                                    <div class="w-[10%] cursor-pointer text-2xl font-bold  flex justify-center items-center"
+                                                        onclick="increase()">+</div>
                                                 </div>
                                             </div>
                                             <div>
                                                 <p class="font-mono">Metode Pembayaran</p>
-                                                <h1 class="w-full border p-3 rounded border-[#969D43] mt-1 cursor-pointer">
+                                                <h1
+                                                    class="w-full border p-3 rounded border-[#969D43] mt-1 cursor-pointer">
                                                     COD ( Cash on Delivery )
                                                 </h1>
                                             </div>
@@ -191,12 +207,12 @@
                                         <!-- Modal footer -->
                                         <div class="mx-5 pb-3">
                                             @if (count($alamat) == 0)
-                                            <button class="btn btn-success w-full " disabled >Orders</button>
+                                                <button class="btn btn-success w-full " disabled>Orders</button>
                                             @else
-                                                <button class="btn btn-success w-full " >Orders</button>
+                                                <button class="btn btn-success w-full ">Orders</button>
                                             @endif
                                         </div>
-                                       
+
                                     </div>
                                 </div>
                             </div>
@@ -326,7 +342,7 @@
     <script>
         function increase() {
             // Mendapatkan elemen input
-            
+
             var inputElement = document.getElementById('counterInput');
 
             // Mendapatkan nilai saat ini dan menambahkannya
@@ -336,7 +352,7 @@
 
         function decrease() {
             // Mendapatkan elemen input
-           
+
             var inputElement = document.getElementById('counterInput');
 
             // Mendapatkan nilai saat ini dan mengurangkannya, tetapi tidak kurang dari 1

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Orders;
 use App\Models\Product;
+use App\Models\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -130,17 +131,22 @@ class OrdersController extends Controller
         ]);
 
         $total_harga = $request->qty * $request->harga;
-        Orders::create([
-            'id_product' => $request->id_product,
-            'id_alamat' => $request->alamat,
-            'id_user' => auth()->user()->id,
-            'qty_orders' => $request->qty,
-            'metode_pembayaran' => 'cod',
-            'status_orders' => 'dikemas',
-            'date_orders' => Carbon::now(),
-            'total_harga' => $total_harga,
-            'size' => $request->size
-        ]);
+
+        $orders = new Orders();
+        $orders->id_product = $request->id_product;
+        $orders->id_alamat = $request->alamat;
+        $orders->id_user = auth()->user()->id;
+        $orders->qty_orders = $request->qty;
+        $orders->metode_pembayaran = 'cod';
+        $orders->status_orders = 'dikemas';
+        $orders->date_orders =  Carbon::now();
+        $orders->total_harga =  $total_harga;
+        $orders->size = $request->size;
+        $orders->save();
+
+        $rate = new Rating();
+        $rate->id_orders = $orders->id;
+        $rate->id_user = auth()->user()->id;
 
         return redirect('/orders/dikemas');
     }

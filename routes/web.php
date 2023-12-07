@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlamatController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ChartSizeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OrdersController;
@@ -57,4 +58,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/selesai/detail/{id}', [OrdersController::class, 'detail'])->name('orderdetail');
     Route::post('/orders/selesai', [OrdersController::class, 'edit'])->name('finishorder');
     Route::get('/search', [OrdersController::class, 'search'])->name('search');
+    Route::get('/brand', [BrandController::class, 'index'])->name('brand');
+    Route::post('/brand', [BrandController::class, 'store'])->name('addBrand');
+    Route::post('/brand/edit', [BrandController::class, 'update'])->name('editBrand');
+    Route::post('/brand/hapus', [BrandController::class, 'destroy'])->name('hapusBrand');
+    Route::get('/dashboard', [LoginController::class, 'dashboard'])->name('dashboard');
+
+    Route::post('/size', [ChartSizeController::class, 'store'])->name('size');
+    Route::post('/size/edit', [ChartSizeController::class, 'update'])->name('editSize');
+    Route::post('/size/hapus', [ChartSizeController::class, 'destroy'])->name('hapusSize');
 });

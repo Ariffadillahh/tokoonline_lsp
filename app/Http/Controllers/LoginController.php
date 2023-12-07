@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\boking;
+use App\Models\chart_size;
 use App\Models\User;
 use App\Models\login;
 use App\Models\daftarbuku;
@@ -29,9 +30,12 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function dashboard()
+    {   
+        $chart = chart_size::all();
+        return view('Admin.dashboard', [
+            'chart' => $chart
+        ]);
     }
 
     /**

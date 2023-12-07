@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\alamat;
+use App\Models\Brand;
 use App\Models\chart_size;
 use App\Models\pavProduct;
 use App\Models\Product;
@@ -36,8 +37,10 @@ class ProductController extends Controller
     public function addproduct()
     {
         $chart = chart_size::all();
+        $brand = Brand::all();
         return view('Admin.AddProduct', [
             'chart' => $chart,
+            'brand' => $brand
         ]);
     }
 
@@ -45,6 +48,7 @@ class ProductController extends Controller
     {
         $product = Product::where('id_product', $id)->first();
         $chart = SizeProduct::where('id_product', $id)->get();
+        $brand = Brand::all();
         $addSize = chart_size::all();
 
         $a = [];
@@ -65,6 +69,7 @@ class ProductController extends Controller
             'product' => $product,
             'addSize' => $addSize,
             'idResult' => $result,
+            'brand' => $brand
         ]);
     }
 

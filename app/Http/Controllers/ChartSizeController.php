@@ -51,7 +51,15 @@ class ChartSizeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'uk_chart' => 'required',
+        ]);
+
+        chart_size::create([
+            'uk_chart' => $request->uk_chart
+        ]);
+
+        return redirect()->back()->with('succsess', 'Berhasil tambah size');
     }
 
     /**
@@ -84,8 +92,18 @@ class ChartSizeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, chart_size $chart_size)
-    {
-        //
+    {   
+        $id = $request->id;
+        $request->validate([
+            'uk_chart' => 'required',
+        ]);
+
+        chart_size::where('chart_id', $id)->update([
+            'uk_chart' => $request->uk_chart
+        ]);
+       
+
+        return redirect()->back()->with('succsess', 'Berhasil update size');
     }
 
     /**
@@ -94,8 +112,11 @@ class ChartSizeController extends Controller
      * @param  \App\Models\chart_size  $chart_size
      * @return \Illuminate\Http\Response
      */
-    public function destroy(chart_size $chart_size)
+    public function destroy(Request $request,chart_size $chart_size)
     {
-        //
+        $id = $request->id;
+       
+        chart_size::where('chart_id', $id)->delete();
+        return redirect()->back()->with('succsess', 'Berhasil Delete size');
     }
 }

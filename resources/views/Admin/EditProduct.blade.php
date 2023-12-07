@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="{{ asset('storage/images/logo.png') }}">
     <title>TokoGue - Edit Product</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
@@ -171,7 +171,6 @@
                                 <p class="text-red-600 -mt-3 mb-3 md:mt-0 w-full">{{ $message }}</p>
                             @enderror
                         </div>
-
                     </div>
 
                     <div class="md:flex gap-4 md:my-5">
@@ -190,12 +189,13 @@
                             @enderror
                         </div>
                         <div class="w-full">
-
-                            <select id="countries" name="name_brand"
+                            <select name="name_brand"
                                 class="bg-gray-50 border border-gray-300 mb-3 text-gray-900 text-sm rounded-lg focus:ring-blue-500 uppercase focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected>{{ $product->name_brand }}</option>
                                 @foreach ($brand as $item)
-                                    <option value="{{ $item->name_brand }}">{{ $item->name_brand }}</option>
+                                    @if (strtolower($item->name_brand) != strtolower($product->name_brand))
+                                        <option value="{{ $item->name_brand }}">{{ $item->name_brand }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                             @error('product_status')

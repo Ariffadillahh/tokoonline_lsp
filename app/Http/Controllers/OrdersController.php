@@ -147,6 +147,8 @@ class OrdersController extends Controller
         $rate = new Rating();
         $rate->id_orders = $orders->id;
         $rate->id_user = auth()->user()->id;
+        $rate->status_rate = 'no';
+        $rate->save();
 
         return redirect('/orders/dikemas');
     }

@@ -9,6 +9,7 @@ use App\Http\Controllers\PavProductController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Row;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,8 +64,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/brand/edit', [BrandController::class, 'update'])->name('editBrand');
     Route::post('/brand/hapus', [BrandController::class, 'destroy'])->name('hapusBrand');
     Route::get('/dashboard', [LoginController::class, 'dashboard'])->name('dashboard');
-
     Route::post('/size', [ChartSizeController::class, 'store'])->name('size');
     Route::post('/size/edit', [ChartSizeController::class, 'update'])->name('editSize');
     Route::post('/size/hapus', [ChartSizeController::class, 'destroy'])->name('hapusSize');
+    Route::get('/orderan', [LoginController::class, 'orderan'])->name('oerderan');
+    
 });

@@ -16,6 +16,7 @@ class Rating extends Model
         'start_rate',
         'id_user',
         'waktu_rate',
+        'status_rate'
     ];
 
     public function orders()

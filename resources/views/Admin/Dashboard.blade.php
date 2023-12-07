@@ -8,7 +8,7 @@
     <title>TokoGue - Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="shortcut icon" href="{{ asset('storage/images/logo.png') }}">
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
@@ -36,7 +36,7 @@
                 <div>
                     <button data-modal-target="default-modal" data-modal-toggle="default-modal"
                         class="btn btn-secondary btn-outline">
-                        Tamabah Size
+                        Tambah Size
                     </button>
                     @if (count($chart) == 0)
                         <div class="h-[50vh] flex items-center justify-center">
@@ -85,7 +85,7 @@
                                                                 class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                                                                 <h3
                                                                     class="text-xl font-semibold text-gray-900 dark:text-white">
-                                                                    Terms of Service
+                                                                    Edit Size
                                                                 </h3>
                                                                 <button type="button"
                                                                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -179,7 +179,7 @@
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                        Terms of Service
+                       Tambah Size
                     </h3>
                     <button type="button"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"

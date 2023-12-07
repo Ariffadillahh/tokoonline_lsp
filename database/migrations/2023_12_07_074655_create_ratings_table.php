@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('start_rate')->nullable();
             $table->string('id_user')->nullable();
             $table->string('waktu_rate')->nullable();
+            $table->string('status_rate')->nullable();
             $table->timestamps();
         });
     }

@@ -201,13 +201,14 @@
                                                 <h1
                                                     class="w-full border p-3 rounded border-[#969D43] mt-1 cursor-pointer">
                                                     COD ( Cash on Delivery )
+                                                    <span class="block text-red-600 italic">Free Ongkir seluruh Indonesia</span>
                                                 </h1>
                                             </div>
                                         </div>
                                         <!-- Modal footer -->
                                         <div class="mx-5 pb-3">
                                             @if (count($alamat) == 0)
-                                                <button class="btn btn-success w-full " disabled>Orders</button>
+                                                <button class="btn btn-success w-full" disabled>Orders</button>
                                             @else
                                                 <button class="btn btn-success w-full ">Orders</button>
                                             @endif

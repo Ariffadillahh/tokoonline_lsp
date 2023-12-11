@@ -56,8 +56,8 @@
                 </div>
             @endif
             @foreach ($orders as $item)
-                <div>
-                   <div class="flex gap-5 w-full border-b py-3">
+                <div class="border-b py-3">
+                   <div class="flex gap-5 w-full ">
                         <div>
                             <img src={{ asset('storage/product_images/' . $item->image_product) }}
                             alt="{{ $item->name_product }}" class="w-[200px]">
@@ -71,19 +71,25 @@
                             <p>{{$item->name_brand}}</p>
                             <p>Size : {{$item->size}}</p>
                             <p>x{{$item->qty_orders}}</p>
-                            <div class="flex justify-end">
+                            <div class="hidden md:flex md:justify-between">
+                                <p class="font-mono">Resi : {{$item->jasa_antar}} {{$item->no_resi}}</p>
                                 <p class="font-mono text-lg md:text-xl ">Rp {{number_format($item->total_harga,'0',',','.')}}</p>
-                            </div>
-                            <div class="justify-between flex mt-3">
-                                <p class="text-sm mt-3 italic text-gray-400">Silakan konfirmasi setelah menerima dan mengecek pesanan.</p>
-                                <form action={{route('finishorder')}} method="post">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{$item->id_orders}}">
-                                    <button class="rounded px-6 bg-primary text-white py-2">Pesanan Diterima</button>
-                                </form>
                             </div>
                         </div>
                    </div>
+                   <div class="md:hidden mt-2">
+                    <p class="font-mono">Resi : {{$item->jasa_antar}} {{$item->no_resi}}</p>
+                    <p class="font-mono text-lg md:text-xl justify-end flex mt-2">Rp {{number_format($item->total_harga,'0',',','.')}}</p>
+                </div>
+                   <div class="justify-between flex mt-3">
+                    <p class="text-sm mt-3 italic text-gray-400">Silakan konfirmasi setelah menerima dan mengecek pesanan.</p>
+                    <form action={{route('finishorder')}} method="post">
+                        @csrf
+                        <input type="hidden" name="id" value="{{$item->id_orders}}">
+                        <button class="rounded px-6 bg-primary text-white py-2">Pesanan Diterima</button>
+                    </form>
+                    </div>
+                    
                 </div>
             @endforeach
         </div>

@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('status_orders');
             $table->string('date_orders');
             $table->string('total_harga');
+            $table->string('no_resi')->nullable();
+            $table->string('jasa_antar')->nullable();
             $table->string('size');
             $table->timestamps();
         });

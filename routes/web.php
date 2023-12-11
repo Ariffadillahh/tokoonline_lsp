@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PavProductController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Row;
@@ -68,5 +69,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/size/edit', [ChartSizeController::class, 'update'])->name('editSize');
     Route::post('/size/hapus', [ChartSizeController::class, 'destroy'])->name('hapusSize');
     Route::get('/orderan', [LoginController::class, 'orderan'])->name('oerderan');
+    Route::post('/rate', [RatingController::class, 'store'])->name('addRating');
     
 });

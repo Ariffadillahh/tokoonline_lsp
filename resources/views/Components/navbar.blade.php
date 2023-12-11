@@ -7,6 +7,7 @@
 </style>
 @php
     $products = \App\Models\Product::take(4)->get();
+    $brand = \App\Models\Brand::take(4)->get();
 @endphp
 <nav class="px-3 md:px-14 shadow-sm">
     <div class="flex justify-between py-4 ">
@@ -102,13 +103,19 @@
             </div>
         </div>
         <div class="flex gap-3 my-3 brand overflow-auto">
-            @foreach ($products as $item)
+            <a href="{{ route('search', ['q']) }}">
+                <div class=" border border-black p-2">
+                   All Product <i class="fa-solid fa-globe"></i>
+                </div>
+            </a>
+            
+            @foreach ($brand as $item)
                 <a href="{{ route('search', ['q' => $item->name_brand]) }}">
                     <div class="rounded-md border border-black p-2">
                         {{ $item->name_brand }}
                     </div>
+                </a>
             @endforeach
-            </a>
         </div>
         <div>
             <p class="font-mono font-semibold">Top Product <span class="text-red-600"><i
@@ -130,6 +137,10 @@
         <li>
             <a href="/"
                 class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Homepage</a>
+        </li>
+        <li>
+            <a href="/alamat"
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Alamat</a>
         </li>
         <li class="md:hidden">
             <a href="/orders/dikemas"

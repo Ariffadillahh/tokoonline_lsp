@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('ratings', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_ratings');
             $table->integer('id_orders')->constraint('orders')->onDelete('cascade');
             $table->string('komentar')->nullable();
             $table->string('start_rate')->nullable();

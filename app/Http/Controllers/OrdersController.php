@@ -164,11 +164,12 @@ class OrdersController extends Controller
         $orders = DB::table('orders')
         ->join('products', 'orders.id_product', '=', 'products.id_product')
         ->join('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat' )
-        ->select('orders.*','products.*', 'alamats.*')
+        ->join('ratings', 'ratings.id_orders', '=' , 'orders.id_orders')
+        ->select('orders.*','products.*', 'alamats.*', 'ratings.*')
         ->where('orders.id_user', '=', auth()->user()->id)
         ->where('orders.id_orders', '=', $id)->first();
         return view('User.Orders.Detail', [
-            'orders' => $orders
+            'item' => $orders
         ]);
     }
 

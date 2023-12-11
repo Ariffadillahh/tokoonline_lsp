@@ -56,7 +56,7 @@
             @foreach ($alamat as $item)
                 <div class="">
                     <div class="md:gird md:grid-cols-3 gap-4">
-                        <div class="border w-full rounded shadow-md border-red-900 ">
+                        <div class="border w-full rounded shadow-md border-primary">
                             <div class="p-3">
                                 <h1 class="font-mono text-xl">{{ $item->name_penerima }}</h1>
                                 <p>{{ $item->no_hp }}</p>

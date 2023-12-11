@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rating;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class RatingController extends Controller
@@ -35,7 +36,14 @@ class RatingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Rating::where('id', $request->id)->update([
+            'komentar' => $request->message,
+            'start_rate' => $request->rating,
+            'waktu_rate' => Carbon::now(),
+            'status_rate' => 'yes'
+        ]);
+
+        return redirect()->back()->with('success', 'Berhasil Riview');
     }
 
     /**

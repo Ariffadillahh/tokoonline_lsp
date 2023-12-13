@@ -36,7 +36,7 @@ class RatingController extends Controller
      */
     public function store(Request $request)
     {
-        Rating::where('id', $request->id)->update([
+        Rating::where('id_ratings', $request->id)->update([
             'komentar' => $request->message,
             'start_rate' => $request->rating,
             'waktu_rate' => Carbon::now(),

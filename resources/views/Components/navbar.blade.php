@@ -1,4 +1,5 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
     .brand::-webkit-scrollbar {
@@ -105,10 +106,10 @@
         <div class="flex gap-3 my-3 brand overflow-auto">
             <a href="{{ route('search', ['q']) }}">
                 <div class=" border border-black p-2">
-                   All Product <i class="fa-solid fa-globe"></i>
+                    All Product <i class="fa-solid fa-globe"></i>
                 </div>
             </a>
-            
+
             @foreach ($brand as $item)
                 <a href="{{ route('search', ['q' => $item->name_brand]) }}">
                     <div class="rounded-md border border-black p-2">
@@ -160,5 +161,3 @@
         </li>
     </ul>
 </div>
-
-

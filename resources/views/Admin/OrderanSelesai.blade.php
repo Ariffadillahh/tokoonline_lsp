@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>TokoGue - Orderan</title>
+    <title>TokoGue - Orderan Diantar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="shortcut icon" href="{{ asset('storage/images/logo.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -66,7 +66,7 @@
                                     stroke-width="2" d="m1 9 4-4-4-4" />
                             </svg>
                             <span
-                                class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Orderan</span>
+                                class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Orderan Selesai</span>
                         </div>
                     </li>
                 </ol>

@@ -1,5 +1,5 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script> --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
     .brand::-webkit-scrollbar {
@@ -10,14 +10,14 @@
     $products = \App\Models\Product::take(4)->get();
     $brand = \App\Models\Brand::take(4)->get();
 @endphp
-<nav class="px-3 md:px-14 shadow-sm">
+
+<nav class="px-3 md:px-14 shadow-sm  w-full bg-white duration-300 transition-all z-10 " id="navbar">
     <div class="flex justify-between py-4 ">
         <div class="flex gap-5">
             <a href="/">
                 <img class="w-10 h-10 " src="{{ asset('storage/images/logo.png') }}" alt="logo">
             </a>
-            <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar"
-                aria-controls="default-sidebar" type="button"
+            <button type="button" onclick="searchNav()"
                 class="text-lg font-light text-gray-400 mt-2 border-l border-b pl-2 rounded-bl-xl hidden md:flex">
                 <svg class="w-4 h-4 mt-1.5 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 20 20">
@@ -29,8 +29,7 @@
         </div>
         <div class="flex gap-5">
             @auth
-                <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar"
-                    aria-controls="default-sidebar" type="button" class="md:hidden">
+                <button onclick="searchNav()" type="button" class="md:hidden">
                     <svg class="w-5 h-5  " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -43,20 +42,48 @@
                 <a href="/favorite">
                     <i class="fa-solid fa-heart text-[25px] mt-2 text-primary"></i>
                 </a>
-                <button id="dropdownDelayButton" data-dropdown-toggle="dropdownDelay" data-dropdown-delay="500"
-                    data-dropdown-trigger="hover" type="button">
+                <button type="button" onclick="dropDown()">
                     @if (Auth::user()->image)
                         <img class="w-10 h-10 rounded-full" src="{{ asset('storage/image_user/' . Auth::user()->image) }}"
-                            alt="user photo">
+                            alt="{{Auth::user()->name}}">
                     @else
                         <img class="w-10 h-10 rounded-full " src="{{ asset('storage/user_image/image.jpeg') }}"
                             alt="user photo">
                     @endif
                 </button>
+                <div class="absolute top-14 right-5 hidden z-10" id="dropDownMenu">
+                    <div class="bg-white rounded-md drop-shadow-md w-[150px]">
+                        <ul class="py-2 text-sm text-gray-700 " >
+                            <li>
+                                <a href="/"
+                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Homepage</a>
+                            </li>
+                            <li>
+                                <a href="/alamat"
+                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Alamat</a>
+                            </li>
+                            <li class="md:hidden">
+                                <a href="/orders/dikemas"
+                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Orders</a>
+                            </li>
+                            <li>
+                                <a href="/settings"
+                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+                            </li>
+                            <li>
+                                <form action={{ route('logout') }} method="post" class="block px-4 py-2 hover:bg-gray-100 ">
+                                    @csrf
+                                    <button>
+                                        Sign out
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             @else
                 <div class="flex mt-1.5 md:mt-0">
-                    <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar"
-                        aria-controls="default-sidebar" type="button" class="md:hidden mr-3">
+                    <button onclick="searchNav()" type="button" class="md:hidden mr-3" >
                         <svg class="w-5 h-5  " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -76,15 +103,15 @@
         </div>
     </div>
 </nav>
-<aside id="default-sidebar"
-    class="fixed h-[250px] w-full z-40 transform transition-transform -translate-y-[500px] duration-300 ease-in-out"
-    aria-label="Sidebar">
+
+<div class="w-full top-0 h-screen bg-black/30 fixed transform transition-transform duration-300 ease-in-out -translate-y-[100vh] z-40"
+    id="searchNav">
     <div class="w-full bg-white h-[280px] px-3 md:px-14 py-5">
-        <div class="w-full flex justify-between ">
+        <div class="w-full flex justify-between">
             <form class="w-full" id="searchForm" action="{{ route('search') }}">
                 <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
                 <div class="relative border-b border-black">
-                    <button class="absolute inset-y-0 start-0 flex items-center ps-3 ">
+                    <button class="absolute inset-y-0 start-0 flex items-center ps-3">
                         <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -92,20 +119,20 @@
                         </svg>
                     </button>
                     <input type="search" id="slugInput" class="w-full p-4 pl-10 border-none focus:ring-0"
-                        name="q" autofocus autocomplete="off" placeholder="Search by brand and name..." required>
+                        name="q" autofocus autocomplete="off" placeholder="Search by brand and name..."
+                        required />
                 </div>
             </form>
             <div class="">
-                <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar"
-                    aria-controls="default-sidebar" type="button"
-                    class="uppercase border-l border-black border-b pb-3 pl-2 mt-5">
+                <button type="button" class="uppercase border-l border-black border-b pb-3 pl-2 mt-5"
+                    onclick="searchNav()">
                     <i class="fa-solid fa-x px-2 mt-1"></i>
                 </button>
             </div>
         </div>
         <div class="flex gap-3 my-3 brand overflow-auto">
             <a href="{{ route('search', ['q']) }}">
-                <div class=" border border-black p-2">
+                <div class="border border-black p-2">
                     All Product <i class="fa-solid fa-globe"></i>
                 </div>
             </a>
@@ -119,8 +146,10 @@
             @endforeach
         </div>
         <div>
-            <p class="font-mono font-semibold">Top Product <span class="text-red-600"><i
-                        class="fa-solid fa-fire"></i></span></p>
+            <p class="font-mono font-semibold">
+                Top Product
+                <span class="text-red-600"><i class="fa-solid fa-fire"></i></span>
+            </p>
             <div class="my-3 grid grid-rows-2 grid-flow-col gap-4">
                 @foreach ($products as $item)
                     <a href="{{ route('search', ['q' => $item->name_product]) }}">
@@ -132,32 +161,44 @@
             </div>
         </div>
     </div>
-</aside>
-<div id="dropdownDelay" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDelayButton">
-        <li>
-            <a href="/"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Homepage</a>
-        </li>
-        <li>
-            <a href="/alamat"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Alamat</a>
-        </li>
-        <li class="md:hidden">
-            <a href="/orders/dikemas"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Orders</a>
-        </li>
-        <li>
-            <a href="#"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-        </li>
-        <li>
-            <form action={{ route('logout') }} method="post" class="block px-4 py-2 hover:bg-gray-100 ">
-                @csrf
-                <button>
-                    Sign out
-                </button>
-            </form>
-        </li>
-    </ul>
 </div>
+
+
+
+<script>
+    let prevScrollpos = window.pageYOffset;
+    let navbar = document.getElementById("navbar");
+    let dropDownMenu = document.getElementById("dropDownMenu");
+
+    window.onscroll = function() {
+        let currentScrollPos = window.pageYOffset;
+
+        if (prevScrollpos > currentScrollPos) {
+            navbar.style.top = "0";
+            navbar.classList.add("fixed");
+        } else {
+            navbar.style.top = `-${navbar.offsetHeight}px`;
+            dropDownMenu.classList.add('hidden')
+        }
+
+        if (currentScrollPos === 0) {
+            navbar.classList.add('top-0') 
+            navbar.classList.remove("fixed");
+        }
+
+        prevScrollpos = currentScrollPos;
+    };
+
+    function searchNav() {
+        const navbar = document.getElementById("navbar");
+        const searchNav = document.getElementById("searchNav");
+        navbar.classList.toggle("hidden");
+        searchNav.classList.toggle("-translate-y-[100vh]");
+        searchNav.classList.toggle("translate-y-0");
+    }
+
+    function dropDown() {
+        const dropDownMenu = document.getElementById("dropDownMenu");
+        dropDownMenu.classList.toggle('hidden')
+    }
+</script>

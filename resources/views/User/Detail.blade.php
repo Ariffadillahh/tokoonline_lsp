@@ -8,6 +8,7 @@
     <link rel="shortcut icon" href="{{ asset('storage/images/logo.png') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>{{ $product->name_product }} - TokoGue</title>
+    <script src="{{ asset('js/script.js') }}"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <style>
@@ -16,12 +17,12 @@
     }
 </style>
 
-<body>
+<body class="">
     @include('../Components/navbar')
     <div class="mx-3 md:mx-16 mt-10">
         @if (session('success'))
-            <div class="mt-5">
-                <div id="alert-3"
+            <div class="mt-3">
+                <div id="alert"
                     class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
                     role="alert">
                     <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -30,12 +31,10 @@
                             d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
                     </svg>
                     <span class="sr-only">Info</span>
-                    <div class="ms-3 text-sm font-medium">
-                        {{ session('success') }}
-                    </div>
+                    <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
                     <button type="button"
                         class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
-                        data-dismiss-target="#alert-3" aria-label="Close">
+                        onclick="closeAlert()">
                         <span class="sr-only">Close</span>
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 14 14">
@@ -111,7 +110,8 @@
                                 @foreach ($size as $item)
                                     <div>
                                         <input type="radio" name="size" value="{{ $item->uk_size }}"
-                                            id="{{ $item->id_size }}" class="hidden peer">
+                                            id="{{ $item->id_size }}" class="hidden peer" id="size"
+                                            onclick="checkInput()">
                                         <label for={{ $item->id_size }}
                                             class="inline-flex items-center justify-between w-[70px] p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[#969D43] hover:text-gray-600  peer-checked:text-gray-600 hover:bg-gray-50 ">
                                             <div class="block mx-auto">
@@ -121,109 +121,114 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <div id="default-modal" tabindex="-1" aria-hidden="true"
-                                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                                <div class="relative p-4 w-full max-w-2xl max-h-full">
-                                    <!-- Modal content -->
-                                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                                        <!-- Modal header -->
-                                        <div
-                                            class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                                                Confrim Your Order
-                                            </h3>
-                                            <button type="button"
-                                                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                                data-modal-hide="default-modal">
-                                                <svg class="w-3 h-3" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 14 14">
-                                                    <path stroke="currentColor" stroke-linecap="round"
-                                                        stroke-linejoin="round" stroke-width="2"
-                                                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                                </svg>
-                                                <span class="sr-only">Close modal</span>
-                                            </button>
-                                        </div>
-                                        <!-- Modal body -->
-                                        <div class="p-4 md:p-5 space-y-4">
-                                            <div class="border-b pb-3">
-                                                @if (count($alamat) != 0)
-                                                    <p class="font-mono mb-2">Pilih alamat anda</p>
-                                                @endif
+                            <div id="modal" class="hidden fixed left-0 w-full top-0 z-40">
+                                <div
+                                    class="w-full h-screen flex justify-center pt-8 md:pt-0 md:items-center bg-black/30">
+                                    <div class="relative p-4 w-full max-w-2xl max-h-full">
+                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                            <div
+                                                class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                                    Confrim Your Order
+                                                </h3>
+                                                <button type="button"
+                                                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                    onclick="closeModal('modal')">
+                                                    <svg class="w-3 h-3" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 14 14">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="2"
+                                                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                    </svg>
+                                                    <span class="sr-only">Close modal</span>
+                                                </button>
+                                            </div>
+                                            <div class="p-4 md:p-5 space-y-4">
+                                                <div class="border-b pb-3">
+                                                    @if (count($alamat) != 0)
+                                                        <p class="font-mono mb-2">Pilih alamat anda</p>
+                                                    @endif
+                                                    @if (count($alamat) == 0)
+                                                        <p class="font-mono">Anda belum memiliki alamat, <a
+                                                                href="/alamat"
+                                                                class="text-blue-600 hover:underline">Tamabah
+                                                                alamat</a>
+                                                        </p>
+                                                    @endif
+                                                    <div class="grid grid-cols-3 gap-4">
+                                                        @foreach ($alamat as $alamats)
+                                                            <div>
+                                                                <input type="radio" name="alamat"
+                                                                    value="{{ $alamats->id_alamat }}"
+                                                                    id="{{ $alamats->id_alamat }}"
+                                                                    class="hidden peer">
+                                                                <label for={{ $alamats->id_alamat }}
+                                                                    class="inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[#969D43] hover:text-gray-600  peer-checked:text-gray-600 hover:bg-gray-50 ">
+                                                                    <div class="">
+                                                                        <h1 class="font-mono font-semibold">
+                                                                            {{ $alamats->name_penerima }}</h1>
+                                                                        <p class="font-mono text-gray-400">
+                                                                            {{ $alamats->no_hp }}</p>
+                                                                        <p class="font-mono text-gray-400">
+                                                                            {{ Str::limit($alamats->alamat_detail, 10, '...') }}
+                                                                        </p>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="id_product"
+                                                    value="{{ $product->id_product }}">
+                                                <input type="hidden" name="harga"
+                                                    value="{{ $product->price_product }}">
+                                                <input type="hidden" name="pembayaran" value="cod">
+
+                                                <div class="border-b pb-3">
+                                                    <p class="font-mono"> Jumlah Pesanan</p>
+                                                    <div class="flex gap-3 w-full my-3">
+                                                        <div class="w-[10%] cursor-pointer text-2xl font-bold  flex justify-center items-center"
+                                                            onclick="decrease()">-</div>
+                                                        <input type="number" id="counterInput" name="qty"
+                                                            min="1" value="1"
+                                                            max="{{ $product->stock_product }}" class="w-[80%]">
+                                                        <div class="w-[10%] cursor-pointer text-2xl font-bold  flex justify-center items-center"
+                                                            onclick="increase()">+</div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <p class="font-mono">Metode Pembayaran</p>
+                                                    <h1
+                                                        class="w-full border p-3 rounded border-[#969D43] mt-1 cursor-pointer">
+                                                        COD ( Cash on Delivery )
+                                                        <span class="block text-red-600 italic">Free Ongkir seluruh
+                                                            Indonesia</span>
+                                                    </h1>
+                                                </div>
+                                            </div>
+                                            <div class="mx-5 pb-3">
                                                 @if (count($alamat) == 0)
-                                                    <p class="font-mono">Anda belum memiliki alamat, <a href="/alamat"
-                                                            class="text-blue-600 hover:underline">Tamabah alamat</a>
-                                                    </p>
+                                                    <button class="btn btn-success w-full" disabled>Orders</button>
+                                                @else
+                                                    <button class="btn btn-success w-full ">Orders</button>
                                                 @endif
-                                                <div class="grid grid-cols-3 gap-4">
-                                                    @foreach ($alamat as $alamats)
-                                                        <div>
-                                                            <input type="radio" name="alamat"
-                                                                value="{{ $alamats->id_alamat }}"
-                                                                id="{{ $alamats->id_alamat }}" class="hidden peer">
-                                                            <label for={{ $alamats->id_alamat }}
-                                                                class="inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[#969D43] hover:text-gray-600  peer-checked:text-gray-600 hover:bg-gray-50 ">
-                                                                <div class="">
-                                                                    <h1 class="font-mono font-semibold">
-                                                                        {{ $alamats->name_penerima }}</h1>
-                                                                    <p class="font-mono text-gray-400">
-                                                                        {{ $alamats->no_hp }}</p>
-                                                                    <p class="font-mono text-gray-400">
-                                                                        {{ Str::limit($alamats->alamat_detail, 10, '...') }}
-                                                                    </p>
-                                                                </div>
-                                                            </label>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
                                             </div>
-                                            <input type="hidden" name="id_product"
-                                                value="{{ $product->id_product }}">
-                                            <input type="hidden" name="harga"
-                                                value="{{ $product->price_product }}">
-                                            <input type="hidden" name="pembayaran" value="cod">
 
-                                            <div class="border-b pb-3">
-                                                <p class="font-mono"> Jumlah Pesanan</p>
-                                                <div class="flex gap-3 w-full my-3">
-                                                    <div class="w-[10%] cursor-pointer text-2xl font-bold  flex justify-center items-center"
-                                                        onclick="decrease()">-</div>
-                                                    <input type="number" id="counterInput" name="qty"
-                                                        min="1" value="1"
-                                                        max="{{ $product->stock_product }}" class="w-[80%]">
-                                                    <div class="w-[10%] cursor-pointer text-2xl font-bold  flex justify-center items-center"
-                                                        onclick="increase()">+</div>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <p class="font-mono">Metode Pembayaran</p>
-                                                <h1
-                                                    class="w-full border p-3 rounded border-[#969D43] mt-1 cursor-pointer">
-                                                    COD ( Cash on Delivery )
-                                                    <span class="block text-red-600 italic">Free Ongkir seluruh Indonesia</span>
-                                                </h1>
-                                            </div>
                                         </div>
-                                        <!-- Modal footer -->
-                                        <div class="mx-5 pb-3">
-                                            @if (count($alamat) == 0)
-                                                <button class="btn btn-success w-full" disabled>Orders</button>
-                                            @else
-                                                <button class="btn btn-success w-full ">Orders</button>
-                                            @endif
-                                        </div>
-
                                     </div>
                                 </div>
                             </div>
                         </form>
                         <div class="flex gap-3 my-5">
-                            <div data-modal-target="default-modal" data-modal-toggle="default-modal"
-                                class="btn md:w-[90%] hover:bg-[#969D43] text-white bg-[#C8D439] duration-150 w-3/4">
-                                Buy
-                                Now</div>
-
+                            @if ($product->stock_product == 0)
+                                <div class="btn md:w-[90%]  w-3/4">
+                                    Sold Out</div>
+                            @else
+                                <div onclick="openModal('modal')" id="submitButton"
+                                    class="btn pointer-events-none md:w-[90%]  duration-150 w-3/4">
+                                    Pilih size</div>
+                            @endif
                             @if (empty($pav))
                                 <form action={{ route('addPav') }} method="post" class="md:w-[10%] w-1/4">
                                     @csrf
@@ -249,49 +254,39 @@
 
                                 </form>
                             @endif
-
                         </div>
                         <div>
-                            <div id="accordion-flush" data-accordion="collapse"
-                                data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
-                                data-inactive-classes="text-gray-500 dark:text-gray-400">
-                                <h2 id="accordion-flush-heading-2">
-                                    <button type="button"
-                                        class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3"
-                                        data-accordion-target="#accordion-flush-body-2" aria-expanded="false"
-                                        aria-controls="accordion-flush-body-2">
-                                        <span>Description</span>
-                                        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0"
-                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 10 6">
+                            <div class="bg-white text-gray-900 ">
+                                <h2>
+                                    <button type="button" onclick="descProduct()"
+                                        class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3">
+                                        <span id="desc">Description</span>
+                                        <svg id="panah" class="w-3 h-3 shrink-0" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                             <path stroke="currentColor" stroke-linecap="round"
                                                 stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5" />
                                         </svg>
                                     </button>
                                 </h2>
-                                <div id="accordion-flush-body-2" class="hidden"
-                                    aria-labelledby="accordion-flush-heading-2">
+                                <div id="descProduct" class="hidden">
                                     <div class="py-5 border-b border-gray-200 dark:border-gray-700">
+                                        <h1 class="text-gray-500">Stock : {{ $product->stock_product }}</h1>
                                         <p class="mb-2 text-gray-500 dark:text-gray-400">{{ $product->desc_product }}
                                         </p>
                                     </div>
                                 </div>
-                                <h2 id="accordion-flush-heading-3">
-                                    <button type="button"
-                                        class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-[#969D43] border-b border-gray-200 gap-3"
-                                        data-accordion-target="#accordion-flush-body-3" aria-expanded="false"
-                                        aria-controls="accordion-flush-body-3">
-                                        <span>Authentic. Trusted. Best Price.</span>
-                                        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0"
-                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 10 6">
+                                <h2>
+                                    <button type="button" onclick="authentic()"
+                                        class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500  border-b border-gray-200 gap-3">
+                                        <span id="authenticText">Authentic. Trusted. Best Price.</span>
+                                        <svg id="panahAuth" class="w-3 h-3 shrink-0" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                             <path stroke="currentColor" stroke-linecap="round"
                                                 stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5" />
                                         </svg>
                                     </button>
                                 </h2>
-                                <div id="accordion-flush-body-3" class="hidden"
-                                    aria-labelledby="accordion-flush-heading-3">
+                                <div id="authentic" class="hidden">
                                     <div class="py-5 border-b border-gray-200 ">
                                         <p class="mb-2 text-gray-500 ">Dengan prosedur yang tepat, seluruh produk telah
                                             melalui proses pemeriksaan yang teliti dan mempunyai standar kualitas
@@ -301,20 +296,63 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
-
-                {{-- Modal Buy --}}
-
-                <!-- Main modal -->
-
-
-                {{-- Akhir --}}
             </div>
-            <div class="border-t">
-                <p class="text-center py-2 font-mono">Similiar Product</p>
+            <div>
+                @foreach ($rate as $item)
+                    <article class="my-5 border-b">
+                        <div class="flex items-center mb-4">
+                            <img class="w-10 h-10 me-4 rounded-full"
+                                src="{{ asset('storage/image_user/' . $item->image) }}" alt="">
+                            <div class="font-medium dark:text-white">
+                                <p>{{ $item->name }}
+                                <p class="block text-sm text-gray-500 dark:text-gray-400">
+                                    {{ \Carbon\Carbon::parse($item->waktu_rate)->diffForHumans() }}</p>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-center mb-1 space-x-1 rtl:space-x-reverse">
+                            @for ($i = 0; $i < $item->start_rate; $i++)
+                                <svg class="w-4 h-4 text-yellow-300" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                    <path
+                                        d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                </svg>
+                            @endfor
+                            @switch($item->start_rate)
+                                @case(1)
+                                    <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">Sangat Buruk!</h3>
+                                @break
+
+                                @case(2)
+                                    <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">Buruk</h3>
+                                @break
+
+                                @case(3)
+                                    <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">Good</h3>
+                                @break
+
+                                @case(4)
+                                    <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">SoGoog</h3>
+                                @break
+
+                                @case(5)
+                                    <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">Amazing</h3>
+                                @break
+
+                                @default
+                            @endswitch
+                        </div>
+                        <p class="mb-2 text-gray-500 dark:text-gray-400">{{ $item->komentar }}</p>
+                    </article>
+                @endforeach
+            </div>
+            <div class="">
+                @if (count($sameProduct) != 0)
+                    <p class="text-center py-2 font-mono">Similiar Product</p>
+                @endif
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                     @foreach ($sameProduct as $item)
                         <a href="{{ route('detail', $item->id_product) }}">

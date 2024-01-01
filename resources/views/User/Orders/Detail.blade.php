@@ -9,14 +9,15 @@
     <link rel="shortcut icon" href="{{ asset('storage/images/logo.png') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="{{ asset('js/script.js') }}"></script>
 </head>
 
 <body>
     @include('../../Components/navbar')
     @if (session('success'))
-        <div id="alert-1" class="" role="alert">
+        <div id="alert" class="" role="alert">
             <div class="fixed top-0 w-full h-full bg-black/20">
-                <button data-dismiss-target="#alert-1" aria-label="Close"
+                <button onclick="closeAlert()"
                     class="absolute top-[17%] text-white bg-red-900 rounded-full py-2 px-4 right-[38%] z-10">X</button>
                 <div class="flex justify-center items-center h-full">
                     <img src="{{ asset('storage/gif/tq.gif') }}">
@@ -74,7 +75,7 @@
         </div>
         <div>
             @if ($item->status_rate == 'no')
-                <p class="text-xl font-mono text-center"> Rate Your Orders</p>
+                <p class="text-xl font-mono text-center my-4"> Rate Your Orders</p>
                 <form action={{ route('addRating') }} method="post">
                     @csrf
                     <div class="my-4">
@@ -111,7 +112,7 @@
                         <img class="w-10 h-10 me-4 rounded-full"
                             src="{{ asset('storage/image_user/' . Auth::user()->image) }}" alt="">
                         <div class="font-medium dark:text-white">
-                            <p>{{ $item->name_penerima }}
+                            <p>{{  Auth::user()->name }}
                             <p class="block text-sm text-gray-500 dark:text-gray-400">
                                 {{ \Carbon\Carbon::parse($item->waktu_rate)->diffForHumans() }}</p>
                             </p>

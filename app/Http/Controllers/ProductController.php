@@ -151,17 +151,24 @@ class ProductController extends Controller
             $Similiar = Product::where('name_brand', $product->name_brand)
             ->where('id_product', '!=', $id)
             ->inRandomOrder()
-            ->limit(5)
+            ->take(5)
             ->get();
 
         $alamat = alamat::where('id_user', auth()->user()->id)->get();
 
+        $rate = DB::table('ratings')
+        ->join('orders', 'ratings.id_orders', '=', 'orders.id_orders')
+        ->join('users', 'ratings.id_user', '=', 'users.id' )
+        ->select('orders.*', 'ratings.*', 'users.*')
+        ->where('orders.id_product', '=', $id)
+        ->where('ratings.status_rate','=', 'yes')->get()->take(5);
         return view('User.Detail', [
             'product' => $product,
             'size' => $size,
             'sameProduct' => $Similiar,
             'pav' => $cek,
-            'alamat' => $alamat
+            'alamat' => $alamat,
+            'rate' => $rate
         ]);
     }
 

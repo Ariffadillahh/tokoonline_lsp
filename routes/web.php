@@ -3,12 +3,15 @@
 use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ChartSizeController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PavProductController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\UserControllers;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Row;
 
@@ -69,6 +72,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/size/edit', [ChartSizeController::class, 'update'])->name('editSize');
     Route::post('/size/hapus', [ChartSizeController::class, 'destroy'])->name('hapusSize');
     Route::get('/orderan', [LoginController::class, 'orderan'])->name('oerderan');
+    Route::get('/orderan/diantar', [LoginController::class, 'orderanDiantar'])->name('orderanDiantar');
+    Route::get('/orderan/selesai', [LoginController::class, 'orderanSelesai'])->name('orderanSelesai');
     Route::post('/rate', [RatingController::class, 'store'])->name('addRating');
-    
+    Route::get('/orderan/detail/{id}', [LoginController::class, 'orderanDetail'])->name('oerderanAdmin');
+    Route::post('/order/update', [OrdersController::class, 'update'])->name('updateOrder');
+    Route::get('/users', [LoginController::class, 'users'])->name('users');
+    Route::get('/settings', [LoginController::class, 'settings'])->name('settings');
+    Route::post('/settings/generl', [UserControllers::class, 'settingsGen'])->name('settingsGen');
+    Route::post('/settings/password', [UserControllers::class, 'settingsPass'])->name('settingsPass');
 });

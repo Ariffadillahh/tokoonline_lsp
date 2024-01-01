@@ -26,6 +26,19 @@ class LoginController extends Controller
         return view('Login.index');
     }
 
+    public function settings()
+    {
+        return view('User.Settings');
+    }
+
+    public function users()
+    {
+        $user = User::all();   
+        return view('Admin.Users', [
+            'user' => $user
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -84,17 +97,61 @@ class LoginController extends Controller
      * @param  \App\Models\login  $login
      * @return \Illuminate\Http\Response
      */
-    public function orderan(login $login)
+    public function orderan()
     {   
         $orders = DB::table('orders')
         ->join('products', 'orders.id_product', '=', 'products.id_product')
         ->join('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat')
         ->select('orders.*', 'products.*', 'alamats.*')
         ->orderBy('orders.id_orders', 'desc')
+        ->where('orders.status_orders', '=', 'dikemas')
         ->get();
 
         return view('Admin.Orders', [
             'order' => $orders
+        ]);
+    }
+
+    public function orderanDiantar()
+    {   
+        $orders = DB::table('orders')
+        ->join('products', 'orders.id_product', '=', 'products.id_product')
+        ->join('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat')
+        ->select('orders.*', 'products.*', 'alamats.*')
+        ->orderBy('orders.id_orders', 'desc')
+        ->where('orders.status_orders', '=', 'diantar')
+        ->get();
+
+        return view('Admin.OrderanDiantar', [
+            'order' => $orders
+        ]);
+    }
+
+    public function orderanSelesai()
+    {   
+        $orders = DB::table('orders')
+        ->join('products', 'orders.id_product', '=', 'products.id_product')
+        ->join('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat')
+        ->select('orders.*', 'products.*', 'alamats.*')
+        ->orderBy('orders.id_orders', 'desc')
+        ->where('orders.status_orders', '=', 'selesai')
+        ->get();
+
+        return view('Admin.OrderanSelesai', [
+            'order' => $orders
+        ]);
+    }
+
+    public function orderanDetail($id)
+    {   
+        $orders = DB::table('orders')
+        ->join('products', 'orders.id_product', '=', 'products.id_product')
+        ->join('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat' )
+        ->select('orders.*','products.*', 'alamats.*')
+        ->where('orders.id_orders', '=', $id)->first();
+    
+        return view('Admin.DetailOrder', [
+            'item' => $orders
         ]);
     }
 

@@ -9,6 +9,7 @@
     <title>TokoGue - Edit Product</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="{{ asset('js/script.js') }}"></script>
 </head>
 
 <body>
@@ -17,7 +18,7 @@
         <div class="md:mx-10 mx-3 md:w-full ">
             @if (session('error'))
                 <div class="mt-5">
-                    <div id="alert-2"
+                    <div id="alert"
                         class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
                         role="alert">
                         <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -31,7 +32,7 @@
                         </div>
                         <button type="button"
                             class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
-                            data-dismiss-target="#alert-2" aria-label="Close">
+                            onclick="closeAlert()">
                             <span class="sr-only">Close</span>
                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 14 14">

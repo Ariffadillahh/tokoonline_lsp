@@ -13,7 +13,7 @@
 
 <body>
     @include('../Components/navbar')
-    <div class="mx-3 md:mx-14">
+    <div class="mx-3 md:mx-14 my-5">
         @if (count($fav) == 0)
             <div class="h-[70vh] flex justify-center items-center capitalize font-mono">tidak ada product favorite</div>
         @endif

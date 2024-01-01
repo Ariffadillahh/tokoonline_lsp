@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>TokoGue - Orderan</title>
+    <title>TokoGue - Users</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="shortcut icon" href="{{ asset('storage/images/logo.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="{{ asset('js/script.js') }}"></script>
 </head>
 
 <body>
@@ -65,48 +66,76 @@
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                     stroke-width="2" d="m1 9 4-4-4-4" />
                             </svg>
-                            <span
-                                class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Orderan</span>
+                            <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Users</span>
                         </div>
                     </li>
                 </ol>
             </nav>
             <div>
-                @if (count($order) == 0)
-                    <div class="h-[50vh] flex justify-center items-center">
-                        <p class="font-mono">Tidak ada orderan</p>
+                @foreach ($user as $item)
+                    <div class="flex justify-between border my-5 p-3 rounded">
+                        <p>{{ $item->name }}</p>
+                        <button  onclick="openModal('modal{{ $item->id}}')"
+                            class="px-3 py-2 bg-red-500 text-white rounded">
+                            Edit
+                        </button>
                     </div>
-                @else
-                    @foreach ($order as $item)
-                        <a href="{{ route('oerderanAdmin', $item->id_orders) }}">
-                            <div class="flex gap-5 w-full border-b py-3">
-                                <div>
-                                    <img src={{ asset('storage/product_images/' . $item->image_product) }}
-                                        alt="{{ $item->name_product }}" class="w-[100px]">
+                    <div class="hidden fixed left-0 w-full top-0 z-40 " id="modal{{ $item->id}}">
+                        <div class="w-full h-screen flex px-5 justify-center pt-8 md:pt-0 md:items-center bg-black/30">
+                            <div class="md:max-w-[50%] w-full max-h-[70vh] overflow-auto bg-white rounded-md p-3 md:p-5 shadow-md">
+                                <div class="flex justify-between border-b pb-3">
+                                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white" id="modalTitle">
+                                        Terms of Service {{ $item->name}}
+                                    </h3>
+                                    <button
+                                        type="button"
+                                        onclick="closeModal('modal{{$item->id}}')"
+                                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                       
+                                    >
+                                        <svg
+                                            class="w-3 h-3"
+                                            aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 14 14"
+                                        >
+                                            <path
+                                                stroke="currentColor"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                                            />
+                                        </svg>
+                                        <span class="sr-only">Close modal</span>
+                                    </button>
                                 </div>
-
-                                <div class="w-full">
-                                    <div class="flex justify-between ">
-                                        <h1 class="font-mono  text-base">{{ $item->name_product }}</h1>
-                                        <h1 class="font-mono  text-base mt-1 uppercase text-primary">
-                                            {{ $item->status_orders }}</h1>
-                                    </div>
-                                    <p>{{ $item->name_brand }}</p>
-                                    <div class="flex justify-between ">
-                                        <p class="mt-1">x{{ $item->qty_orders }}</p>
-                                        <p class="font-mono text-lg md:text-xl ">Rp
-                                            {{ number_format($item->total_harga, '0', ',', '.') }}</p>
-                                    </div>
+                                <div class="p-4 md:p-5 space-y-4">
+                                    <p
+                                        class="text-base leading-relaxed text-gray-500 dark:text-gray-400"
+                                    >
+                                        With less than a month to go before the European Union enacts new
+                                        consumer privacy laws for its citizens, companies around the world
+                                        are updating their terms of service agreements to comply.
+                                    </p>
+                                   
+                                    <p id="modalIdValue"></p> <!-- Element untuk menampilkan nilai modalId -->
                                 </div>
                             </div>
-                        </a>
-                    @endforeach
-                @endif
+                        </div>
+                    </div>
+                @endforeach
             </div>
-
 
         </div>
     </div>
+
+    
+
+    <script>
+       
+    </script>
 </body>
 
 </html>

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id("id_product");
             $table->string("name_product");
             $table->text("desc_product");
-            $table->integer("stock_product");
+            $table->integer("stock_product")->nullable();
             $table->string("name_brand");
             $table->string("image_product");
             $table->string("product_status");

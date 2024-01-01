@@ -46,7 +46,7 @@ class BrandController extends Controller
             'name_brand' => $request->name_brand
         ]);
 
-        return redirect()->back()->with('succsess', 'Berhasil tambah brand');
+        return redirect()->back()->with('success', 'Berhasil tambah brand');
     }
 
     /**
@@ -88,7 +88,7 @@ class BrandController extends Controller
         Brand::where('id_brand', $id)->update([
             'name_brand' => $request->name_brand
         ]);
-        return redirect()->back()->with('succsess', ' Berhasil Update brand');
+        return redirect()->back()->with('success', ' Berhasil Update brand');
     }
 
     /**
@@ -102,6 +102,6 @@ class BrandController extends Controller
         $id = $request->id;
        
         Brand::where('id_brand', $id)->delete();
-        return redirect()->back()->with('succsess', 'Berhasil Delete brand');
+        return redirect()->back()->with('success', 'Berhasil Delete brand');
     }
 }

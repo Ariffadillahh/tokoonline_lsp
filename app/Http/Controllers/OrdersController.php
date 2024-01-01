@@ -129,9 +129,9 @@ class OrdersController extends Controller
             'alamat' => 'required',
             'qty' => 'required',
         ]);
-
+        
         $total_harga = $request->qty * $request->harga;
-
+        
         $orders = new Orders();
         $orders->id_product = $request->id_product;
         $orders->id_alamat = $request->alamat;
@@ -143,12 +143,32 @@ class OrdersController extends Controller
         $orders->total_harga =  $total_harga;
         $orders->size = $request->size;
         $orders->save();
-
+        
         $rate = new Rating();
         $rate->id_orders = $orders->id;
         $rate->id_user = auth()->user()->id;
         $rate->status_rate = 'no';
         $rate->save();
+        
+        DB::transaction(function () use ($request) {
+            $product = Product::where('id_product', $request->id_product)->first();
+        
+            if ($product) {
+                $stockProduct = $product->stock_product;
+        
+                $finalStockProduct = max($stockProduct - $request->qty, 0);
+        
+                Product::where('id_product', $request->id_product)->update([
+                    'stock_product' => $finalStockProduct
+                ]);
+        
+                if ($finalStockProduct == 0) {
+                    Product::where('id_product', $request->id_product)->update([
+                        'product_status' => 'sold'
+                    ]);
+                }
+            }
+        });
 
         return redirect('/orders/dikemas');
     }
@@ -168,6 +188,7 @@ class OrdersController extends Controller
         ->select('orders.*','products.*', 'alamats.*', 'ratings.*')
         ->where('orders.id_user', '=', auth()->user()->id)
         ->where('orders.id_orders', '=', $id)->first();
+
         return view('User.Orders.Detail', [
             'item' => $orders
         ]);
@@ -196,8 +217,19 @@ class OrdersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Orders $orders)
-    {
-        //
+    {   
+       
+        $request->validate([
+            'noResi' => 'required',
+        ]);
+
+        Orders::where('id_orders',$request->id)->where('id_user', auth()->user()->id)->update([
+            'no_resi' => $request->noResi,
+            'jasa_antar' => $request->jasa,
+            'status_orders' => $request->status
+        ]);
+
+        return redirect()->back()->with('success', 'Berhasil Update status');
     }
 
     /**

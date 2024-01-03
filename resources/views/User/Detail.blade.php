@@ -161,9 +161,9 @@
                                                             <div>
                                                                 <input type="radio" name="alamat"
                                                                     value="{{ $alamats->id_alamat }}"
-                                                                    id="{{ $alamats->id_alamat }}"
+                                                                    id="pilih{{ $alamats->id_alamat }}"
                                                                     class="hidden peer">
-                                                                <label for={{ $alamats->id_alamat }}
+                                                                <label for="pilih{{ $alamats->id_alamat }}"
                                                                     class="inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[#969D43] hover:text-gray-600  peer-checked:text-gray-600 hover:bg-gray-50 ">
                                                                     <div class="">
                                                                         <h1 class="font-mono font-semibold">

@@ -87,23 +87,28 @@
                     <div class="flex items-center">
                         <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="m1 9 4-4-4-4" />
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 9 4-4-4-4" />
                         </svg>
-                        <span
-                            class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Settings</span>
+                        <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Settings</span>
                     </div>
                 </li>
             </ol>
         </nav>
         <div class="rounded-md bg-gradient-to-r from-primary to-[#C8D439]">
             <div class="p-5 md:flex gap-10 ">
-            
+
                 <div class="flex justify-center mb-5 md:mb-0">
                     <div>
-                        <img class="w-[150px] h-[150px] rounded-full"
-                            src="{{ asset('storage/image_user/' . Auth::user()->image) }}"
-                            alt="{{ Auth::user()->name }}">
+                        @if (Auth::user()->image)
+                            <img class="w-[150px] h-[150px] rounded-full"
+                                src="{{ asset('storage/image_user/' . Auth::user()->image) }}"
+                                alt="{{ Auth::user()->name }}">
+                        @else
+                            <img class="w-[150px] h-[150px] rounded-full"
+                                src="{{ asset('storage/image_user/ppkosong.jpg') }}" alt="{{ Auth::user()->name }}">
+                        @endif
+
                         <div class="text-white text-xl mt-5 font-mono">
                             <h1 class="capitalize">{{ Auth::user()->name }}</h1>
                             <h1 class="">{{ Auth::user()->email }}</h1>
@@ -134,8 +139,10 @@
                                     id="small_size" type="file" name="image">
                             </div>
                             <div>
-                                <label for="name" class="block mb-2 text-sm font-medium text-white">Username</label>
-                                <input type="text" id="name" name="name" value="{{ auth()->user()->name }}"
+                                <label for="name"
+                                    class="block mb-2 text-sm font-medium text-white">Username</label>
+                                <input type="text" id="name" name="name"
+                                    value="{{ auth()->user()->name }}"
                                     class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             </div>
                             <button class="btn btn-accent btn-sm my-3 w-full text-white">update</button>

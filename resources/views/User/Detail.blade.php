@@ -186,7 +186,10 @@
                                                 <input type="hidden" name="pembayaran" value="cod">
 
                                                 <div class="border-b pb-3">
-                                                    <p class="font-mono"> Jumlah Pesanan</p>
+                                                    <div class="flex justify-between font-mono">
+                                                        <p class=""> Jumlah Pesanan</p>
+                                                        <p>Stock : {{ $product->stock_product }}</p>
+                                                    </div>
                                                     <div class="flex gap-3 w-full my-3">
                                                         <div class="w-[10%] cursor-pointer text-2xl font-bold  flex justify-center items-center"
                                                             onclick="decrease()">-</div>
@@ -270,7 +273,6 @@
                                 </h2>
                                 <div id="descProduct" class="hidden">
                                     <div class="py-5 border-b border-gray-200 dark:border-gray-700">
-                                        <h1 class="text-gray-500">Stock : {{ $product->stock_product }}</h1>
                                         <p class="mb-2 text-gray-500 dark:text-gray-400">{{ $product->desc_product }}
                                         </p>
                                     </div>

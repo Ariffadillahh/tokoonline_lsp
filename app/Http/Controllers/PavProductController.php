@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\pavProduct;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PavProductController extends Controller
@@ -22,15 +23,13 @@ class PavProductController extends Controller
             $a[] = $key->id_product;
         }
         
-        $product = Product::whereIn('id_product', $a)->get();
         $products = DB::table('products')
         ->join('pav_products', 'pav_products.id_product', '=', 'products.id_product')
         ->select('products.*', 'pav_products.*')
         ->whereIn('products.id_product', $a)
+        ->where('pav_products.id_user', '=', Auth::user()->id)
         ->get();
 
-      
-       
         return view('User.Favorite' , [
             'fav' => $products,
         ]);

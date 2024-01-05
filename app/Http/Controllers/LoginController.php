@@ -65,8 +65,13 @@ class LoginController extends Controller
             'password' => $request->input('password'),
         ];
 
-        if (Auth::Attempt($data)) {
-            return redirect('/');
+        if (Auth::attempt($data)) {
+            $user = Auth::user();
+            if ($user->level == 'admin' || $user->level == 'superadmin') {
+                return redirect('/dashboard');
+            } else {
+                return redirect('/');
+            }
         } else {
             return redirect('/login')->with('error', 'Email atau Password anda salah');
         }
@@ -82,13 +87,14 @@ class LoginController extends Controller
     {
 
         $product = Product::orderBy("id_product", "DESC")->get();
-        
+
         return view(
             "Homepage.index",
             [
                 'product' => $product
             ]
         );
+       
     }
 
     /**
@@ -175,7 +181,7 @@ class LoginController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(login $login)
-    {
+    {   
         Auth::logout();
         return redirect('/');
     }

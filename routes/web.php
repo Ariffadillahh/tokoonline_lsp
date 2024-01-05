@@ -40,15 +40,7 @@ Route::post('/logout', [LoginController::class, 'destroy'])
 Route::get('/', [LoginController::class, 'show'])->name('homepage');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/product', [ProductController::class, 'index']);
     Route::get('/product/detail/{id}', [ProductController::class, 'show'])->name('detail');
-    Route::get('/product/add-product', [ProductController::class, 'addproduct']);
-    Route::post('/product/add-product', [ProductController::class, 'store'])->name('add');
-    Route::get('/product/edit-product/{id}', [ProductController::class, 'editproduct']);
-    Route::post('/product/edit-product/{id}', [ProductController::class, 'edit'])->name('edit');
-    Route::post('/product/hapus-product', [ProductController::class, 'destroy'])->name('hapus');
-    Route::delete('/product/edit-product', [ProductController::class, 'deleteSize'])->name('delete-size');
-    Route::post('/product/edit-product', [ChartSizeController::class, 'addSize'])->name('addSize');
     Route::post('/product/detail/addpav', [PavProductController::class, 'store'])->name('addPav');
     Route::post('/product/detail/unpav', [PavProductController::class, 'destroy'])->name('unPav');
     Route::get('/alamat', [AlamatController::class, 'index'])->name('alamat');
@@ -63,22 +55,42 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/selesai/detail/{id}', [OrdersController::class, 'detail'])->name('orderdetail');
     Route::post('/orders/selesai', [OrdersController::class, 'edit'])->name('finishorder');
     Route::get('/search', [OrdersController::class, 'search'])->name('search');
-    Route::get('/brand', [BrandController::class, 'index'])->name('brand');
-    Route::post('/brand', [BrandController::class, 'store'])->name('addBrand');
-    Route::post('/brand/edit', [BrandController::class, 'update'])->name('editBrand');
-    Route::post('/brand/hapus', [BrandController::class, 'destroy'])->name('hapusBrand');
-    Route::get('/dashboard', [LoginController::class, 'dashboard'])->name('dashboard');
-    Route::post('/size', [ChartSizeController::class, 'store'])->name('size');
-    Route::post('/size/edit', [ChartSizeController::class, 'update'])->name('editSize');
-    Route::post('/size/hapus', [ChartSizeController::class, 'destroy'])->name('hapusSize');
-    Route::get('/orderan', [LoginController::class, 'orderan'])->name('oerderan');
-    Route::get('/orderan/diantar', [LoginController::class, 'orderanDiantar'])->name('orderanDiantar');
-    Route::get('/orderan/selesai', [LoginController::class, 'orderanSelesai'])->name('orderanSelesai');
     Route::post('/rate', [RatingController::class, 'store'])->name('addRating');
-    Route::get('/orderan/detail/{id}', [LoginController::class, 'orderanDetail'])->name('oerderanAdmin');
-    Route::post('/order/update', [OrdersController::class, 'update'])->name('updateOrder');
-    Route::get('/users', [LoginController::class, 'users'])->name('users');
     Route::get('/settings', [LoginController::class, 'settings'])->name('settings');
     Route::post('/settings/generl', [UserControllers::class, 'settingsGen'])->name('settingsGen');
     Route::post('/settings/password', [UserControllers::class, 'settingsPass'])->name('settingsPass');
 });
+
+Route::middleware(['checkRole:admin,superadmin'])->group(function () {
+    Route::get('/dashboard', [LoginController::class, 'dashboard'])->name('dashboard');
+    Route::get('/brand', [BrandController::class, 'index'])->name('brand');
+    Route::post('/brand', [BrandController::class, 'store'])->name('addBrand');
+    Route::post('/brand/edit', [BrandController::class, 'update'])->name('editBrand');
+    Route::post('/brand/hapus', [BrandController::class, 'destroy'])->name('hapusBrand');
+    Route::get('/orderan', [LoginController::class, 'orderan'])->name('oerderan');
+    Route::get('/orderan/diantar', [LoginController::class, 'orderanDiantar'])->name('orderanDiantar');
+    Route::get('/orderan/selesai', [LoginController::class, 'orderanSelesai'])->name('orderanSelesai');
+    Route::get('/orderan/detail/{id}', [LoginController::class, 'orderanDetail'])->name('oerderanAdmin');
+    Route::post('/order/update', [OrdersController::class, 'update'])->name('updateOrder');
+    Route::get('/users', [LoginController::class, 'users'])->name('users');
+    Route::get('/product', [ProductController::class, 'index']);
+    Route::get('/product/add-product', [ProductController::class, 'addproduct']);
+    Route::post('/product/add-product', [ProductController::class, 'store'])->name('add');
+    Route::get('/product/edit-product/{id}', [ProductController::class, 'editproduct']);
+    Route::post('/product/edit-product/{id}', [ProductController::class, 'edit'])->name('edit');
+    Route::post('/product/hapus-product', [ProductController::class, 'destroy'])->name('hapus');
+    Route::delete('/product/edit-product', [ProductController::class, 'deleteSize'])->name('delete-size');
+    Route::post('/product/edit-product', [ChartSizeController::class, 'addSize'])->name('addSize');
+    Route::post('/size', [ChartSizeController::class, 'store'])->name('size');
+    Route::post('/size/edit', [ChartSizeController::class, 'update'])->name('editSize');
+    Route::post('/size/hapus', [ChartSizeController::class, 'destroy'])->name('hapusSize');
+});
+
+Route::middleware(['checkRole:superadmin'])->group(function () {
+    Route::get('/users', [LoginController::class, 'users'])->name('users');
+});
+
+
+
+
+

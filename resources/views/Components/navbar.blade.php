@@ -45,15 +45,15 @@
                 <button type="button" onclick="dropDown()">
                     @if (Auth::user()->image)
                         <img class="w-10 h-10 rounded-full" src="{{ asset('storage/image_user/' . Auth::user()->image) }}"
-                            alt="{{Auth::user()->name}}">
+                            alt="{{ Auth::user()->name }}">
                     @else
-                        <img class="w-10 h-10 rounded-full " src="{{ asset('storage/user_image/image.jpeg') }}"
+                        <img class="w-10 h-10 rounded-full " src="{{ asset('storage/image_user/ppkosong.jpg') }}"
                             alt="user photo">
                     @endif
                 </button>
                 <div class="absolute top-14 right-5 hidden z-10" id="dropDownMenu">
                     <div class="bg-white rounded-md drop-shadow-md w-[150px]">
-                        <ul class="py-2 text-sm text-gray-700 " >
+                        <ul class="py-2 text-sm text-gray-700 ">
                             <li>
                                 <a href="/"
                                     class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Homepage</a>
@@ -71,7 +71,8 @@
                                     class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
                             </li>
                             <li>
-                                <form action={{ route('logout') }} method="post" class="block px-4 py-2 hover:bg-gray-100 ">
+                                <form action={{ route('logout') }} method="post"
+                                    class="block px-4 py-2 hover:bg-gray-100 ">
                                     @csrf
                                     <button>
                                         Sign out
@@ -83,7 +84,7 @@
                 </div>
             @else
                 <div class="flex mt-1.5 md:mt-0">
-                    <button onclick="searchNav()" type="button" class="md:hidden mr-3" >
+                    <button onclick="searchNav()" type="button" class="md:hidden mr-3">
                         <svg class="w-5 h-5  " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -182,7 +183,7 @@
         }
 
         if (currentScrollPos === 0) {
-            navbar.classList.add('top-0') 
+            navbar.classList.add('top-0')
             navbar.classList.remove("fixed");
         }
 

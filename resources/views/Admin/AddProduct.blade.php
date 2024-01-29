@@ -59,14 +59,11 @@
                 @csrf
                 <div class="md:flex gap-4">
                     <div class="w-full">
-                        <div class="relative">
-                            <input type="text" id="floating_outlined"
-                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                placeholder=" " name="name_product" value="{{ old('name_product') }}" />
-                            <label for="floating_outlined"
-                                class="absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Name
-                                Product
-                            </label>
+                        <label class="font-semibold text-sm ">Name Product</label>
+                        <div class="relative w-full">
+                            <input type="text" id="nameProduct" name="name_product"
+                                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 "
+                                placeholder="Name Product" value="{{ old('name_product') }}" required>
                         </div>
                         @error('name_product')
                             <p class="text-red-600 w-full">{{ $message }}</p>
@@ -74,7 +71,7 @@
                     </div>
 
                     <div class="w-full ">
-
+                        <label class="font-semibold text-sm ">Price</label>
                         <div class="relative w-full">
                             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                 <i class="fa-solid fa-rupiah-sign"></i>
@@ -92,20 +89,19 @@
 
                 <div class="md:flex gap-4 md:my-5">
                     <div class="w-full">
-                        <div class="relative ">
-                            <input type="number" id="stok"
-                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                placeholder=" " name="stock_product" value="{{ old('stock_product') }}" />
-                            <label for="stok"
-                                class="absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Stock
-                                Product
-                            </label>
+                        <label class="font-semibold text-sm ">Stock Product</label>
+                        <div class="relative w-full">
+                            <input type="number" id="stok" name="stock_product"
+                                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 "
+                                placeholder="Stock Product" value="{{ old('stock_product') }}" required>
                         </div>
                         @error('stock_product')
                             <p class="text-red-600 w-full">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="w-full">
+                        <label class="font-semibold text-sm ">Name Brand</label>
+
                         <select name="name_brand"
                             class="bg-gray-50 border border-gray-300 mb-3 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option selected disabled>Name Brand</option>
@@ -124,7 +120,7 @@
                 <div class="md:flex gap-4">
                     <div class="w-full">
                         <label for="images" class="font-semibold text-sm">Images</label>
-                        <input type="file" name="images" id="images" class="w-full border rounded-md">
+                        <input type="file" name="images" id="images" class="w-full border rounded-md p-1.5">
                         @error('images')
                             <p class="text-red-600 py-1 w-full">{{ $message }}</p>
                         @enderror

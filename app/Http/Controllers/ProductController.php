@@ -36,7 +36,7 @@ class ProductController extends Controller
 
     public function addproduct()
     {
-        $chart = chart_size::all();
+        $chart = chart_size::orderBy('uk_chart')->get();
         $brand = Brand::all();
         return view('Admin.AddProduct', [
             'chart' => $chart,
@@ -49,7 +49,7 @@ class ProductController extends Controller
         $product = Product::where('id_product', $id)->first();
         $chart = SizeProduct::where('id_product', $id)->get();
         $brand = Brand::all();
-        $addSize = chart_size::all();
+        $addSize = chart_size::orderBy('uk_chart')->get();
 
         $a = [];
         $b = [];
@@ -143,7 +143,7 @@ class ProductController extends Controller
     public function show(Product $product, $id)
     {
         $product = Product::where('id_product', $id)->first();
-        $size = SizeProduct::where('id_product', $id)->get();
+        $size = SizeProduct::where('id_product', $id)->orderBy('uk_size')->get();
         $cek = pavProduct::where('id_product', $id)
             ->where('id_user', auth()->user()->id)
             ->first();
@@ -162,6 +162,7 @@ class ProductController extends Controller
         ->select('orders.*', 'ratings.*', 'users.*')
         ->where('orders.id_product', '=', $id)
         ->where('ratings.status_rate','=', 'yes')->get()->take(5);
+
         return view('User.Detail', [
             'product' => $product,
             'size' => $size,

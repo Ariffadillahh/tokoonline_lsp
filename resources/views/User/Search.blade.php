@@ -24,18 +24,26 @@
                 <P class="text-lg font-mono">Tidak ada product {{ $q }}</P>
             </div>
         @else
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 my-5">
+            <div class="grid lg:grid-cols-5 md:grid-cols-4 md:gap-5 gap-3 grid-cols-2 my-5">
                 @foreach ($product as $item)
                     <a href="{{ route('detail', $item->id_product) }}">
                         <div class="hover:text-[#969D43] duration-150 cursor-pointer ">
-                            <div class="overflow-hidden ">
+                            <div class="relative overflow-hidden ">
                                 <img src={{ asset('storage/product_images/' . $item->image_product) }}
                                     alt="{{ $item->name_product }}" class="w-full   ">
+                                @if ($item->stock_product == 0)
+                                    <div class="absolute top-1 left-2 ">
+                                        <span
+                                            class="bg-pink-100 ml-1 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300 uppercase">Sold
+                                            Out</span>
+                                    </div>
+                                @endif
                             </div>
+
                             <div class="p-4">
-                                <h1 class="font-semibold text-lg font-mono ">{{ $item->name_product }}</h1>
-                                <h1 class="font-light text-sm font-mono ">{{ $item->name_brand }}</h1>
-                                <p class="text-base font-mono ">Rp
+                                <h1 class="font-semibold text-lg font-mono line-clamp-2 ">{{ $item->name_product }}</h1>
+                                <h1 class="font-light text-sm font-mono truncate my-1">{{ $item->name_brand }}</h1>
+                                <p class="text-base font-mono truncate">Rp
                                     {{ number_format($item->price_product, 0, ',', '.') }}</p>
                             </div>
                         </div>
@@ -45,10 +53,6 @@
         @endif
     </div>
     @include('./Components/footer')
-    {{-- Mencari {{$q}}
-    @foreach ($product as $item)
-        {{$item->name_product}}
-    @endforeach --}}
 </body>
 
 </html>

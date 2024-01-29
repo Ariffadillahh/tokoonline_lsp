@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('no_resi')->nullable();
             $table->string('jasa_antar')->nullable();
             $table->string('size');
+            $table->string('harga_product');
+            $table->string('waktu_nerimapesanan')->nullable();
             $table->timestamps();
         });
     }

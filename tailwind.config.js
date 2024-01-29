@@ -11,8 +11,9 @@ module.exports = {
         extend: {
             colors: {
                 "primary": '#969D43',
+                "secondary" : '#C8D439'
               },
         },
     },
-    plugins: [require("flowbite/plugin"), require("daisyui")],
+    plugins: [ require("daisyui")],
 };

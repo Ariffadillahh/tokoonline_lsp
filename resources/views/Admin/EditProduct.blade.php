@@ -87,7 +87,7 @@
                 <div class="md:grid md:grid-cols-2 gap-4 w-full">
                     <div class="w-full border rounded flex justify-center items-center py-5 bg-blue-100/20">
                         <img src={{ asset('storage/product_images/' . $product->image_product) }}
-                            alt="{{ $product->name_product }}" class="w-[150px] h-[150px]">
+                            alt="{{ $product->name_product }}" class="max-w-[50%]">
                     </div>
                     <div class="w-full">
                         <label class="font-semibold text-sm ">Size</label>
@@ -144,52 +144,55 @@
                     @csrf
                     <div class="md:flex gap-4">
                         <div class="w-full">
-                            <div class="relative">
-                                <input type="text" id="floating_outlined"
-                                    class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                    placeholder=" " name="name_product" value="{{ $product->name_product }}" />
-                                <label for="floating_outlined"
-                                    class="absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Name
-                                    Product
-                                </label>
+                            <div class="w-full mb-3">
+                                <label class="font-semibold text-sm ">Name Product</label>
+                                <div class="relative w-full">
+                                    <input type="text" id="simple-search" name="name_product"
+                                        value="{{ $product->name_product }}"
+                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        required>
+                                </div>
+                                @error('name_product')
+                                    <p class="text-red-600 w-full">{{ $message }}</p>
+                                @enderror
                             </div>
-                            @error('name_product')
-                                <p class="text-red-600 w-full">{{ $message }}</p>
-                            @enderror
                         </div>
 
                         <div class="w-full">
-                            <div class="relative my-4 md:my-0 ">
-                                <input type="text" id="floating_outlined"
-                                    class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                    placeholder=" " name="desc_product" value="{{ $product->desc_product }}" />
-                                <label for="floating_outlined"
-                                    class="absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Description
-                                    Product
-                                </label>
+                            <div class="w-full mb-3">
+                                <label class="font-semibold text-sm ">Price</label>
+                                <div class="relative w-full">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                        <i class="fa-solid fa-rupiah-sign"></i>
+                                    </div>
+                                    <input type="text" id="simple-search" name="price"
+                                        value="{{ number_format($product->price_product, 0, ',', '.') }}"
+                                        class="rupiah bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="XXXXXX" required>
+                                </div>
+                                @error('price_product')
+                                    <p class="text-red-600 w-full">{{ $message }}</p>
+                                @enderror
                             </div>
-                            @error('desc_product')
-                                <p class="text-red-600 -mt-3 mb-3 md:mt-0 w-full">{{ $message }}</p>
-                            @enderror
+
                         </div>
                     </div>
 
                     <div class="md:flex gap-4 md:my-5">
                         <div class="w-full">
-                            <div class="relative ">
-                                <input type="number" id="floating_outlined"
-                                    class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                    placeholder=" " name="stock_product" value="{{ $product->stock_product }}" />
-                                <label for="floating_outlined"
-                                    class="absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Stock
-                                    Product
-                                </label>
+                            <label class="font-semibold text-sm ">Stock Product</label>
+                            <div class="relative w-full">
+                                <input type="number" id="simple-search" name="stock_product"
+                                    value="{{ $product->stock_product }}"
+                                    class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    required>
                             </div>
                             @error('stock_product')
                                 <p class="text-red-600 w-full">{{ $message }}</p>
                             @enderror
                         </div>
                         <div class="w-full">
+                            <label class="font-semibold text-sm ">Name Brand</label>
                             <select name="name_brand"
                                 class="bg-gray-50 border border-gray-300 mb-3 text-gray-900 text-sm rounded-lg focus:ring-blue-500 uppercase focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected>{{ $product->name_brand }}</option>
@@ -210,7 +213,8 @@
                     <div class="md:flex gap-4">
                         <div class="w-full">
                             <label for="images" class="font-semibold text-sm">Images</label>
-                            <input type="file" name="images" id="images" class="w-full border rounded-md">
+                            <input type="file" name="images" id="images"
+                                class="w-full border rounded-md p-1.5">
                             @error('images')
                                 <p class="text-red-600 py-1 w-full">{{ $message }}</p>
                             @enderror
@@ -235,19 +239,17 @@
                         </div>
                     </div>
 
+
                     <div class="w-full mb-3">
-                        <label class="font-semibold text-sm ">Price</label>
-                        <div class="relative w-full">
-                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                <i class="fa-solid fa-rupiah-sign"></i>
-                            </div>
-                            <input type="text" id="simple-search" name="price"
-                                value="{{ number_format($product->price_product, 0, ',', '.') }}"
-                                class="rupiah bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="XXXXXX" required>
-                        </div>
-                        @error('price_product')
-                            <p class="text-red-600 w-full">{{ $message }}</p>
+                        <label for="message"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                        <textarea id="message" rows="4"
+                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Write your thoughts here..." name="desc_product">{{ $product->desc_product }}</textarea>
+
+
+                        @error('desc_product')
+                            <p class="text-red-600 -mt-3 mb-3 md:mt-0 w-full">{{ $message }}</p>
                         @enderror
                     </div>
 

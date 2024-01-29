@@ -22,7 +22,7 @@ class OrdersController extends Controller
         ->join('products', 'orders.id_product', '=', 'products.id_product')
         ->select('orders.*','products.*')
         ->where('orders.id_user', '=', auth()->user()->id)
-        ->where('orders.status_orders', '=', 'dikemas')->get();
+        ->where('orders.status_orders', '=', 'dikemas')->orderBy('id_orders', 'DESC')->get();
 
         $ordersAntar = DB::table('orders')
         ->join('products', 'orders.id_product', '=', 'products.id_product')
@@ -54,7 +54,7 @@ class OrdersController extends Controller
         ->join('products', 'orders.id_product', '=', 'products.id_product')
         ->select('orders.*','products.*')
         ->where('orders.id_user', '=', auth()->user()->id)
-        ->where('orders.status_orders', '=', 'diantar')->get();
+        ->where('orders.status_orders', '=', 'diantar')->orderBy('id_orders', 'DESC')->get();
 
         $selesai = DB::table('orders')
         ->join('products', 'orders.id_product', '=', 'products.id_product')
@@ -95,7 +95,7 @@ class OrdersController extends Controller
         ->join('products', 'orders.id_product', '=', 'products.id_product')
         ->select('orders.*','products.*')
         ->where('orders.id_user', '=', auth()->user()->id)
-        ->where('orders.status_orders', '=', 'selesai')->get();
+        ->where('orders.status_orders', '=', 'selesai')->orderBy('id_orders', 'DESC')->get();
 
         $dikemas = DB::table('orders')
         ->join('products', 'orders.id_product', '=', 'products.id_product')
@@ -142,6 +142,7 @@ class OrdersController extends Controller
         $orders->date_orders =  Carbon::now();
         $orders->total_harga =  $total_harga;
         $orders->size = $request->size;
+        $orders->harga_product = $request->harga;
         $orders->save();
         
         $rate = new Rating();
@@ -203,7 +204,8 @@ class OrdersController extends Controller
     public function edit(Request $request, Orders $orders)
     {
         Orders::where('id_orders', $request->id)->where('id_user', auth()->user()->id)->update([
-            'status_orders' => 'selesai'
+            'status_orders' => 'selesai',
+            'waktu_nerimapesanan' => Carbon::now()
         ]);
 
         return redirect()->back()->with('success', 'Thankyou sudah berbelanja di TokoGue');
@@ -218,12 +220,11 @@ class OrdersController extends Controller
      */
     public function update(Request $request, Orders $orders)
     {   
-       
         $request->validate([
             'noResi' => 'required',
         ]);
 
-        Orders::where('id_orders',$request->id)->where('id_user', auth()->user()->id)->update([
+        Orders::where('id_orders',$request->id)->update([
             'no_resi' => $request->noResi,
             'jasa_antar' => $request->jasa,
             'status_orders' => $request->status

@@ -48,7 +48,7 @@
         <div class="md:flex justify-between">
             <div class="flex ">
                 <p class="font-mono text-lg md:text-xl mt-1 mr-3">Rp
-                    {{ number_format($item->price_product, '0', ',', '.') }}</p>
+                    {{ number_format($item->harga_product, '0', ',', '.') }}</p>
                 <p class="font-mono text-lg md:text-xl mt-1">x{{ $item->qty_orders }}</p>
             </div>
             <p class="font-mono text-lg md:text-xl ">Total : Rp
@@ -59,6 +59,7 @@
                 <div>
                     <p>Metode Pembayaran : <span class="uppercase">{{ $item->metode_pembayaran }}</span></p>
                     <p>Tanggal Orders : <span class="uppercase">{{ $item->date_orders }}</span></p>
+                    <p>Tanggal Terima Pesanan : <span class="uppercase">{{ $item->waktu_nerimapesanan }}</span></p>
                 </div>
                 <div>
                     <p>Jasa Pengiriman : <span class="uppercase">{{ $item->jasa_antar }}</span></p>
@@ -109,10 +110,18 @@
             @else
                 <article class="my-5">
                     <div class="flex items-center mb-4">
-                        <img class="w-10 h-10 me-4 rounded-full"
-                            src="{{ asset('storage/image_user/' . Auth::user()->image) }}" alt="">
+
+                        @if (Auth::user()->image)
+                            <img class="w-10 h-10 me-4 rounded-full"
+                                src="{{ asset('storage/image_user/' . Auth::user()->image) }}"
+                                alt="{{ Auth::user()->name }}">
+                        @else
+                            <img class="w-10 h-10 me-4 rounded-full"
+                                src="{{ asset('storage/image_user/ppkosong.jpg') }}" alt="{{ Auth::user()->name }}">
+                        @endif
+
                         <div class="font-medium dark:text-white">
-                            <p>{{  Auth::user()->name }}
+                            <p>{{ Auth::user()->name }}
                             <p class="block text-sm text-gray-500 dark:text-gray-400">
                                 {{ \Carbon\Carbon::parse($item->waktu_rate)->diffForHumans() }}</p>
                             </p>
@@ -126,8 +135,6 @@
                                     d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
                             </svg>
                         @endfor
-
-
 
                         @switch($item->start_rate)
                             @case(1)

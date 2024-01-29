@@ -65,7 +65,7 @@
             </div>
         @endif
         <div class="my-10">
-            <nav class="flex" aria-label="Breadcrumb">
+            <nav class="flex overflow-hidden" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                     <li class="inline-flex items-center">
                         <a href="/"
@@ -79,14 +79,14 @@
                         </a>
                     </li>
                     <li aria-current="page">
-                        <div class="flex items-center">
+                        <div class="flex items-center ">
                             <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                     stroke-width="2" d="m1 9 4-4-4-4" />
                             </svg>
                             <span
-                                class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">{{ $product->name_product }}</span>
+                                class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400 line-clamp-1">{{ $product->name_product }}</span>
                         </div>
                     </li>
                 </ol>
@@ -107,19 +107,36 @@
                         <form action={{ route('buy') }} method="post">
                             @csrf
                             <div class="flex gap-4 py-2 overflow-x-auto size">
-                                @foreach ($size as $item)
-                                    <div>
-                                        <input type="radio" name="size" value="{{ $item->uk_size }}"
-                                            id="{{ $item->id_size }}" class="hidden peer" id="size"
-                                            onclick="checkInput()">
-                                        <label for={{ $item->id_size }}
-                                            class="inline-flex items-center justify-between w-[70px] p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[#969D43] hover:text-gray-600  peer-checked:text-gray-600 hover:bg-gray-50 ">
-                                            <div class="block mx-auto">
-                                                {{ $item->uk_size }}
-                                            </div>
-                                        </label>
-                                    </div>
-                                @endforeach
+                                @if ($product->product_status == 'sold')
+                                    @foreach ($size as $item)
+                                        <div>
+                                            <input type="radio" name="size" value="{{ $item->uk_size }}"
+                                                id="{{ $item->id_size }}" class="hidden peer" id="size" disabled
+                                                onclick="checkInput()">
+                                            <label for={{ $item->id_size }}
+                                                class="inline-flex items-center justify-between w-[70px] p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[#969D43] hover:text-gray-600  peer-checked:text-gray-600 hover:bg-gray-50 ">
+                                                <div class="block mx-auto">
+                                                    {{ $item->uk_size }}
+                                                </div>
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    @foreach ($size as $item)
+                                        <div>
+                                            <input type="radio" name="size" value="{{ $item->uk_size }}"
+                                                id="{{ $item->id_size }}" class="hidden peer" id="size"
+                                                onclick="checkInput()">
+                                            <label for={{ $item->id_size }}
+                                                class="inline-flex items-center justify-between w-[70px] p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[#969D43] hover:text-gray-600  peer-checked:text-gray-600 hover:bg-gray-50 ">
+                                                <div class="block mx-auto">
+                                                    {{ $item->uk_size }}
+                                                </div>
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                @endif
+
                             </div>
                             <div id="modal" class="hidden fixed left-0 w-full top-0 z-40">
                                 <div
@@ -185,6 +202,7 @@
                                                     value="{{ $product->price_product }}">
                                                 <input type="hidden" name="pembayaran" value="cod">
 
+
                                                 <div class="border-b pb-3">
                                                     <div class="flex justify-between font-mono">
                                                         <p class=""> Jumlah Pesanan</p>
@@ -195,7 +213,8 @@
                                                             onclick="decrease()">-</div>
                                                         <input type="number" id="counterInput" name="qty"
                                                             min="1" value="1"
-                                                            max="{{ $product->stock_product }}" class="w-[80%]">
+                                                            max="{{ $product->stock_product }}"
+                                                            class="w-[80%] p-2 text-center border rounded focus:outline-none">
                                                         <div class="w-[10%] cursor-pointer text-2xl font-bold  flex justify-center items-center"
                                                             onclick="increase()">+</div>
                                                     </div>
@@ -264,11 +283,14 @@
                                     <button type="button" onclick="descProduct()"
                                         class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3">
                                         <span id="desc">Description</span>
-                                        <svg id="panah" class="w-3 h-3 shrink-0" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                            <path stroke="currentColor" stroke-linecap="round"
-                                                stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5" />
-                                        </svg>
+                                        <div id="panah" class="rotate-180 duration-300 transition-all">
+                                            <svg class="w-3 h-3 shrink-0" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5" />
+                                            </svg>
+                                        </div>
+
                                     </button>
                                 </h2>
                                 <div id="descProduct" class="hidden">
@@ -281,8 +303,10 @@
                                     <button type="button" onclick="authentic()"
                                         class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500  border-b border-gray-200 gap-3">
                                         <span id="authenticText">Authentic. Trusted. Best Price.</span>
-                                        <svg id="panahAuth" class="w-3 h-3 shrink-0" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                        <svg id="panahAuth"
+                                            class="w-3 h-3 shrink-0 rotate-180 duration-300 transition-all"
+                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 10 6">
                                             <path stroke="currentColor" stroke-linecap="round"
                                                 stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5" />
                                         </svg>
@@ -306,8 +330,15 @@
                 @foreach ($rate as $item)
                     <article class="my-5 border-b">
                         <div class="flex items-center mb-4">
-                            <img class="w-10 h-10 me-4 rounded-full"
-                                src="{{ asset('storage/image_user/' . $item->image) }}" alt="">
+                            @if (Auth::user()->image)
+                                <img class="w-10 h-10 me-4 rounded-full"
+                                    src="{{ asset('storage/image_user/' . Auth::user()->image) }}"
+                                    alt="{{ Auth::user()->name }}">
+                            @else
+                                <img class="w-10 h-10 me-4 rounded-full"
+                                    src="{{ asset('storage/image_user/ppkosong.jpg') }}"
+                                    alt="{{ Auth::user()->name }}">
+                            @endif
                             <div class="font-medium dark:text-white">
                                 <p>{{ $item->name }}
                                 <p class="block text-sm text-gray-500 dark:text-gray-400">
@@ -325,11 +356,11 @@
                             @endfor
                             @switch($item->start_rate)
                                 @case(1)
-                                    <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">Sangat Buruk!</h3>
+                                    <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">So Bad!!!</h3>
                                 @break
 
                                 @case(2)
-                                    <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">Buruk</h3>
+                                    <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">Bad!!</h3>
                                 @break
 
                                 @case(3)
@@ -337,7 +368,7 @@
                                 @break
 
                                 @case(4)
-                                    <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">SoGoog</h3>
+                                    <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">So Good</h3>
                                 @break
 
                                 @case(5)
@@ -353,20 +384,29 @@
             </div>
             <div class="">
                 @if (count($sameProduct) != 0)
-                    <p class="text-center py-2 font-mono">Similiar Product</p>
+                    <p class="text-center py-2 font-mono md:text-lg">Similiar Product</p>
+                    <div class="w-[40px] h-1 bg-primary mx-auto block rounded"></div>
                 @endif
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4 my-3">
                     @foreach ($sameProduct as $item)
                         <a href="{{ route('detail', $item->id_product) }}">
                             <div class="hover:text-[#969D43] duration-150 cursor-pointer ">
-                                <div class="overflow-hidden ">
+                                <div class="relative overflow-hidden ">
                                     <img src={{ asset('storage/product_images/' . $item->image_product) }}
                                         alt="{{ $item->name_product }}" class="w-full   ">
+                                    @if ($item->stock_product == 0)
+                                        <div class="absolute top-1 left-2 ">
+                                            <span
+                                                class="bg-pink-100 ml-1 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300 uppercase">Sold
+                                                Out</span>
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="p-4">
-                                    <h1 class="font-semibold text-lg font-mono ">{{ $item->name_product }}</h1>
-                                    <h1 class="font-light text-sm font-mono ">{{ $item->name_brand }}</h1>
-                                    <p class="text-base font-mono ">Rp
+                                    <h1 class="font-semibold text-lg font-mono line-clamp-2">{{ $item->name_product }}
+                                    </h1>
+                                    <h1 class="font-light text-sm font-mono truncate">{{ $item->name_brand }}</h1>
+                                    <p class="text-base font-mono truncate">Rp
                                         {{ number_format($item->price_product, 0, ',', '.') }}</p>
                                 </div>
                             </div>

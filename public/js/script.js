@@ -12,6 +12,8 @@ function closeModal(modalId) {
 
 function showMenu() {
   var dropMenu = document.getElementById('dropdownMenu');
+  var arrow = document.getElementById('arrow')
+  arrow.classList.toggle('-rotate-90')
   dropMenu.classList.toggle("hidden");        
 }
 

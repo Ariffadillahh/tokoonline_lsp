@@ -7,7 +7,9 @@
     }
 </style>
 @php
-    $products = \App\Models\Product::take(4)->get();
+    $products = \App\Models\Product::inRandomOrder()
+        ->take(4)
+        ->get();
     $brand = \App\Models\Brand::take(4)->get();
 @endphp
 
@@ -27,7 +29,7 @@
                 <p class="ml-1 text-[15px]"> Search by brand and name</p>
             </button>
         </div>
-        <div class="flex gap-5">
+        <div class="flex gap-3 md:gap-5">
             @auth
                 <button onclick="searchNav()" type="button" class="md:hidden">
                     <svg class="w-5 h-5  " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -36,12 +38,20 @@
                             d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                     </svg>
                 </button>
-                <a href="/orders/dikemas" class="hidden md:flex">
-                    <i class="fa-solid fa-box text-[25px] mt-2 text-primary"></i>
-                </a>
-                <a href="/favorite">
-                    <i class="fa-solid fa-heart text-[25px] mt-2 text-primary"></i>
-                </a>
+                <div class="relative group">
+                    <a href="/orders/dikemas" class="hidden md:flex ">
+                        <i class="fa-solid fa-box text-[25px] mt-2  text-primary"></i>
+                    </a>
+                    <span
+                        class="absolute -bottom-10 left-[50%] -translate-x-[50%] bg-black/50 text-white py-1 px-2 rounded opacity-0 group-hover:opacity-100">Orders</span>
+                </div>
+                <div class="relative group">
+                    <a href="/favorite">
+                        <i class="fa-solid fa-heart text-[25px] mt-2 text-primary"></i>
+                    </a>
+                    <span
+                        class="absolute -bottom-10 left-[50%] -translate-x-[50%] bg-black/50 text-white py-1 px-2 rounded opacity-0 group-hover:opacity-100">Favorite</span>
+                </div>
                 <button type="button" onclick="dropDown()">
                     @if (Auth::user()->image)
                         <img class="w-10 h-10 rounded-full" src="{{ asset('storage/image_user/' . Auth::user()->image) }}"
@@ -115,13 +125,13 @@
                     <button class="absolute inset-y-0 start-0 flex items-center ps-3">
                         <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                         </svg>
                     </button>
-                    <input type="search" id="slugInput" class="w-full p-4 pl-10 border-none focus:ring-0"
-                        name="q" autofocus autocomplete="off" placeholder="Search by brand and name..."
-                        required />
+                    <input type="search" id="slugInput"
+                        class="w-full p-4 pl-10 border-none focus:ring-0 focus:outline-none" name="q" autofocus
+                        autocomplete="off" placeholder="Search by brand and name..." required />
                 </div>
             </form>
             <div class="">
@@ -154,9 +164,7 @@
             <div class="my-3 grid grid-rows-2 grid-flow-col gap-4">
                 @foreach ($products as $item)
                     <a href="{{ route('search', ['q' => $item->name_product]) }}">
-                        <li class="cursor-pointer" id="suggestions-container">
-                            {{ $item->name_product }}
-                        </li>
+                        <p class="line-clamp-1 cursor-pointer"> {{ $item->name_product }}</p>
                     </a>
                 @endforeach
             </div>

@@ -135,7 +135,7 @@
                                 <label class="block mb-2 text-sm font-medium text-white" for="small_size">Foto
                                     Profile</label>
                                 <input
-                                    class="block w-full mb-3 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                    class="block w-full mb-3 text-xs border p-3 text-gray-900  border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                     id="small_size" type="file" name="image">
                             </div>
                             <div>

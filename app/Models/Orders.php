@@ -19,5 +19,6 @@ class Orders extends Model
         'date_orders',
         'total_harga',
         'size',
+        'harga_product'
     ];
 }

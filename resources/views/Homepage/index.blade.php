@@ -13,28 +13,49 @@
 <body>
     @include('./Components/navbar')
     <div class="md:my-10 mx-3 md:mx-5 lg:mx-10">
-        <div class=" mt-12">
+        <div class=" mt-8">
             <div class="">
                 <div>
-                    <h1 class="text-5xl font-bold">Box Office News!</h1>
-                    <p class="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi
-                        exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
-
+                    <h1
+                        class="text-xl md:text-2xl lg:text-4xl uppercase font-black bg-clip-text text-transparent bg-gradient-to-r from-primary to-pink-500">
+                        Step into Style, </h1>
+                    <h1
+                        class="text-xl md:text-2xl lg:text-4xl uppercase font-black bg-clip-text text-transparent bg-gradient-to-r from-primary to-pink-500">
+                        Stride with Confidence</h1>
                 </div>
+                <p
+                    class="text-xl md:text-2xl lg:text-4xl uppercase font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-pink-500">
+                    TokoGue, Where Every
+                    Shoe Tells a
+                    Story!</p>
             </div>
         </div>
-        <div class="">
-            <h1 class="text-3xl font-semibold mb-4">Sepatu Hypebeast BJIRR!!</h1>
-            <div class=" grid md:grid-cols-5 gap-5 grid-cols-2">
+        <div class="my-10">
+            <div class="grid lg:grid-cols-5 md:grid-cols-4 md:gap-5 gap-3 grid-cols-2">
                 @forelse ($product as $item)
                     <a href="{{ route('detail', $item->id_product) }}">
-                        <div class="hover:text-[#969D43] hover:scale-105 duration-100 hover:transform hover:shadow-xl hover:rounded-md hover:cursor-pointer">
-                            <div class="overflow-hidden ">
-                                <img src={{asset('storage/product_images/' . $item->image_product)}} alt="{{$item->name_product}}" class="w-full   ">
-                            </div>
-                            <div class="p-4">
-                                <h1 class="font-semibold text-lg font-mono ">{{$item->name_product}}</h1>
-                                <p class="text-base font-mono ">Rp {{number_format($item->price_product,0,',','.')}}</p>
+                        <div class="w-full bg-white rounded-md shadow-md overflow-hidden border group">
+                            <div class="p-3">
+                                <div
+                                    class="relative md:min-h-[250px] flex justify-center items-center overflow-hidden  rounded-md">
+                                    <img src={{ asset('storage/product_images/' . $item->image_product) }}
+                                        alt="{{ $item->name_product }}"
+                                        class="w-full object-cover transition-all duration-300 group-hover:scale-110 ">
+                                    @if ($item->stock_product == 0)
+                                        <div class="absolute top-1 left-2">
+                                            <span
+                                                class="bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300 uppercase">Sold
+                                                Out</span>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="md:p-2 mt-2">
+                                    <h1 class="font-semibold text-base md:text-xl font-mono line-clamp-2 ">
+                                        {{ $item->name_product }}</h1>
+                                    <p class="md:text-lg text-sm font-mono truncate md:mt-3 mt-1.5">Rp
+                                        {{ number_format($item->price_product, 0, ',', '.') }}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </a>

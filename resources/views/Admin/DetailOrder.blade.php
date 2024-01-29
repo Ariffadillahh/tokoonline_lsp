@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <title>TokoGue - Detail Pembelian</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body>
     <div class="md:flex">
         @include('./Components/sidebar')
@@ -69,91 +71,99 @@
                     </li>
                 </ol>
             </nav>
-           <div>
-            
-            <div class="flex gap-5 w-full  p-3">
-                <div>
-                    <img src={{ asset('storage/product_images/' . $item->image_product) }} alt="{{ $item->name_product }}"
-                        class="w-[100px]">
-                </div>
-    
-                <div class="w-full">
-                    <div class="flex justify-between ">
-                        <h1 class="font-mono  text-base">{{ $item->name_product }}</h1>
-                        <h1 class="font-mono  text-base mt-1 uppercase text-primary">
-                            {{ $item->status_orders }}</h1>
-                    </div>
-                    <p>{{ $item->name_brand }}</p>
-                    <p>Size : {{ $item->size }}</p>
-    
-                </div>
-            </div>
-            <div class="md:flex justify-between">
-                <div class="flex ">
-                    <p class="font-mono text-lg md:text-xl mt-1 mr-3">Rp
-                        {{ number_format($item->price_product, '0', ',', '.') }}</p>
-                    <p class="font-mono text-lg md:text-xl mt-1">x{{ $item->qty_orders }}</p>
-                </div>
-                <p class="font-mono text-lg md:text-xl ">Total : Rp
-                    {{ number_format($item->total_harga, '0', ',', '.') }}</p>
-            </div>
-            <div class="mt-3 font-mono ">
-                <div class="">
-                    <div class="md:flex justify-between">
-                        <div>
-                            <p>Metode Pembayaran : <span class="uppercase">{{ $item->metode_pembayaran }}</span></p>
-                            <p>Tanggal Orders : <span class="uppercase">{{ $item->date_orders }}</span></p>
-                        </div>
-                        @if ($item->status_orders != 'dikemas')
+            <div>
+
+                <div class="flex gap-5 w-full  p-3">
                     <div>
-                        <p>Jasa Pengiriman : <span class="uppercase">{{ $item->jasa_antar }}</span></p>
-                        <p>No Resi : <span class="uppercase">{{ $item->no_resi }}</span></p>
-                        </div>
-                        @else
+                        <img src={{ asset('storage/product_images/' . $item->image_product) }}
+                            alt="{{ $item->name_product }}" class="w-[100px]">
                     </div>
-                   
-                    <form action={{route('updateOrder')}} method="post" >
-                        @csrf
-                        <div class="flex gap-2">
-                            <p class="text-lg">No Resi :</p>
-                            <input class="input input-bordered input-sm " type="text" name="noResi" placeholder="NO RESI" required>
+
+                    <div class="w-full">
+                        <div class="flex justify-between ">
+                            <h1 class="font-mono  text-base">{{ $item->name_product }}</h1>
+                            <h1 class="font-mono  text-base mt-1 uppercase text-primary">
+                                {{ $item->status_orders }}</h1>
                         </div>
-                        <input type="hidden" name="id" value="{{$item->id_orders}}">
-                        <div class="flex gap-2 mt-2">
-                            <p class="text-lg">Jasa Pengiriman : </span></p>
-                            <select class="p-1 rounded-md " name="jasa" id="">
-                                <option value="jne">JNE</option>
-                                <option value="j&t">J&T</option>
-                                <option value="anteraja">ANTERAJA</option>
-                            </select>
+                        <p>{{ $item->name_brand }}</p>
+                        <p>Size : {{ $item->size }}</p>
+
+                    </div>
+                </div>
+                <div class="md:flex justify-between">
+                    <div class="flex ">
+                        <p class="font-mono text-lg md:text-xl mt-1 mr-3">Rp
+                            {{ number_format($item->harga_product, '0', ',', '.') }}</p>
+                        <p class="font-mono text-lg md:text-xl mt-1">x{{ $item->qty_orders }}</p>
+                    </div>
+                    <p class="font-mono text-lg md:text-xl ">Total : Rp
+                        {{ number_format($item->total_harga, '0', ',', '.') }}</p>
+                </div>
+                <div class="mt-3 font-mono ">
+                    <div class="">
+                        <div class="md:flex justify-between">
+                            <div>
+                                <p>Metode Pembayaran : <span class="uppercase">{{ $item->metode_pembayaran }}</span>
+                                </p>
+                                <p>Tanggal Orders : <span class="uppercase">{{ $item->date_orders }}</span></p>
+                                @if ($item->waktu_nerimapesanan)
+                                    <p>Tanggal Terima Pesanan : <span
+                                            class="uppercase">{{ $item->waktu_nerimapesanan }}</span>
+                                    </p>
+                                @endif
+                            </div>
+                            @if ($item->status_orders != 'dikemas')
+                                <div>
+                                    <p>Jasa Pengiriman : <span class="uppercase">{{ $item->jasa_antar }}</span></p>
+                                    <p>No Resi : <span class="uppercase">{{ $item->no_resi }}</span></p>
+                                </div>
+                            @else
                         </div>
-                        <div class="flex gap-2 mt-2">
-                            <p class="text-lg">Status Ordered :</p>
-                            <select class="p-1 rounded-md " name="status" id="">
-                                <option value="dikemas">Dikimas</option>
-                                <option value="diantar">Diantar</option>
-                               
-                            </select>
-                        </div>
-                        <button class="btn btn-secondary">Update</button>
-                    </form>
-                    @endif
-                    
+
+                        <form action={{ route('updateOrder') }} method="post">
+                            @csrf
+                            <div class="flex gap-2">
+                                <p class="text-lg">No Resi :</p>
+                                <input class="input input-bordered input-sm " type="text" name="noResi"
+                                    placeholder="NO RESI" required autocomplete="off">
+                            </div>
+                            <input type="hidden" name="id" value="{{ $item->id_orders }}">
+                            <div class="flex gap-2 mt-2">
+                                <p class="text-lg">Jasa Pengiriman : </span></p>
+                                <select class="p-1 rounded-md border" name="jasa" id="">
+                                    <option value="jne">JNE</option>
+                                    <option value="j&t">J&T</option>
+                                    <option value="anteraja">ANTERAJA</option>
+                                </select>
+                            </div>
+                            <div class="flex gap-2 mt-2">
+                                <p class="text-lg">Status Ordered :</p>
+                                <select class="p-1 rounded-md border" name="status" id="">
+                                    <option value="dikemas" selected>DIKEMAS</option>
+                                    <option value="diantar">DIANTAR</option>
+
+                                </select>
+                            </div>
+                            <button class="btn btn-secondary">Update</button>
+                        </form>
+                        @endif
+
+                    </div>
+                </div>
+                <div class=" py-4">
+                    <div class="border w-full rounded shadow-md border-primary p-3">
+                        <h1 class="font-mono text-xl">{{ $item->name_penerima }}</h1>
+                        <p class="font-mono">No hp : {{ $item->no_hp }}</p>
+                        <p class="font-mono">Provinsi : {{ $item->name_provinsi }}</p>
+                        <p class="font-mono">Kota : {{ $item->name_kota }}</p>
+                        <p class="font-mono">Kecamatan : {{ $item->name_kecamatan }}</p>
+                        <p class="font-mono">Kelurahan : {{ $item->name_kelurahan }}</p>
+                        <p class="font-mono"> Alamat Detail : {{ $item->alamat_detail }}</p>
+                    </div>
                 </div>
             </div>
-            <div class=" py-4">
-                <div class="border w-full rounded shadow-md border-primary p-3">
-                    <h1 class="font-mono text-xl">{{ $item->name_penerima }}</h1>
-                    <p class="font-mono">No hp : {{ $item->no_hp }}</p>
-                    <p class="font-mono">Provinsi : {{ $item->name_provinsi }}</p>
-                    <p class="font-mono">Kota : {{ $item->name_kota }}</p>
-                    <p class="font-mono">Kecamatan : {{ $item->name_kecamatan }}</p>
-                    <p class="font-mono">Kelurahan : {{ $item->name_kelurahan }}</p>
-                    <p  class="font-mono" > Alamat Detail : {{ $item->alamat_detail}}</p>
-                </div>
-            </div>
-           </div>
         </div>
     </div>
 </body>
+
 </html>

@@ -46,7 +46,8 @@ class LoginController extends Controller
      */
     public function dashboard()
     {   
-        $chart = chart_size::all();
+        $chart = chart_size::orderBy('uk_chart')->get();
+
         return view('Admin.dashboard', [
             'chart' => $chart
         ]);
@@ -86,7 +87,7 @@ class LoginController extends Controller
     public function show(request $request)
     {
 
-        $product = Product::orderBy("id_product", "DESC")->get();
+        $product = Product::inRandomOrder()->take(20)->get();
 
         return view(
             "Homepage.index",

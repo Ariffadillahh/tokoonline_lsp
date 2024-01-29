@@ -64,7 +64,7 @@
                 <label class="block  text-sm font-medium text-gray-900 dark:text-white" for="file_input">Foto
                     Profile</label>
                 <input
-                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 "
+                    class="block w-full text-sm text-gray-900 p-2 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 "
                     id="file_input" type="file" name="image">
                 <div>
                     <button type="submit"

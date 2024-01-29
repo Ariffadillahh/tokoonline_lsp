@@ -135,7 +135,7 @@
                                                                 <form action={{ route('editBrand') }} method="post">
                                                                     @csrf
                                                                     <input type="text" name="name_brand"
-                                                                        class="w-full rounded"
+                                                                        class="w-full rounded border p-3"
                                                                         value="{{ $item->name_brand }}">
                                                                     <input type="hidden" name="id"
                                                                         value="{{ $item->id_brand }}">
@@ -241,7 +241,7 @@
                             <div class="p-4 md:p-5 space-y-4">
                                 <form action={{ route('addBrand') }} method="post">
                                     @csrf
-                                    <input type="text" name="name_brand" class="w-full rounded"
+                                    <input type="text" name="name_brand" class="w-full rounded p-3 border"
                                         placeholder="Nama Brand">
                                     <button class="btn btn-primary w-full my-4">Tambah</button>
                                 </form>

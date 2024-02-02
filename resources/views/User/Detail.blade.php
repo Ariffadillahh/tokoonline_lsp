@@ -107,7 +107,7 @@
                         <form action={{ route('buy') }} method="post">
                             @csrf
                             <div class="flex gap-4 py-2 overflow-x-auto size">
-                                @if ($product->product_status == 'sold')
+                                @if ($product->product_status == 'sold' || (Auth()->user()->level == 'admin' || Auth()->user()->level == 'superadmin'))
                                     @foreach ($size as $item)
                                         <div>
                                             <input type="radio" name="size" value="{{ $item->uk_size }}"
@@ -243,38 +243,43 @@
                             </div>
                         </form>
                         <div class="flex gap-3 my-5">
-                            @if ($product->stock_product == 0)
-                                <div class="btn md:w-[90%]  w-3/4">
-                                    Sold Out</div>
+                            @if (Auth()->user()->level == 'admin' || Auth()->user()->level == 'superadmin')
                             @else
-                                <div onclick="openModal('modal')" id="submitButton"
-                                    class="btn pointer-events-none md:w-[90%]  duration-150 w-3/4">
-                                    Pilih size</div>
-                            @endif
-                            @if (empty($pav))
-                                <form action={{ route('addPav') }} method="post" class="md:w-[10%] w-1/4">
-                                    @csrf
-                                    <input type="hidden" name="id_product" value="{{ $product->id_product }}">
-                                    <button type="submit"
-                                        class="btn  text-red-600 btn-outline hover:bg-red-600 hover:border-white w-full"><i
-                                            class="fa-sharp fa-regular fa-heart text-lg"></i></button>
-                                </form>
-                            @else
-                                <form action={{ route('unPav') }} method="post" class="md:w-[10%] w-1/4">
-                                    @csrf
-                                    <input type="hidden" name="idPav" value="{{ $pav->id_pavpro }}">
-                                    <button data-tooltip-target="tooltip-light" data-tooltip-style="light"
-                                        type="submit"
-                                        class="btn  text-red-600 btn-outline hover:bg-red-600 hover:border-white w-full"><i
-                                            class="fa-solid fa-heart text-lg"></i>
-                                    </button>
-                                    <div id="tooltip-light" role="tooltip"
-                                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 tooltip">
-                                        Hapus Favorite
-                                        <div class="tooltip-arrow" data-popper-arrow></div>
-                                    </div>
+                                @if ($product->stock_product == 0)
+                                    <div class="btn md:w-[90%]  w-3/4">
+                                        Sold Out</div>
+                                @else
+                                    <div onclick="openModal('modal')" id="submitButton"
+                                        class="btn pointer-events-none md:w-[90%]  duration-150 w-3/4">
+                                        Pilih size</div>
+                                @endif
+                                @if (empty($pav))
+                                    <form action={{ route('addPav') }} method="post" class="md:w-[10%] w-1/4">
+                                        @csrf
+                                        <input type="hidden" name="id_product" value="{{ $product->id_product }}">
+                                        <button type="submit"
+                                            class="btn  text-red-600 btn-outline hover:bg-red-600 hover:border-white w-full"><i
+                                                class="fa-sharp fa-regular fa-heart text-lg"></i></button>
+                                    </form>
+                                @else
+                                    <form action={{ route('unPav') }} method="post" class="md:w-[10%] w-1/4">
+                                        @csrf
+                                        <input type="hidden" name="idPav" value="{{ $pav->id_pavpro }}">
+                                        <button data-tooltip-target="tooltip-light" data-tooltip-style="light"
+                                            type="submit"
+                                            class="btn  text-red-600 btn-outline hover:bg-red-600 hover:border-white w-full"><i
+                                                class="fa-solid fa-heart text-lg"></i>
+                                        </button>
+                                        <div id="tooltip-light" role="tooltip"
+                                            class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 tooltip">
+                                            Hapus Favorite
+                                            <div class="tooltip-arrow" data-popper-arrow></div>
+                                        </div>
 
-                                </form>
+                                    </form>
+                                @endif
+
+
                             @endif
                         </div>
                         <div>

@@ -38,6 +38,7 @@ Route::post('/logout', [LoginController::class, 'destroy'])
     ->name('logout')
     ->middleware('auth');
 Route::get('/', [LoginController::class, 'show'])->name('homepage');
+Route::get('/search', [OrdersController::class, 'search'])->name('search');
 
 Route::middleware('auth')->group(function () {
     Route::get('/product/detail/{id}', [ProductController::class, 'show'])->name('detail');
@@ -54,7 +55,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/selesai', [OrdersController::class, 'selesai'])->name('ordersSelesai');
     Route::get('/orders/selesai/detail/{id}', [OrdersController::class, 'detail'])->name('orderdetail');
     Route::post('/orders/selesai', [OrdersController::class, 'edit'])->name('finishorder');
-    Route::get('/search', [OrdersController::class, 'search'])->name('search');
     Route::post('/rate', [RatingController::class, 'store'])->name('addRating');
     Route::get('/settings', [LoginController::class, 'settings'])->name('settings');
     Route::post('/settings/generl', [UserControllers::class, 'settingsGen'])->name('settingsGen');

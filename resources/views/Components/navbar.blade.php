@@ -1,5 +1,4 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script> --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
     .brand::-webkit-scrollbar {
@@ -11,13 +10,18 @@
         ->take(4)
         ->get();
     $brand = \App\Models\Brand::take(4)->get();
+    if (Auth()->check() && Auth()->user()->level == 'user') {
+        $fav = \App\Models\PavProduct::where('id_user', Auth()->user()->id)->get();
+    } else {
+        $fav = null; // Set $fav to null or handle it accordingly for non-authenticated users or non-admin/superadmin users
+    }
 @endphp
 
 <nav class="px-3 md:px-14 shadow-sm  w-full bg-white duration-300 transition-all z-10 " id="navbar">
     <div class="flex justify-between py-4 ">
         <div class="flex gap-5">
             <a href="/">
-                <img class="w-10 h-10 " src="{{ asset('storage/images/logo.png') }}" alt="logo">
+                <img class="w-10 h-10 " src="{{ asset('storage/images/logo.png') }}" alt="TokoGue">
             </a>
             <button type="button" onclick="searchNav()"
                 class="text-lg font-light text-gray-400 mt-2 border-l border-b pl-2 rounded-bl-xl hidden md:flex">
@@ -38,20 +42,39 @@
                             d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                     </svg>
                 </button>
-                <div class="relative group">
-                    <a href="/orders/dikemas" class="hidden md:flex ">
-                        <i class="fa-solid fa-box text-[25px] mt-2  text-primary"></i>
-                    </a>
-                    <span
-                        class="absolute -bottom-10 left-[50%] -translate-x-[50%] bg-black/50 text-white py-1 px-2 rounded opacity-0 group-hover:opacity-100">Orders</span>
-                </div>
-                <div class="relative group">
-                    <a href="/favorite">
-                        <i class="fa-solid fa-heart text-[25px] mt-2 text-primary"></i>
-                    </a>
-                    <span
-                        class="absolute -bottom-10 left-[50%] -translate-x-[50%] bg-black/50 text-white py-1 px-2 rounded opacity-0 group-hover:opacity-100">Favorite</span>
-                </div>
+                @if (Auth()->user()->level == 'admin' || Auth()->user()->level == 'superadmin')
+                @else
+                    <div class="relative group">
+                        <a href="/orders/dikemas" class="hidden md:flex ">
+                            <i class="fa-solid fa-box text-[25px] mt-2  text-primary"></i>
+                        </a>
+                        <span
+                            class="absolute -bottom-10 left-[50%] -translate-x-[50%] bg-black/50 text-white py-1 px-2 rounded opacity-0 group-hover:opacity-100">Orders</span>
+                    </div>
+                    <div class="relative group">
+                        @if (count($fav) == 0)
+                            <a href="/favorite">
+                                <div class="">
+                                    <i class="fa-solid fa-heart text-[25px] mt-2 text-primary"></i>
+
+                                </div>
+                            </a>
+                        @else
+                            <a href="/favorite">
+                                <div class="relative">
+                                    <i class="fa-solid fa-heart text-[25px] mt-2 text-primary"></i>
+                                    <div class="absolute -right-2 top-1  bg-red-600 rounded-full px-1.5 text-white">
+                                        <p class="text-sm">{{ count($fav) }}</p>
+                                    </div>
+                                </div>
+                            </a>
+                        @endif
+
+                        <span
+                            class="absolute -bottom-10 left-[50%] -translate-x-[50%] bg-black/50 text-white py-1 px-2 rounded opacity-0 group-hover:opacity-100">Favorite</span>
+                    </div>
+                @endif
+
                 <button type="button" onclick="dropDown()">
                     @if (Auth::user()->image)
                         <img class="w-10 h-10 rounded-full" src="{{ asset('storage/image_user/' . Auth::user()->image) }}"
@@ -64,22 +87,27 @@
                 <div class="absolute top-14 right-5 hidden z-10" id="dropDownMenu">
                     <div class="bg-white rounded-md drop-shadow-md w-[150px]">
                         <ul class="py-2 text-sm text-gray-700 ">
-                            <li>
-                                <a href="/"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Homepage</a>
-                            </li>
-                            <li>
-                                <a href="/alamat"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Alamat</a>
-                            </li>
-                            <li class="md:hidden">
-                                <a href="/orders/dikemas"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Orders</a>
-                            </li>
-                            <li>
-                                <a href="/settings"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-                            </li>
+                            @if (Auth()->user()->level == 'admin' || Auth()->user()->level == 'superadmin')
+                                <li>
+                                    <a href="/dashboard"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+                                </li>
+                            @endif
+
+                            @if (Auth()->user()->level == 'user')
+                                <li>
+                                    <a href="/alamat"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Alamat</a>
+                                </li>
+                                <li class="md:hidden">
+                                    <a href="/orders/dikemas"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Orders</a>
+                                </li>
+                                <li>
+                                    <a href="/settings"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+                                </li>
+                            @endif
                             <li>
                                 <form action={{ route('logout') }} method="post"
                                     class="block px-4 py-2 hover:bg-gray-100 ">
@@ -176,8 +204,8 @@
 
 <script>
     let prevScrollpos = window.pageYOffset;
-    let navbar = document.getElementById("navbar");
     let dropDownMenu = document.getElementById("dropDownMenu");
+    let navbar = document.getElementById("navbar");
 
     window.onscroll = function() {
         let currentScrollPos = window.pageYOffset;

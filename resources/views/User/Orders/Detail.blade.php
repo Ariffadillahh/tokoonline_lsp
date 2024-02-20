@@ -17,10 +17,19 @@
     @if (session('success'))
         <div id="alert" class="" role="alert">
             <div class="fixed top-0 w-full h-full bg-black/20">
-                <button onclick="closeAlert()"
-                    class="absolute top-[17%] text-white bg-red-900 rounded-full py-2 px-4 right-[38%] z-10">X</button>
-                <div class="flex justify-center items-center h-full">
-                    <img src="{{ asset('storage/gif/tq.gif') }}">
+                <div onclick="closeAlert()"
+                    class='absolute md:bottom-[15%] bottom-[10%] text-white py-2 px-4 md:right-[48%] right-[43%] z-10 button w-16 h-16 bg-blue-500 rounded-full cursor-pointer select-none
+                    active:translate-y-2  active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]
+                    active:border-b-[0px]
+                    transition-all duration-150 [box-shadow:0_8px_0_0_#1b6ff8,0_13px_0_0_#1b70f841]
+                    border-[1px] border-blue-400
+'>
+                    <span class='flex flex-col justify-center items-center h-full text-white font-bold text-lg '><i
+                            class="fa-solid fa-xmark"></i></span>
+                </div>
+
+                <div class="flex justify-center items-center h-full p-3">
+                    <img src="{{ asset('storage/images/maaci.jpg') }}" class="md:w-1/4 rounded-md">
                 </div>
             </div>
         </div>
@@ -138,11 +147,11 @@
 
                         @switch($item->start_rate)
                             @case(1)
-                                <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">Sangat Buruk!</h3>
+                                <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">So Bad!!!</h3>
                             @break
 
                             @case(2)
-                                <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">Buruk</h3>
+                                <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">Bad!!</h3>
                             @break
 
                             @case(3)
@@ -150,7 +159,7 @@
                             @break
 
                             @case(4)
-                                <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">SoGoog</h3>
+                                <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">So Good</h3>
                             @break
 
                             @case(5)

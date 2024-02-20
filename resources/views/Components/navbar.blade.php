@@ -6,9 +6,7 @@
     }
 </style>
 @php
-    $products = \App\Models\Product::inRandomOrder()
-        ->take(4)
-        ->get();
+    $products = \App\Models\Product::inRandomOrder()->take(4)->get();
     $brand = \App\Models\Brand::take(4)->get();
     if (Auth()->check() && Auth()->user()->level == 'user') {
         $fav = \App\Models\PavProduct::where('id_user', Auth()->user()->id)->get();
@@ -49,7 +47,7 @@
                             <i class="fa-solid fa-box text-[25px] mt-2  text-primary"></i>
                         </a>
                         <span
-                            class="absolute -bottom-10 left-[50%] -translate-x-[50%] bg-black/50 text-white py-1 px-2 rounded opacity-0 group-hover:opacity-100">Orders</span>
+                            class="absolute -bottom-10 left-[50%] -translate-x-[50%] bg-black/50 text-white py-1 px-2 rounded hidden group-hover:flex">Orders</span>
                     </div>
                     <div class="relative group">
                         @if (count($fav) == 0)
@@ -61,7 +59,7 @@
                             </a>
                         @else
                             <a href="/favorite">
-                                <div class="relative">
+                                <div class="relative ">
                                     <i class="fa-solid fa-heart text-[25px] mt-2 text-primary"></i>
                                     <div class="absolute -right-2 top-1  bg-red-600 rounded-full px-1.5 text-white">
                                         <p class="text-sm">{{ count($fav) }}</p>
@@ -71,7 +69,7 @@
                         @endif
 
                         <span
-                            class="absolute -bottom-10 left-[50%] -translate-x-[50%] bg-black/50 text-white py-1 px-2 rounded opacity-0 group-hover:opacity-100">Favorite</span>
+                            class="absolute -bottom-10 left-[50%] -translate-x-[50%] bg-black/50 text-white py-1 px-2 rounded hidden group-hover:flex">Favorite</span>
                     </div>
                 @endif
 

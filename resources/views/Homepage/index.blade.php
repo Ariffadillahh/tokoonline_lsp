@@ -70,6 +70,8 @@
 
     </div>
     @include('./Components/footer')
+
+
 </body>
 
 </html>

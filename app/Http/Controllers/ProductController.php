@@ -7,6 +7,7 @@ use App\Models\Brand;
 use App\Models\chart_size;
 use App\Models\pavProduct;
 use App\Models\Product;
+use App\Models\Rating;
 use App\Models\SizeProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -161,15 +162,27 @@ class ProductController extends Controller
         ->join('users', 'ratings.id_user', '=', 'users.id' )
         ->select('orders.*', 'ratings.*', 'users.*')
         ->where('orders.id_product', '=', $id)
-        ->where('ratings.status_rate','=', 'yes')->get()->take(5);
+        ->where('ratings.status_rate','=', 'yes')->orderBy('ratings.waktu_rate', 'desc')->limit(5)->get();
 
+        $countRate = DB::table('ratings')
+        ->join('orders', 'ratings.id_orders', '=', 'orders.id_orders')
+        ->where('orders.id_product', '=', $id)
+        ->sum('ratings.start_rate');
+        $totalPembeli = count($rate);
+
+        $totalRate = 0; // Default total rate
+        if ($totalPembeli > 0) {
+            $totalRate = $countRate / $totalPembeli;
+        }
+        $formattedTotalRate = number_format($totalRate, 2);
         return view('User.Detail', [
             'product' => $product,
             'size' => $size,
             'sameProduct' => $Similiar,
             'pav' => $cek,
             'alamat' => $alamat,
-            'rate' => $rate
+            'rate' => $rate,
+            'totalRate' => $formattedTotalRate
         ]);
     }
 

@@ -12,7 +12,7 @@ class diskon extends Model
     protected $fillable = [
         'id_product',
         'persen_diskon',
-        'total_harga',
+        'total_harga_diskon',
         'tanggal_berlaku',
         'status',
     ];

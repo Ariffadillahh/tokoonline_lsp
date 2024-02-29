@@ -145,7 +145,7 @@ class ProductController extends Controller
     {
         $product = Product::where('id_product', $id)->first();
         $pro = Product::leftJoin('diskons', 'products.id_product', '=', 'diskons.id_product')
-            ->select('products.*', 'diskons.total_harga', 'diskons.persen_diskon', 'diskons.tanggal_berlaku', 'diskons.id_diskon')
+            ->select('products.*', 'diskons.total_harga_diskon', 'diskons.persen_diskon', 'diskons.tanggal_berlaku', 'diskons.id_diskon')
             ->where('products.id_product', $id)
             ->where('diskons.status', 'active')
             ->first();
@@ -161,8 +161,18 @@ class ProductController extends Controller
             ->where('id_user', auth()->user()->id)
             ->first();
 
-        $Similiar = Product::where('name_brand', $product->name_brand)
-            ->where('id_product', '!=', $id)
+        // $Similiar = Product::where('name_brand', $product->name_brand)
+        //     ->where('id_product', '!=', $id)
+        //     ->inRandomOrder()
+        //     ->take(5)
+        //     ->get();
+        $Similiar = Product::leftJoin('diskons', function ($join) {
+            $join->on('products.id_product', '=', 'diskons.id_product')
+                ->where('diskons.status', 'active');
+        })
+            ->select('products.*', 'diskons.total_harga_diskon', 'diskons.persen_diskon')
+            ->where('name_brand', $product->name_brand)
+            ->where('products.id_product', '!=', $id)
             ->inRandomOrder()
             ->take(5)
             ->get();

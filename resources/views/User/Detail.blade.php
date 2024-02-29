@@ -103,7 +103,7 @@
                         $selisih = \Carbon\Carbon::parse($tanggalTentukan)->diffForHumans($waktuSekarang);
 
                     @endphp
-                    @if ($product->total_harga !== null && $product->persen_diskon !== null)
+                    @if ($product->total_harga_diskon !== null && $product->persen_diskon !== null)
                         <div class="absolute left-0 top-4">
                             <span
                                 class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  uppercase">Diskon
@@ -126,14 +126,14 @@
                     <h1 class="text-lg md:text-xl lg:text-3xl font-mono">{{ $product->name_product }}</h1>
                     <h1 class="font-mono md:text-lg">{{ $product->name_brand }}</h1>
 
-                    @if ($product->total_harga !== null && $product->persen_diskon !== null)
+                    @if ($product->total_harga_diskon !== null && $product->persen_diskon !== null)
                         <div class="">
                             <p class="text-sm font-mono truncate md:mt-3 mt-1.5 line-through text-red-500">
                                 Rp
                                 {{ number_format($product->price_product, 0, ',', '.') }}
                             </p>
                             <p class="text-base md:text-lg lg:text-xl my-2 font-mono">
-                                Rp. {{ number_format($product->total_harga, 0, ',', '.') }}
+                                Rp. {{ number_format($product->total_harga_diskon, 0, ',', '.') }}
                             </p>
 
                         </div>
@@ -241,7 +241,7 @@
                                                 <input type="hidden" name="id_product"
                                                     value="{{ $product->id_product }}">
                                                 <input type="hidden" name="price"
-                                                    value="{{ $product->total_harga !== null && $product->persen_diskon !== null ? $product->total_harga : $product->price_product }}">
+                                                    value="{{ $product->total_harga_diskon !== null && $product->persen_diskon !== null ? $product->total_harga_diskon : $product->price_product }}">
 
                                                 <input type="hidden" name="pembayaran" value="cod">
 
@@ -467,19 +467,42 @@
                                     <img src={{ asset('storage/product_images/' . $item->image_product) }}
                                         alt="{{ $item->name_product }}" class="w-full   ">
                                     @if ($item->stock_product == 0)
-                                        <div class="absolute top-1 left-2 ">
+                                        <div class="absolute top-1 right-2 ">
                                             <span
                                                 class="bg-pink-100 ml-1 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300 uppercase">Sold
                                                 Out</span>
                                         </div>
                                     @endif
+                                    @if ($item->total_harga_diskon !== null && $item->persen_diskon !== null)
+                                        <div class="absolute top-1 left-2">
+                                            <span
+                                                class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  uppercase">Diskon
+                                                {{ $item->persen_diskon }}%</span>
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="p-4">
-                                    <h1 class="font-semibold text-lg font-mono line-clamp-2">{{ $item->name_product }}
+                                    <h1 class="font-semibold text-lg font-mono line-clamp-2 ">
+                                        {{ $item->name_product }}</h1>
+                                    <h1 class="font-light text-sm font-mono truncate my-1">{{ $item->name_brand }}
                                     </h1>
-                                    <h1 class="font-light text-sm font-mono truncate">{{ $item->name_brand }}</h1>
-                                    <p class="text-base font-mono truncate">Rp
-                                        {{ number_format($item->price_product, 0, ',', '.') }}</p>
+                                    @if ($item->total_harga_diskon !== null && $item->persen_diskon !== null)
+                                        <div class="">
+                                            <p
+                                                class="text-sm font-mono truncate md:mt-3 mt-1.5 line-through text-red-500">
+                                                Rp
+                                                {{ number_format($item->price_product, 0, ',', '.') }}
+                                            </p>
+                                            <p class="text-base font-mono truncate">
+                                                Rp. {{ number_format($item->total_harga_diskon, 0, ',', '.') }}
+                                            </p>
+                                        </div>
+                                    @else
+                                        <p class="text-base font-mono truncate">Rp
+                                            {{ number_format($item->price_product ?? 0, 0, ',', '.') }}
+                                        </p>
+                                    @endif
+
                                 </div>
                             </div>
                         </a>

@@ -79,12 +79,16 @@ class OrdersController extends Controller
     {
 
         $query = $request->input('q');
-        $product = Product::orderBy('id_product', 'DESC')
+        $pro = Product::leftJoin('diskons', function ($join) {
+            $join->on('products.id_product', '=', 'diskons.id_product')
+                ->where('diskons.status', 'active');
+        })
+            ->select('products.*', 'diskons.total_harga_diskon', 'diskons.persen_diskon')
             ->where('name_product', 'like', '%' . $query . '%')
-            ->orWhere('name_brand', 'like', '%' . $query . '%')->get();
+            ->orWhere('name_brand', 'like', '%' . $query . '%')->orderBy('id_product', 'DESC')->get();
 
         return view('User.Search', [
-            'product' => $product,
+            'product' => $pro,
             'q' => $query
         ]);
     }
@@ -197,13 +201,23 @@ class OrdersController extends Controller
     public function detail(Orders $orders, $id)
     {
         $orders = DB::table('orders')
-            ->join('products', 'orders.id_product', '=', 'products.id_product')
-            ->join('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat')
-            ->join('ratings', 'ratings.id_orders', '=', 'orders.id_orders')
-            ->select('orders.*', 'products.*', 'alamats.*', 'ratings.*')
+            ->leftJoin('products', 'orders.id_product', '=', 'products.id_product')
+            ->leftJoin('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat')
+            ->leftJoin('diskons', 'products.id_product', '=', 'diskons.id_product')
+            ->leftJoin('ratings', 'ratings.id_orders', '=', 'orders.id_orders')
+            ->select('orders.*', 'products.*', 'alamats.*', 'ratings.*', 'diskons.total_harga_diskon', 'diskons.persen_diskon', 'diskons.tanggal_berlaku', 'diskons.id_diskon')
             ->where('orders.id_user', '=', auth()->user()->id)
             ->where('orders.id_orders', '=', $id)->first();
 
+        if ($orders === null) {
+            $orders = DB::table('orders')
+                ->join('products', 'orders.id_product', '=', 'products.id_product')
+                ->join('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat')
+                ->join('ratings', 'ratings.id_orders', '=', 'orders.id_orders')
+                ->select('orders.*', 'products.*', 'alamats.*', 'ratings.*')
+                ->where('orders.id_user', '=', auth()->user()->id)
+                ->where('orders.id_orders', '=', $id)->first();
+        }
 
         return view('User.Orders.Detail', [
             'item' => $orders

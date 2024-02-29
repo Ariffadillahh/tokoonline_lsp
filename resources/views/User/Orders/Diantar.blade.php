@@ -15,25 +15,26 @@
 <body>
     @include('../../Components/navbar')
     @if (session('success'))
-        <div id="alert" class="" role="alert">
-            <div class="fixed top-0 w-full h-full bg-black/20">
-                <div onclick="closeAlert()"
-                    class='absolute md:bottom-[15%] bottom-[10%] text-white py-2 px-4 md:right-[48%] right-[43%] z-10 button w-16 h-16 bg-blue-500 rounded-full cursor-pointer select-none
-                        active:translate-y-2  active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]
-                        active:border-b-[0px]
-                        transition-all duration-150 [box-shadow:0_8px_0_0_#1b6ff8,0_13px_0_0_#1b70f841]
-                        border-[1px] border-blue-400
-  '>
-                    <span class='flex flex-col justify-center items-center h-full text-white font-bold text-lg '><i
-                            class="fa-solid fa-xmark"></i></span>
-                </div>
+    <div id="alert" class="" role="alert">
+        <div class="fixed top-0 w-full h-full bg-black/20">
+            <div onclick="closeAlert()"
+                class='absolute md:bottom-[15%] bottom-[10%] text-white py-2 px-4 md:right-[48%] right-[43%] z-10 button w-16 h-16 bg-blue-500 rounded-full cursor-pointer select-none
+                    active:translate-y-2  active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]
+                    active:border-b-[0px]
+                    transition-all duration-150 [box-shadow:0_8px_0_0_#1b6ff8,0_13px_0_0_#1b70f841]
+                    border-[1px] border-blue-400
+'>
+                <span class='flex flex-col justify-center items-center h-full text-white font-bold text-lg '><i
+                        class="fa-solid fa-xmark"></i></span>
+            </div>
 
-                <div class="flex justify-center items-center h-full p-3">
-                    <img src="{{ asset('storage/images/maaci.jpg') }}" class="md:w-1/4 rounded-md">
-                </div>
+            <div class="flex justify-center items-center h-full p-3">
+                <img src="{{ asset('storage/images/maaci.png') }}" class="md:w-1/4 rounded-md">
             </div>
         </div>
+    </div>
     @endif
+   
 
     <div class="md:mx-14 mx-3 my-5">
         <ul class="flex text-sm font-medium text-center text-gray-500 rounded-lg shadow">

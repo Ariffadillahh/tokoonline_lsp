@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 29 Feb 2024 pada 09.10
--- Versi server: 10.4.27-MariaDB
--- Versi PHP: 8.2.0
+-- Waktu pembuatan: 29 Feb 2024 pada 11.34
+-- Versi server: 10.4.28-MariaDB
+-- Versi PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -50,7 +50,8 @@ INSERT INTO `alamats` (`id_alamat`, `name_penerima`, `no_hp`, `name_provinsi`, `
 (3, 'Arif Fadillah', '8963578346', 'Jakartaa', 'Jakarta Timur', 'Ciracas', 'Ciracas', 'hauyuiydhfdwf', 1, '2024-01-02 01:30:18', '2024-01-02 01:30:18'),
 (4, 'Arif Fadillah', '081293772795', 'Jakarta', 'Jakarta Timur', 'Ciracas', 'Ciracas', 'Rt 09 Rw 07 No 10', 2, '2024-01-08 02:20:24', '2024-01-08 02:20:24'),
 (5, 'Ucup', '0832324834', 'Jawa Barat', 'Depok', 'Depok', 'Depok', 'Depok Aneh Ada Keranda Terbang', 2, '2024-01-22 05:11:00', '2024-01-22 05:11:00'),
-(7, 'Arif Fadillah', '081293772789', 'Jakarta', 'Jakarta Timur', 'Ciracas', 'Ciracas', 'rt09', 7, '2024-02-29 02:22:37', '2024-02-29 02:22:37');
+(6, 'Arif Fadillah', '081293772795', 'Jakarta', 'Jakarta Timur', 'Ciracas', 'Ciracas', 'RT09/07 No 10', 7, '2024-02-27 04:19:58', '2024-02-27 04:19:58'),
+(7, 'Ucup', '0932243434', 'Sumatra', 'Jambo=i', 'Samsuri', 'Similikiti', 'RT10 RW04 No10', 8, '2024-02-27 05:01:32', '2024-02-27 05:01:32');
 
 -- --------------------------------------------------------
 
@@ -108,7 +109,7 @@ CREATE TABLE `diskons` (
   `id_diskon` bigint(20) UNSIGNED NOT NULL,
   `id_product` varchar(255) NOT NULL,
   `persen_diskon` varchar(255) NOT NULL,
-  `total_harga` varchar(255) NOT NULL,
+  `total_harga_diskon` varchar(255) NOT NULL,
   `tanggal_berlaku` varchar(255) NOT NULL,
   `status` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -119,8 +120,9 @@ CREATE TABLE `diskons` (
 -- Dumping data untuk tabel `diskons`
 --
 
-INSERT INTO `diskons` (`id_diskon`, `id_product`, `persen_diskon`, `total_harga`, `tanggal_berlaku`, `status`, `created_at`, `updated_at`) VALUES
-(3, '1', '5', '12350000', '2024-03-02', 'active', '2024-02-29 06:49:04', '2024-02-29 07:10:52');
+INSERT INTO `diskons` (`id_diskon`, `id_product`, `persen_diskon`, `total_harga_diskon`, `tanggal_berlaku`, `status`, `created_at`, `updated_at`) VALUES
+(1, '1', '5', '12350000', '2024-03-02', 'active', '2024-02-29 10:24:33', '2024-02-29 10:26:06'),
+(3, '5', '10', '1215000', '2024-03-02', 'active', '2024-02-29 10:28:54', '2024-02-29 10:28:54');
 
 -- --------------------------------------------------------
 
@@ -200,14 +202,13 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id_orders`, `id_product`, `id_alamat`, `id_user`, `qty_orders`, `metode_pembayaran`, `status_orders`, `date_orders`, `total_harga`, `no_resi`, `jasa_antar`, `size`, `harga_product`, `waktu_nerimapesanan`, `created_at`, `updated_at`) VALUES
-(1, 6, 6, 7, '1', 'cod', 'selesai', '2024-02-05 10:03:45', '1900000', '086568586', 'jne', '47', '1900000', '2024-02-05 10:05:13', '2024-02-05 03:03:45', '2024-02-05 03:05:13'),
-(2, 2, 6, 7, '1', 'cod', 'dikemas', '2024-02-22 10:40:37', '2500000', NULL, NULL, '47', '2500000', NULL, '2024-02-22 03:40:37', '2024-02-22 03:40:37'),
-(3, 1, 7, 7, '3', 'cod', 'selesai', '2024-02-29 09:22:52', '39000000', 'fuddde', 'j&t', '54', '13000000', '2024-02-29 09:24:03', '2024-02-29 02:22:52', '2024-02-29 02:24:03'),
-(4, 1, 7, 7, '1', 'cod', 'selesai', '2024-02-29 13:06:10', '12350000', '3437fdklf', 'j&t', '40', '12350000', '2024-02-29 14:28:05', '2024-02-29 06:06:10', '2024-02-29 07:28:05'),
-(5, 2, 7, 7, '6', 'cod', 'dikemas', '2024-02-29 14:35:23', '14250000', NULL, NULL, '47', '2500000', NULL, '2024-02-29 07:35:23', '2024-02-29 07:35:23'),
-(6, 5, 7, 7, '6', 'cod', 'selesai', '2024-02-29 14:37:05', '7695000', '1224335', 'anteraja', '45', '1350000', '2024-02-29 14:45:05', '2024-02-29 07:37:05', '2024-02-29 07:45:05'),
-(7, 8, 7, 7, '1', 'cod', 'dikemas', '2024-02-29 14:42:39', '1100000', NULL, NULL, '40', '1100000', NULL, '2024-02-29 07:42:39', '2024-02-29 07:42:39'),
-(8, 1, 7, 7, '1', 'cod', 'dikemas', '2024-02-29 15:09:06', '12350000', NULL, NULL, '45', '12350000', NULL, '2024-02-29 08:09:06', '2024-02-29 08:09:06');
+(1, 13, 6, 7, '1', 'cod', 'selesai', '2024-02-27 11:20:17', '2500000', '133424JLD', 'j&t', '41', '2500000', '2024-02-27 11:21:44', '2024-02-27 04:20:17', '2024-02-27 04:21:44'),
+(2, 5, 6, 7, '1', 'cod', 'selesai', '2024-02-27 11:54:56', '1350000', 'HHFFF924', 'anteraja', '45', '1350000', '2024-02-27 11:55:26', '2024-02-27 04:54:56', '2024-02-27 04:55:26'),
+(3, 13, 7, 8, '1', 'cod', 'selesai', '2024-02-27 12:02:03', '2500000', 'kirirh', 'j&t', '41', '2500000', '2024-02-27 12:02:37', '2024-02-27 05:02:03', '2024-02-27 05:02:37'),
+(4, 1, 6, 7, '1', 'cod', 'selesai', '2024-02-29 16:14:26', '12350000', 'ADadni324', 'j&t', '45', '12350000', '2024-02-29 17:14:39', '2024-02-29 09:14:26', '2024-02-29 10:14:39'),
+(5, 2, 6, 7, '1', 'cod', 'selesai', '2024-02-29 16:14:57', '2500000', 'kjdsok3232', 'jne', '45', '2500000', '2024-02-29 17:15:32', '2024-02-29 09:14:57', '2024-02-29 10:15:32'),
+(6, 4, 6, 7, '6', 'cod', 'selesai', '2024-02-29 16:15:42', '7125000', 'ASDADSQ889', 'j&t', '45', '1250000', '2024-02-29 16:29:55', '2024-02-29 09:15:42', '2024-02-29 09:29:55'),
+(7, 5, 6, 7, '2', 'cod', 'dikemas', '2024-02-29 17:31:23', '2430000', NULL, NULL, '45', '1215000', NULL, '2024-02-29 10:31:23', '2024-02-29 10:31:23');
 
 -- --------------------------------------------------------
 
@@ -240,8 +241,7 @@ CREATE TABLE `pav_products` (
 --
 
 INSERT INTO `pav_products` (`id_pavpro`, `id_product`, `id_user`, `created_at`, `updated_at`) VALUES
-(2, 13, 7, '2024-02-01 07:25:21', '2024-02-01 07:25:21'),
-(4, 1, 7, '2024-02-29 02:24:48', '2024-02-29 02:24:48');
+(2, 13, 7, '2024-02-01 07:25:21', '2024-02-01 07:25:21');
 
 -- --------------------------------------------------------
 
@@ -286,19 +286,19 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id_product`, `name_product`, `desc_product`, `stock_product`, `name_brand`, `image_product`, `product_status`, `price_product`, `created_at`, `updated_at`) VALUES
-(1, 'Adidas Samba OG Black White Gum', 'The adidas Samba Black-White Gum shoe, style B75807, is a product made from kangaroo leather with an innovative lightweight upper and gum rubber sole for grip. It features adidas stripes on its sides. Of course, as their name suggests, the shoes are black and cloud-white and come with white or black shoelaces made of polyester and plastic. adidas Samba Black-White Gum’s tongue is branded with the adidas logo. Samba branding is just beneath the collar, close to the stripes on the sides of the sneakers.', 4, 'Adidas', 'b4NkRmn0R6mlDPHYKGNSyL8TPFq4jMFOmghgzVNl.webp', 'ready', '13000000', '2023-12-07 05:47:18', '2024-02-29 08:09:06'),
-(2, 'Adidas NMD R1 Japan Triple Black', 'Enter the NMD R1 Primeknit Japan “Triple Black,” featuring a clean black woven upper with matching jet black Three Stripes, full-length Boost cushioning, and Japanese branding on the front bumper and heel that provides an international twist.', 0, 'Adidas', 'M8NmqAlKWXrvd1ZAdKNqe50ErFyhNdK2W7Ws4eZ8.webp', 'sold', '2500000', '2024-01-08 06:54:20', '2024-02-29 07:35:23'),
+(1, 'Adidas Samba OG Black White Gum', 'The adidas Samba Black-White Gum shoe, style B75807, is a product made from kangaroo leather with an innovative lightweight upper and gum rubber sole for grip. It features adidas stripes on its sides. Of course, as their name suggests, the shoes are black and cloud-white and come with white or black shoelaces made of polyester and plastic. adidas Samba Black-White Gum’s tongue is branded with the adidas logo. Samba branding is just beneath the collar, close to the stripes on the sides of the sneakers.', 8, 'Adidas', 'b4NkRmn0R6mlDPHYKGNSyL8TPFq4jMFOmghgzVNl.webp', 'ready', '13000000', '2023-12-07 05:47:18', '2024-02-29 09:14:26'),
+(2, 'Adidas NMD R1 Japan Triple Black', 'Enter the NMD R1 Primeknit Japan “Triple Black,” featuring a clean black woven upper with matching jet black Three Stripes, full-length Boost cushioning, and Japanese branding on the front bumper and heel that provides an international twist.', 6, 'Adidas', 'M8NmqAlKWXrvd1ZAdKNqe50ErFyhNdK2W7Ws4eZ8.webp', 'ready', '2500000', '2024-01-08 06:54:20', '2024-02-29 09:14:58'),
 (3, 'Nike Blazer Mid \'77 Vintage White Black (2021)', 'In the \'70s, Nike was the new shoe on the block. So new in fact, we were still breaking into the basketball scene and testing prototypes on the feet of our local team. Of course, the design improved over the years, but the name stuck. The Nike Blazer Mid \'77 Vintage—classic from the beginning.', 0, 'Nike', 'WHcynCZsxScNud2hrCpwcXUSccZ2CdgQ5TfJtNov.webp', 'sold', '1500000', '2024-01-11 08:02:57', '2024-01-22 03:45:24'),
-(4, 'Nike Dunk Low White Black Panda', 'The Nike Dunk Low White Black (2021) (W) highlights classic color blocking on a vintage silhouette originally released in 1985. The all-leather upper features a crisp white base with contrasting black overlays and a matching black Swoosh. Nike branding lands on the heel tab and woven tongue tag in keeping with the sneaker’s OG aesthetic. The low-top is supported by a durable rubber cupsole, equipped underfoot with a basketball-specific traction pattern.', 7, 'Nike', 'IUCtZ6ZoryjKP5w1QMwAnd6FGcfossTEYWohiybA.webp', 'ready', '1250000', '2024-01-15 05:43:01', '2024-01-15 05:43:01'),
-(5, 'Air Jordan 1 Mid Lucky Green', 'The upper of the Air Jordan 1 Mid Lucky Green is made of high-quality leather and textile, which gives the shoe durability and a premium look', 0, 'Nike', 'yx8O025iWoYPSaaGBTYeoDDohQZeoaxuXU8CwBrj.webp', 'sold', '1350000', '2024-01-15 05:45:09', '2024-02-29 07:37:05'),
-(6, 'Air Jordan 1 Retro High Tie Dye', 'The Jordan 1 Retro High Tie Dye (W) gives the iconic silhouette a fashion-forward look, highlighted by a faux hand-dyed effect on the sneaker’s heel and forefoot overlays. The swirling blue and teal hues are offset by a white leather quarter panel and contrasting black leather on the collar and toe box. Branding elements include a black Swoosh, matching black Wings logo and a Nike tag atop the lightly padded nylon tongue.', 6, 'Nike', 'bFctO4z6fNMi4JF0VTOKPqLfxHP7mW9GmuEI6MM8.webp', 'ready', '1900000', '2024-01-15 05:50:59', '2024-02-05 03:03:45'),
+(4, 'Nike Dunk Low White Black Panda', 'The Nike Dunk Low White Black (2021) (W) highlights classic color blocking on a vintage silhouette originally released in 1985. The all-leather upper features a crisp white base with contrasting black overlays and a matching black Swoosh. Nike branding lands on the heel tab and woven tongue tag in keeping with the sneaker’s OG aesthetic. The low-top is supported by a durable rubber cupsole, equipped underfoot with a basketball-specific traction pattern.', 1, 'Nike', 'IUCtZ6ZoryjKP5w1QMwAnd6FGcfossTEYWohiybA.webp', 'ready', '1250000', '2024-01-15 05:43:01', '2024-02-29 09:15:42'),
+(5, 'Air Jordan 1 Mid Lucky Green', 'The upper of the Air Jordan 1 Mid Lucky Green is made of high-quality leather and textile, which gives the shoe durability and a premium look', 3, 'Nike', 'yx8O025iWoYPSaaGBTYeoDDohQZeoaxuXU8CwBrj.webp', 'ready', '1350000', '2024-01-15 05:45:09', '2024-02-29 10:31:23'),
+(6, 'Air Jordan 1 Retro High Tie Dye', 'The Jordan 1 Retro High Tie Dye (W) gives the iconic silhouette a fashion-forward look, highlighted by a faux hand-dyed effect on the sneaker’s heel and forefoot overlays. The swirling blue and teal hues are offset by a white leather quarter panel and contrasting black leather on the collar and toe box. Branding elements include a black Swoosh, matching black Wings logo and a Nike tag atop the lightly padded nylon tongue.', 7, 'Nike', 'bFctO4z6fNMi4JF0VTOKPqLfxHP7mW9GmuEI6MM8.webp', 'ready', '1900000', '2024-01-15 05:50:59', '2024-01-15 05:50:59'),
 (7, 'Air Jordan 1 Low Multi Canvas (GS)', 'Presenting a sustainable take on the retro basketball model, the Air Jordan 1 Low Multi Canvas GS is made using recycled materials. Boasting a pastel-toned colourway,', 7, 'Nike', 'uuodo3uUJymZUUfEYgcZZtHarIikYf7KFS2K9P3z.webp', 'ready', '2000000', '2024-01-15 05:52:30', '2024-01-15 05:52:30'),
-(8, 'Nike Air Max 1 \'86 OG Big Bubble Lost Sketch', 'For Summer 2023, the Swoosh will be releasing new colorways of the “Big Bubble” runner as we now take a look at this upcoming Nike Air Max 1 ’86 “Blue Safari” makeup. It utilizes Tinker Hatfield’s iconic “Safari” print that he took inspiration from an ostrich-skin couch at a furniture store. Dressed in a Light Smoke Grey and Diffused Blue color scheme. This offering of the Nike Air Max 1 features a mesh base with textile overlays, suede Swooshes, and safari print used on the mudguards.', 6, 'Nike', 'NDgQ9xMMglsLEfPUxQKJB99b7FATpwfkqk7tgmH8.webp', 'ready', '1100000', '2024-01-15 07:02:36', '2024-02-29 07:42:39'),
+(8, 'Nike Air Max 1 \'86 OG Big Bubble Lost Sketch', 'For Summer 2023, the Swoosh will be releasing new colorways of the “Big Bubble” runner as we now take a look at this upcoming Nike Air Max 1 ’86 “Blue Safari” makeup. It utilizes Tinker Hatfield’s iconic “Safari” print that he took inspiration from an ostrich-skin couch at a furniture store. Dressed in a Light Smoke Grey and Diffused Blue color scheme. This offering of the Nike Air Max 1 features a mesh base with textile overlays, suede Swooshes, and safari print used on the mudguards.', 7, 'Nike', 'NDgQ9xMMglsLEfPUxQKJB99b7FATpwfkqk7tgmH8.webp', 'ready', '1100000', '2024-01-15 07:02:36', '2024-01-15 07:08:24'),
 (9, 'Nike Air Force 1 Low \'07 Triple White (2021)', 'The radiance lives on in the Nike Air Force 1 ’07, the b-ball OG that puts a fresh spin on what you know best: durably stitched overlays, clean finishes and the perfect amount of flash to make you shine. The stitched overlays on the upper add heritage style, durability and support. Originally designed for performance hoops, the Nike Air cushioning adds lightweight, all-day comfort. The low-cut silhouette adds a clean, streamlined look. The padded collar feels soft and comfortable. Foam midsole, Perforations on the toe, Rubber sole.', 0, 'Nike', 'KmoqYNAFYehOYkvnBV5fH0FXJDWBqQTz4lNN4sFn.webp', 'sold', '1700000', '2024-01-15 07:04:04', '2024-01-17 04:06:52'),
 (10, 'Air Jordan 1 Retro High OG Lost and Found', 'Constructed in high quality tumbled leather in the original hightop silhouette of the Air Jordan 1, the orange, black, and white colorway is taken from the team uniform MJ wore during the game and modeled after the OG “Black Toe” AJ1 color block.', 7, 'Nike', 'YXJQyvj5Xtzt43GUtSNXqbVHdgUGEsfRe9KhZ9qR.webp', 'ready', '4500000', '2024-01-15 07:06:57', '2024-01-15 07:06:57'),
 (11, 'Adidas Country OG White Green', 'didas AG (juga dikenal sebagai adidas) adalah sebuah perusahaan sepatu Jerman. Perusahaan ini dinamakan atas pendirinya, Adolf (Adi) Dassler, 12', 9, 'Adidas', '01IXXgEsqkZUuGxuycPUoDgTfUv8zlcgomaEZ7yP.webp', 'sold', '1500000', '2024-01-16 04:10:01', '2024-01-16 04:28:35'),
 (12, 'Adidas Yeezy 350 V2 Carbon Beluga', 'Just in time for summer adidas and Kanye West delivered the Yeezy Boost 350 V2 Carbon Beluga, a revamped version of the classic Beluga colorway. The iconic partnership continues to defy expectations and redefine sneaker culture. With the Carbon Beluga colorway, this drop showcased a fresh take on the beloved Beluga. The Primeknit upper wrapped around the Boost midsole is swathed in this cutting-edge colorway, infusing a familiar design with bold, modern energy. It screams street-ready while maintaining that sleek Yeezy aesthetic we all know and love.', 9, 'Adidas', 'AX4sMzHYNjF8vRzNue5TUgqNEjfeu4YJmyZsm24t.webp', 'ready', '4400000', '2024-01-16 04:40:40', '2024-01-16 04:40:40'),
-(13, 'Adidas Superstar Bape ABC Camo Green', 'Description\r\n\r\nIn addition to tapping new-age collaborators the likes of Gunna and The Weeknd, the last couple of year have seen A BATHING APE (BAPE) revisit its partnership decades-old partnership with adidas. For their next endeavor, the institutions have prepped an adidas Superstar covered in the Japanese label’s iconic green ABC camouflage.\r\n\r\nAs with adidas Originals collaborations of yesteryear, the forthcoming pair lends its entire upper to BAPE’s oft-imitated, military-inspired print. Shell-toes and their attached sole units forgo any warped flair in favor of an off-white arrangement. Profile STAs and “BAPE STA”', 7, 'Adidas', 'sZeIXqcd8yU5eulNjVgtPXn6lFMYwxjwDqQ93Ajs.webp', 'ready', '2500000', '2024-01-16 04:48:04', '2024-01-22 02:38:56'),
+(13, 'Adidas Superstar Bape ABC Camo Green', 'Description\r\n\r\nIn addition to tapping new-age collaborators the likes of Gunna and The Weeknd, the last couple of year have seen A BATHING APE (BAPE) revisit its partnership decades-old partnership with adidas. For their next endeavor, the institutions have prepped an adidas Superstar covered in the Japanese label’s iconic green ABC camouflage.\r\n\r\nAs with adidas Originals collaborations of yesteryear, the forthcoming pair lends its entire upper to BAPE’s oft-imitated, military-inspired print. Shell-toes and their attached sole units forgo any warped flair in favor of an off-white arrangement. Profile STAs and “BAPE STA”', 5, 'Adidas', 'sZeIXqcd8yU5eulNjVgtPXn6lFMYwxjwDqQ93Ajs.webp', 'ready', '2500000', '2024-01-16 04:48:04', '2024-02-27 05:02:03'),
 (14, 'Adidas Gazelle Indoor Sean Wotherspoon', 'Adidas\' Gazelle Mid Indoor \"Sean Wotherspoon\" sneakers are distinguished by their intricately embroidered design. The signature 3-Stripes decorate the sides, while a rubber sole adds comfort and traction to the design.', 9, 'Adidas', 'lioqkF3xTbifgVxXOWlHkRp5IGJJrKP3jx6YRP1g.webp', 'ready', '3400000', '2024-01-16 04:51:11', '2024-01-16 04:51:11'),
 (15, 'Adidas Samba OG notitle Cow Print', 'Adidas Samba OG Cow Print or any other specific model, I recommend checking the official Adidas website, authorized Adidas retailers, or other reliable sneaker retailers.', 7, 'Adidas', 'dmYPMwiuSKuASwpad7QwrQmVznl9wpSfppP2jzUu.webp', 'ready', '3300000', '2024-01-16 04:53:39', '2024-01-16 05:18:44'),
 (16, 'Adidas NMD Human Race Trail Pharrell Multi-Color', 'Description\r\n\r\nDubbed the \"Hiking Collection,\" each pair takes the usual NMD Hu upper and sits it on top of a rugged outsole. Bright colorways take cues from popular outdoors designs from the \'80s and \'90s, while each pair sports the model\'s signature embroidered text on each shoe as well.', 9, 'Adidas', 'mRiNBj5GQ1p64tXzGuQtX6ykiot9y09MPcq78a8I.webp', 'ready', '2200000', '2024-01-16 04:55:32', '2024-01-17 02:43:01');
@@ -326,14 +326,13 @@ CREATE TABLE `ratings` (
 --
 
 INSERT INTO `ratings` (`id_ratings`, `id_orders`, `komentar`, `start_rate`, `id_user`, `waktu_rate`, `status_rate`, `created_at`, `updated_at`) VALUES
-(1, 1, '100% Authentic', '4', '7', '2024-02-05 10:28:52', 'yes', '2024-02-05 03:03:45', '2024-02-05 03:28:52'),
-(2, 2, NULL, NULL, '7', NULL, 'no', '2024-02-22 03:40:37', '2024-02-22 03:40:37'),
-(3, 3, 'Bagus', '4', '7', '2024-02-29 09:24:17', 'yes', '2024-02-29 02:22:52', '2024-02-29 02:24:17'),
-(4, 4, NULL, NULL, '7', NULL, 'no', '2024-02-29 06:06:10', '2024-02-29 06:06:10'),
-(5, 5, NULL, NULL, '7', NULL, 'no', '2024-02-29 07:35:23', '2024-02-29 07:35:23'),
-(6, 6, NULL, NULL, '7', NULL, 'no', '2024-02-29 07:37:05', '2024-02-29 07:37:05'),
-(7, 7, NULL, NULL, '7', NULL, 'no', '2024-02-29 07:42:39', '2024-02-29 07:42:39'),
-(8, 8, NULL, NULL, '7', NULL, 'no', '2024-02-29 08:09:06', '2024-02-29 08:09:06');
+(1, 1, 'GOODDDAY', '4', '7', '2024-02-27 11:22:20', 'yes', '2024-02-27 04:20:17', '2024-02-27 04:22:20'),
+(2, 2, 'KEREN', '5', '7', '2024-02-27 11:55:45', 'yes', '2024-02-27 04:54:56', '2024-02-27 04:55:45'),
+(3, 3, 'GOOD', '5', '8', '2024-02-27 12:02:56', 'yes', '2024-02-27 05:02:03', '2024-02-27 05:02:56'),
+(4, 4, NULL, NULL, '7', NULL, 'no', '2024-02-29 09:14:26', '2024-02-29 09:14:26'),
+(5, 5, 'Good', '3', '7', '2024-02-29 17:16:58', 'yes', '2024-02-29 09:14:57', '2024-02-29 10:16:58'),
+(6, 6, NULL, NULL, '7', NULL, 'no', '2024-02-29 09:15:42', '2024-02-29 09:15:42'),
+(7, 7, NULL, NULL, '7', NULL, 'no', '2024-02-29 10:31:23', '2024-02-29 10:31:23');
 
 -- --------------------------------------------------------
 
@@ -429,10 +428,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `level`, `image`, `remember_token`, `created_at`, `updated_at`) VALUES
-(3, 'superadmin', 'superadmin@gmail.com', NULL, '$2y$10$nAYYmyoykJJzHiDKaadM4OTsCGJDyimyIUhimYJ98sNuUpOAxnDU.', 'superadmin', NULL, NULL, '2024-01-03 02:24:45', '2024-01-29 04:58:07'),
+(3, 'superadmin', 'superadmin@gmail.com', NULL, '$2y$10$hLMQO1nOSYr1/l7XT4hf0OFzpFLQWNhqMzxr9HJ10kL2BvqdR0eDS', 'superadmin', NULL, NULL, '2024-01-03 02:24:45', '2024-01-29 04:58:07'),
 (6, 'Arif Fadillah', 'admin@gmail.com', NULL, '$2y$10$DhAafJvOUCR0euw.GY7g9.k/BVuTiJNS3oBVA.sWY0LXe7p13f87.', 'admin', NULL, NULL, '2024-02-01 07:03:23', '2024-02-01 07:03:23'),
 (7, 'Arif Fadillah', 'user@gmail.com', NULL, '$2y$10$hEa2VUu5gO5/nkR85MOIceMZO/QCkqGvoZeNa8VXOmhUpNnJ2i6Jy', 'user', NULL, NULL, '2024-02-01 07:04:08', '2024-02-01 07:04:08'),
-(9, 'udin petot', 'petot@gmail.com', NULL, '$2y$10$F.H2O5XuHr1zY2ycjrDLZuwjyP1Ots/3SoFnW3Yc/AS51c/5CK.b6', NULL, NULL, NULL, '2024-02-29 02:48:17', '2024-02-29 02:48:17');
+(8, 'ucup nirin', 'ucup@gmail.com', NULL, '$2y$10$PdeyYsUaSsKnuyJrgIBY9uTZXCueyaLXL7q8cPIWoy7oVO5rwyb.W', 'user', NULL, NULL, '2024-02-27 05:00:24', '2024-02-27 05:00:24');
 
 --
 -- Indexes for dumped tables
@@ -552,7 +551,7 @@ ALTER TABLE `chart_sizes`
 -- AUTO_INCREMENT untuk tabel `diskons`
 --
 ALTER TABLE `diskons`
-  MODIFY `id_diskon` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_diskon` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `failed_jobs`
@@ -570,13 +569,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT untuk tabel `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id_orders` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_orders` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `pav_products`
 --
 ALTER TABLE `pav_products`
-  MODIFY `id_pavpro` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_pavpro` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `personal_access_tokens`
@@ -594,7 +593,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT untuk tabel `ratings`
 --
 ALTER TABLE `ratings`
-  MODIFY `id_ratings` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_ratings` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `size_products`
@@ -606,7 +605,7 @@ ALTER TABLE `size_products`
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

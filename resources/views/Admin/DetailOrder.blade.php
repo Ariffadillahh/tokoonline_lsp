@@ -90,7 +90,22 @@
 
                     </div>
                 </div>
-
+                <div>
+                    @if ($item->qty_orders > 5)
+                        <p class="text-red-600 italic">Diskon 5%</p>
+                    @endif
+                    @if ($item->qty_orders > 10)
+                        <p class="text-red-600 italic">Diskon 15%</p>
+                    @endif
+                </div>
+                @if ($item->total_harga_diskon !== null && $item->persen_diskon !== null)
+                <div class="flex gap-2">
+                    <p class="font-mono text-lg md:text-xl mt-1 mr-3 text-red-500 line-through">Rp
+                        {{ number_format($item->price_product, '0', ',', '.') }}</p>
+                    <p class="text-red-600 italic mt-1">Diskon {{$item->persen_diskon}}%</p>
+                </div>
+                @endif
+                
                 <div class="md:flex justify-between">
                     <div class="flex ">
                         <p class="font-mono text-lg md:text-xl mt-1 mr-3">Rp

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id('id_diskon');
             $table->string('id_product');
             $table->string('persen_diskon');
-            $table->string('total_harga');
+            $table->string('total_harga_diskon');
             $table->string('tanggal_berlaku');
             $table->string('status')->nullable();
             $table->timestamps();

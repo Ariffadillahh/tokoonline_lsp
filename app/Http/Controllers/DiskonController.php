@@ -63,7 +63,7 @@ class DiskonController extends Controller
         diskon::create([
             'id_product' => $request->product,
             'persen_diskon' => $request->diskon,
-            'total_harga' => $totalHarga,
+            'total_harga_diskon' => $totalHarga,
             'tanggal_berlaku' => $request->tgl,
             'status' => 'active',
         ]);
@@ -114,7 +114,7 @@ class DiskonController extends Controller
             diskon::where('id_diskon', $request->id)->update(
                 [
                     'persen_diskon' => $request->diskon,
-                    'total_harga' => $totalHarga,
+                    'total_harga_diskon' => $totalHarga,
                     'tanggal_berlaku' => $tgl_lama,
                     'status' => $request->status
                 ]
@@ -123,7 +123,7 @@ class DiskonController extends Controller
             diskon::where('id_diskon', $request->id)->update(
                 [
                     'persen_diskon' => $request->diskon,
-                    'total_harga' => $totalHarga,
+                    'total_harga_diskon' => $totalHarga,
                     'tanggal_berlaku' => $request->date,
                     'status' => $request->status
                 ]

@@ -105,16 +105,11 @@ class LoginController extends Controller
      */
     public function show(request $request)
     {
-
-
-
-
-
         $pro = Product::leftJoin('diskons', function ($join) {
             $join->on('products.id_product', '=', 'diskons.id_product')
                 ->where('diskons.status', 'active');
         })
-            ->select('products.*', 'diskons.total_harga', 'diskons.persen_diskon')
+            ->select('products.*', 'diskons.total_harga_diskon', 'diskons.persen_diskon')
             ->take(20)
             ->get();
 
@@ -184,10 +179,21 @@ class LoginController extends Controller
     public function orderanDetail($id)
     {
         $orders = DB::table('orders')
-            ->join('products', 'orders.id_product', '=', 'products.id_product')
-            ->join('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat')
-            ->select('orders.*', 'products.*', 'alamats.*')
-            ->where('orders.id_orders', '=', $id)->first();
+            ->leftJoin('products', 'orders.id_product', '=', 'products.id_product')
+            ->leftJoin('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat')
+            ->leftJoin('diskons', 'products.id_product', '=', 'diskons.id_product')
+            ->select('orders.*', 'products.*', 'alamats.*', 'diskons.total_harga_diskon', 'diskons.persen_diskon', 'diskons.tanggal_berlaku', 'diskons.id_diskon')
+            ->where('orders.id_orders', '=', $id)
+            ->first();
+
+        if ($orders === null) {
+            $orders = DB::table('orders')
+                ->join('products', 'orders.id_product', '=', 'products.id_product')
+                ->join('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat')
+                ->select('orders.*', 'products.*', 'alamats.*')
+                ->where('orders.id_orders', '=', $id)
+                ->first();
+        }
 
         return view('Admin.DetailOrder', [
             'item' => $orders

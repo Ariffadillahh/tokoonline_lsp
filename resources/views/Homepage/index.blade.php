@@ -48,7 +48,7 @@
                                                 Out</span>
                                         </div>
                                     @endif
-                                    @if ($item->total_harga !== null && $item->persen_diskon !== null)
+                                    @if ($item->total_harga_diskon !== null && $item->persen_diskon !== null)
                                         <div class="absolute top-1 left-2">
                                             <span
                                                 class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  uppercase">Diskon
@@ -60,7 +60,7 @@
                                     <h1 class="font-semibold text-base md:text-xl font-mono line-clamp-2 ">
                                         {{ $item->name_product }}</h1>
 
-                                    @if ($item->total_harga !== null && $item->persen_diskon !== null)
+                                    @if ($item->total_harga_diskon !== null && $item->persen_diskon !== null)
                                         <div class="">
                                             <p
                                                 class="text-sm font-mono truncate md:mt-3 mt-1.5 line-through text-red-500">
@@ -68,7 +68,7 @@
                                                 {{ number_format($item->price_product, 0, ',', '.') }}
                                             </p>
                                             <p class="md:text-lg text-sm font-mono truncate md:mt-3 mt-1.5">
-                                                Rp. {{ number_format($item->total_harga, 0, ',', '.') }}
+                                                Rp. {{ number_format($item->total_harga_diskon, 0, ',', '.') }}
                                             </p>
                                         </div>
                                     @else

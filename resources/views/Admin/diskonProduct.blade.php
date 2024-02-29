@@ -175,7 +175,7 @@
                                     </td>
 
                                     <td class="px-6 py-4">
-                                        Rp. {{ number_format($item->total_harga, 0, ',', '.') }}
+                                        Rp. {{ number_format($item->total_harga_diskon, 0, ',', '.') }}
                                     </td>
                                     <td class="px-6 py-4">
                                         {{ $item->tanggal_berlaku }}

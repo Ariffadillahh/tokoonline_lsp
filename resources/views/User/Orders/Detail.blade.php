@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="flex justify-center items-center h-full p-3">
-                    <img src="{{ asset('storage/images/maaci.jpg') }}" class="md:w-1/4 rounded-md">
+                    <img src="{{ asset('storage/images/maaci.png') }}" class="md:w-1/4 rounded-md">
                 </div>
             </div>
         </div>
@@ -55,11 +55,20 @@
             </div>
         </div>
 
-        @if ($item->qty_orders > 5)
-            <p class="font-bold">Diskon 5%</p>
-        @endif
-        @if ($item->qty_orders > 10)
-            <p class="font-bold">Diskon 15%</p>
+        <div>
+            @if ($item->qty_orders > 5)
+                <p class="text-red-600 italic">Diskon 5%</p>
+            @endif
+            @if ($item->qty_orders > 10)
+                <p class="text-red-600 italic">Diskon 15%</p>
+            @endif
+        </div>
+        @if ($item->total_harga_diskon !== null && $item->persen_diskon !== null)
+            <div class="flex gap-2">
+                <p class="font-mono text-lg md:text-xl mt-1 mr-3 text-red-500 line-through">Rp
+                    {{ number_format($item->price_product, '0', ',', '.') }}</p>
+                <p class="text-red-600 italic mt-1">Diskon {{ $item->persen_diskon }}%</p>
+            </div>
         @endif
         <div class="md:flex justify-between">
             <div class="flex ">

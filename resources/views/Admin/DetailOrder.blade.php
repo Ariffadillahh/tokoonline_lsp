@@ -90,6 +90,7 @@
 
                     </div>
                 </div>
+
                 <div class="md:flex justify-between">
                     <div class="flex ">
                         <p class="font-mono text-lg md:text-xl mt-1 mr-3">Rp
@@ -98,7 +99,10 @@
                     </div>
                     <p class="font-mono text-lg md:text-xl ">Total : Rp
                         {{ number_format($item->total_harga, '0', ',', '.') }}</p>
+
                 </div>
+
+
                 <div class="mt-3 font-mono ">
                     <div class="">
                         <div class="md:flex justify-between">

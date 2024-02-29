@@ -3,7 +3,7 @@
 use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ChartSizeController;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\DiskonController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PavProductController;
@@ -11,9 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserControllers;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
-use Maatwebsite\Excel\Row;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,13 +82,13 @@ Route::middleware(['checkRole:admin,superadmin'])->group(function () {
     Route::post('/size', [ChartSizeController::class, 'store'])->name('size');
     Route::post('/size/edit', [ChartSizeController::class, 'update'])->name('editSize');
     Route::post('/size/hapus', [ChartSizeController::class, 'destroy'])->name('hapusSize');
+    Route::get('/diskon', [DiskonController::class, 'index'])->name('diskon');
+    Route::post('/diskon', [DiskonController::class, 'store'])->name('addDiskon');
+    Route::post('/hapusDiskon', [DiskonController::class, 'destroy'])->name('hapusDiskon');
+    Route::post('/editDiskon', [DiskonController::class, 'update'])->name('editDiskon');
 });
 
 Route::middleware(['checkRole:superadmin'])->group(function () {
     Route::get('/users', [LoginController::class, 'users'])->name('users');
+    Route::post('/users', [LoginController::class, 'addUsers'])->name('addUser');
 });
-
-
-
-
-

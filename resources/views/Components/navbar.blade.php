@@ -11,11 +11,12 @@
     if (Auth()->check() && Auth()->user()->level == 'user') {
         $fav = \App\Models\PavProduct::where('id_user', Auth()->user()->id)->get();
     } else {
-        $fav = null; // Set $fav to null or handle it accordingly for non-authenticated users or non-admin/superadmin users
+        $fav = null;
     }
+    $navbarClass = Auth()->check() ? 'navbar' : 'fixed';
 @endphp
 
-<nav class="px-3 md:px-14 shadow-sm  w-full bg-white duration-300 transition-all z-10 " id="navbar">
+<nav class="px-3 md:px-14 shadow-sm  w-full bg-white duration-300 transition-all z-10 " id="{{ $navbarClass }}">
     <div class="flex justify-between py-4 ">
         <div class="flex gap-5">
             <a href="/">
@@ -61,7 +62,8 @@
                             <a href="/favorite">
                                 <div class="relative ">
                                     <i class="fa-solid fa-heart text-[25px] mt-2 text-primary"></i>
-                                    <div class="absolute -right-2 top-1  bg-red-600 rounded-full px-1.5 text-white">
+                                    <div
+                                        class="absolute -right-2 top-1  bg-red-600 rounded-full px-1.5 text-white border border-white">
                                         <p class="text-sm">{{ count($fav) }}</p>
                                     </div>
                                 </div>
@@ -199,11 +201,10 @@
 </div>
 
 
-
 <script>
     let prevScrollpos = window.pageYOffset;
-    let dropDownMenu = document.getElementById("dropDownMenu");
     let navbar = document.getElementById("navbar");
+    let dropDownMenu = document.getElementById("dropDownMenu");
 
     window.onscroll = function() {
         let currentScrollPos = window.pageYOffset;
@@ -217,12 +218,15 @@
         }
 
         if (currentScrollPos === 0) {
-            navbar.classList.add('top-0')
+            navbar.classList.add('top-0');
             navbar.classList.remove("fixed");
         }
 
         prevScrollpos = currentScrollPos;
     };
+
+
+
 
     function searchNav() {
         const navbar = document.getElementById("navbar");
@@ -233,7 +237,16 @@
     }
 
     function dropDown() {
-        const dropDownMenu = document.getElementById("dropDownMenu");
-        dropDownMenu.classList.toggle('hidden')
+        dropDownMenu.classList.toggle('hidden');
     }
+
+    // Hide dropdown when clicking outside of it
+    document.addEventListener('click', function(event) {
+        const isClickInsideDropDown = dropDownMenu.contains(event.target);
+        const isClickOnDropDownButton = event.target.closest('button[onclick="dropDown()"]');
+
+        if (!isClickInsideDropDown && !isClickOnDropDownButton) {
+            dropDownMenu.classList.add('hidden');
+        }
+    });
 </script>

@@ -54,6 +54,13 @@
 
             </div>
         </div>
+
+        @if ($item->qty_orders > 5)
+            <p class="font-bold">Diskon 5%</p>
+        @endif
+        @if ($item->qty_orders > 10)
+            <p class="font-bold">Diskon 15%</p>
+        @endif
         <div class="md:flex justify-between">
             <div class="flex ">
                 <p class="font-mono text-lg md:text-xl mt-1 mr-3">Rp
@@ -175,6 +182,8 @@
 
         </div>
     </div>
+    </div>
+
     @include('../../Components/footer')
 </body>
 

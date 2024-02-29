@@ -42,19 +42,41 @@
                                         alt="{{ $item->name_product }}"
                                         class="w-full object-cover transition-all duration-300 group-hover:scale-110 ">
                                     @if ($item->stock_product == 0)
-                                        <div class="absolute top-1 left-2">
+                                        <div class="absolute top-1 right-2">
                                             <span
                                                 class="bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300 uppercase">Sold
                                                 Out</span>
+                                        </div>
+                                    @endif
+                                    @if ($item->total_harga !== null && $item->persen_diskon !== null)
+                                        <div class="absolute top-1 left-2">
+                                            <span
+                                                class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  uppercase">Diskon
+                                                {{ $item->persen_diskon }}%</span>
                                         </div>
                                     @endif
                                 </div>
                                 <div class="md:p-2 mt-2">
                                     <h1 class="font-semibold text-base md:text-xl font-mono line-clamp-2 ">
                                         {{ $item->name_product }}</h1>
-                                    <p class="md:text-lg text-sm font-mono truncate md:mt-3 mt-1.5">Rp
-                                        {{ number_format($item->price_product, 0, ',', '.') }}
-                                    </p>
+
+                                    @if ($item->total_harga !== null && $item->persen_diskon !== null)
+                                        <div class="">
+                                            <p
+                                                class="text-sm font-mono truncate md:mt-3 mt-1.5 line-through text-red-500">
+                                                Rp
+                                                {{ number_format($item->price_product, 0, ',', '.') }}
+                                            </p>
+                                            <p class="md:text-lg text-sm font-mono truncate md:mt-3 mt-1.5">
+                                                Rp. {{ number_format($item->total_harga, 0, ',', '.') }}
+                                            </p>
+                                        </div>
+                                    @else
+                                        <p class="md:text-lg text-sm font-mono truncate md:mt-3 mt-1.5">Rp
+                                            {{ number_format($item->price_product ?? 0, 0, ',', '.') }}
+                                        </p>
+                                    @endif
+
                                 </div>
                             </div>
                         </div>

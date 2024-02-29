@@ -144,12 +144,24 @@ class ProductController extends Controller
     public function show(Product $product, $id)
     {
         $product = Product::where('id_product', $id)->first();
+        $pro = Product::leftJoin('diskons', 'products.id_product', '=', 'diskons.id_product')
+            ->select('products.*', 'diskons.total_harga', 'diskons.persen_diskon', 'diskons.tanggal_berlaku', 'diskons.id_diskon')
+            ->where('products.id_product', $id)
+            ->where('diskons.status', 'active')
+            ->first();
+
+        // Check apakah $pro null atau tidak
+        if ($pro === null) {
+            // Jika null, lakukan query tanpa join ke diskons
+            $pro = Product::where('products.id_product', $id)
+                ->first();
+        }
         $size = SizeProduct::where('id_product', $id)->orderBy('uk_size')->get();
         $cek = pavProduct::where('id_product', $id)
             ->where('id_user', auth()->user()->id)
             ->first();
-       
-            $Similiar = Product::where('name_brand', $product->name_brand)
+
+        $Similiar = Product::where('name_brand', $product->name_brand)
             ->where('id_product', '!=', $id)
             ->inRandomOrder()
             ->take(5)
@@ -158,16 +170,16 @@ class ProductController extends Controller
         $alamat = alamat::where('id_user', auth()->user()->id)->get();
 
         $rate = DB::table('ratings')
-        ->join('orders', 'ratings.id_orders', '=', 'orders.id_orders')
-        ->join('users', 'ratings.id_user', '=', 'users.id' )
-        ->select('orders.*', 'ratings.*', 'users.*')
-        ->where('orders.id_product', '=', $id)
-        ->where('ratings.status_rate','=', 'yes')->orderBy('ratings.waktu_rate', 'desc')->limit(5)->get();
+            ->join('orders', 'ratings.id_orders', '=', 'orders.id_orders')
+            ->join('users', 'ratings.id_user', '=', 'users.id')
+            ->select('orders.*', 'ratings.*', 'users.*')
+            ->where('orders.id_product', '=', $id)
+            ->where('ratings.status_rate', '=', 'yes')->orderBy('ratings.waktu_rate', 'desc')->limit(5)->get();
 
         $countRate = DB::table('ratings')
-        ->join('orders', 'ratings.id_orders', '=', 'orders.id_orders')
-        ->where('orders.id_product', '=', $id)
-        ->sum('ratings.start_rate');
+            ->join('orders', 'ratings.id_orders', '=', 'orders.id_orders')
+            ->where('orders.id_product', '=', $id)
+            ->sum('ratings.start_rate');
         $totalPembeli = count($rate);
 
         $totalRate = 0; // Default total rate
@@ -176,7 +188,7 @@ class ProductController extends Controller
         }
         $formattedTotalRate = number_format($totalRate, 2);
         return view('User.Detail', [
-            'product' => $product,
+            'product' => $pro,
             'size' => $size,
             'sameProduct' => $Similiar,
             'pav' => $cek,

@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\boking;
 use App\Models\chart_size;
 use App\Models\User;
 use App\Models\login;
-use App\Models\daftarbuku;
-use App\Models\jenisbuku;
-use App\Models\penjagaperpus;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -33,11 +30,33 @@ class LoginController extends Controller
 
     public function users()
     {
-        $user = User::all();   
+        $user = User::all();
         return view('Admin.Users', [
             'user' => $user
         ]);
     }
+
+    public function addUsers(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required',
+            'role' => 'required',
+        ]);
+
+        $password = Hash::make($request->password);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $password,
+            'role' => $request->role,
+        ]);
+
+        return redirect()->back()->with('success', "Berhasil tambah {$request->role}");
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -45,7 +64,7 @@ class LoginController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function dashboard()
-    {   
+    {
         $chart = chart_size::orderBy('uk_chart')->get();
 
         return view('Admin.dashboard', [
@@ -87,15 +106,28 @@ class LoginController extends Controller
     public function show(request $request)
     {
 
-        $product = Product::inRandomOrder()->take(20)->get();
+
+
+
+
+        $pro = Product::leftJoin('diskons', function ($join) {
+            $join->on('products.id_product', '=', 'diskons.id_product')
+                ->where('diskons.status', 'active');
+        })
+            ->select('products.*', 'diskons.total_harga', 'diskons.persen_diskon')
+            ->take(20)
+            ->get();
+
+
+        // Check apakah $pro null atau tidak
+
 
         return view(
             "Homepage.index",
             [
-                'product' => $product
+                'product' => $pro
             ]
         );
-       
     }
 
     /**
@@ -105,14 +137,14 @@ class LoginController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function orderan()
-    {   
+    {
         $orders = DB::table('orders')
-        ->join('products', 'orders.id_product', '=', 'products.id_product')
-        ->join('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat')
-        ->select('orders.*', 'products.*', 'alamats.*')
-        ->orderBy('orders.id_orders', 'desc')
-        ->where('orders.status_orders', '=', 'dikemas')
-        ->get();
+            ->join('products', 'orders.id_product', '=', 'products.id_product')
+            ->join('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat')
+            ->select('orders.*', 'products.*', 'alamats.*')
+            ->orderBy('orders.id_orders', 'desc')
+            ->where('orders.status_orders', '=', 'dikemas')
+            ->get();
 
         return view('Admin.Orders', [
             'order' => $orders
@@ -120,14 +152,14 @@ class LoginController extends Controller
     }
 
     public function orderanDiantar()
-    {   
+    {
         $orders = DB::table('orders')
-        ->join('products', 'orders.id_product', '=', 'products.id_product')
-        ->join('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat')
-        ->select('orders.*', 'products.*', 'alamats.*')
-        ->orderBy('orders.id_orders', 'desc')
-        ->where('orders.status_orders', '=', 'diantar')
-        ->get();
+            ->join('products', 'orders.id_product', '=', 'products.id_product')
+            ->join('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat')
+            ->select('orders.*', 'products.*', 'alamats.*')
+            ->orderBy('orders.id_orders', 'desc')
+            ->where('orders.status_orders', '=', 'diantar')
+            ->get();
 
         return view('Admin.OrderanDiantar', [
             'order' => $orders
@@ -135,14 +167,14 @@ class LoginController extends Controller
     }
 
     public function orderanSelesai()
-    {   
+    {
         $orders = DB::table('orders')
-        ->join('products', 'orders.id_product', '=', 'products.id_product')
-        ->join('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat')
-        ->select('orders.*', 'products.*', 'alamats.*')
-        ->orderBy('orders.id_orders', 'desc')
-        ->where('orders.status_orders', '=', 'selesai')
-        ->get();
+            ->join('products', 'orders.id_product', '=', 'products.id_product')
+            ->join('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat')
+            ->select('orders.*', 'products.*', 'alamats.*')
+            ->orderBy('orders.id_orders', 'desc')
+            ->where('orders.status_orders', '=', 'selesai')
+            ->get();
 
         return view('Admin.OrderanSelesai', [
             'order' => $orders
@@ -150,13 +182,13 @@ class LoginController extends Controller
     }
 
     public function orderanDetail($id)
-    {   
+    {
         $orders = DB::table('orders')
-        ->join('products', 'orders.id_product', '=', 'products.id_product')
-        ->join('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat' )
-        ->select('orders.*','products.*', 'alamats.*')
-        ->where('orders.id_orders', '=', $id)->first();
-    
+            ->join('products', 'orders.id_product', '=', 'products.id_product')
+            ->join('alamats', 'orders.id_alamat', '=', 'alamats.id_alamat')
+            ->select('orders.*', 'products.*', 'alamats.*')
+            ->where('orders.id_orders', '=', $id)->first();
+
         return view('Admin.DetailOrder', [
             'item' => $orders
         ]);
@@ -182,7 +214,7 @@ class LoginController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(login $login)
-    {   
+    {
         Auth::logout();
         return redirect('/');
     }

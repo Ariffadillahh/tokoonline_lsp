@@ -92,15 +92,57 @@
                 </ol>
             </nav>
             <div class="md:grid md:grid-cols-2 gap-5 my-5">
-                <div>
+                <div class="relative">
                     <img src={{ asset('storage/product_images/' . $product->image_product) }}
                         alt="{{ $product->name_product }}" class="w-full">
+                    @php
+                        $waktuSekarang = \Carbon\Carbon::now();
+                        // Konversi tanggal string dari database ke objek Carbon
+                        $tanggalTentukan = $product->tanggal_berlaku;
+                        // Hitung selisih waktu
+                        $selisih = \Carbon\Carbon::parse($tanggalTentukan)->diffForHumans($waktuSekarang);
+
+                    @endphp
+                    @if ($product->total_harga !== null && $product->persen_diskon !== null)
+                        <div class="absolute left-0 top-4">
+                            <span
+                                class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  uppercase">Diskon
+                                {{ $product->persen_diskon }}%</span>
+                            <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded ">
+                                {{ $selisih }} akan expired</span>
+                        </div>
+                    @endif
+                    @if ($waktuSekarang > $product->tanggal_berlaku)
+                        @php
+                            DB::table('diskons')
+                                ->where('id_diskon', $product->id_diskon)
+                                ->update([
+                                    'status' => 'expired',
+                                ]);
+                        @endphp
+                    @endif
                 </div>
                 <div class="pt-5 md:pt-10 md:px-5">
                     <h1 class="text-lg md:text-xl lg:text-3xl font-mono">{{ $product->name_product }}</h1>
                     <h1 class="font-mono md:text-lg">{{ $product->name_brand }}</h1>
-                    <h1 class="text-base md:text-lg lg:text-xl my-2 font-mono">Rp
-                        {{ number_format($product->price_product, 0, ',', '.') }}</h1>
+
+                    @if ($product->total_harga !== null && $product->persen_diskon !== null)
+                        <div class="">
+                            <p class="text-sm font-mono truncate md:mt-3 mt-1.5 line-through text-red-500">
+                                Rp
+                                {{ number_format($product->price_product, 0, ',', '.') }}
+                            </p>
+                            <p class="text-base md:text-lg lg:text-xl my-2 font-mono">
+                                Rp. {{ number_format($product->total_harga, 0, ',', '.') }}
+                            </p>
+
+                        </div>
+                    @else
+                        <h1 class="text-base md:text-lg lg:text-xl my-2 font-mono">Rp
+                            {{ number_format($product->price_product, 0, ',', '.') }}</h1>
+                    @endif
+
+
                     <div class="my-6">
                         <p class="font-mono ">Select Size</p>
 
@@ -198,8 +240,9 @@
                                                 </div>
                                                 <input type="hidden" name="id_product"
                                                     value="{{ $product->id_product }}">
-                                                <input type="hidden" name="harga"
-                                                    value="{{ $product->price_product }}">
+                                                <input type="hidden" name="price"
+                                                    value="{{ $product->total_harga !== null && $product->persen_diskon !== null ? $product->total_harga : $product->price_product }}">
+
                                                 <input type="hidden" name="pembayaran" value="cod">
 
 
@@ -227,6 +270,10 @@
                                                         <span class="block text-red-600 italic">Free Ongkir seluruh
                                                             Indonesia</span>
                                                     </h1>
+                                                    <div>
+                                                        <p class="font-bold mt-3 ">Beli Lebih dari 5 Diskon 5% Dan Beli
+                                                            lebih dari 10 diskon 10%</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="mx-5 pb-3">
@@ -341,7 +388,7 @@
                                 <path
                                     d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
                             </svg>
-                            <p class="ms-2 text-sm font-bold text-gray-900 dark:text-white">{{$totalRate}}</p>
+                            <p class="ms-2 text-sm font-bold text-gray-900 dark:text-white">{{ $totalRate }}</p>
                             <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
                             <p class="text-sm font-medium text-gray-900 underline hover:no-underline dark:text-white">
                                 {{ count($rate) }}
